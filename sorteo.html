@@ -267,7 +267,7 @@
 </footer>
 
 <script>
-  const MAX_JUGADORES = 6;
+  const MAX_JUGADORES = 12;
   const MIN_JUGADORES = 2;
 
   const inputView = document.getElementById('input-view');
@@ -290,7 +290,7 @@
     li.className = 'player-row';
     li.innerHTML = `
       <span class="player-num">${num}.</span>
-      <input type="text" maxlength="20" placeholder="Nombre del jugador ${num}" aria-label="Jugador ${num}" />
+      <input type="text" maxlength="20" placeholder="Nombre del jugador ${num}" aria-label="Jugador ${num}" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" />
       <button type="button" class="remove-player" aria-label="Quitar jugador">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>

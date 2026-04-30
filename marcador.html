@@ -97,11 +97,147 @@
   }
   .add-player-input input { flex: 1; }
 
-  /* Tabla del marcador */
+  /* Tabla del marcador (desktop) */
   .scoreboard-wrap {
     overflow-x: auto;
     margin: 1.5rem 0;
     border: 1px solid var(--ink-line);
+  }
+
+  /* Layout cards (mobile) */
+  .scoreboard-cards {
+    display: none;
+    margin: 1.5rem 0;
+  }
+
+  /* Switch entre tabla y cards según viewport */
+  @media (max-width: 720px) {
+    .scoreboard-wrap { display: none; }
+    .scoreboard-cards { display: block; }
+  }
+
+  .round-card {
+    background: var(--ink-soft);
+    border: 1px solid var(--ink-line);
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+  }
+  .round-card-header {
+    background: rgba(245, 183, 0, 0.06);
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--ink-line);
+  }
+  .round-card-num {
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+  .round-card-sum {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+  .round-card-body {
+    padding: 0.5rem 0.75rem;
+  }
+  .round-player-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .round-player-row:last-child { border-bottom: none; }
+  .round-player-name {
+    flex: 1;
+    font-size: 14px;
+    color: var(--paper);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .round-player-input {
+    width: 75px;
+    background: var(--ink);
+    border: 1px solid var(--ink-line);
+    color: var(--paper);
+    text-align: right;
+    padding: 0.5rem 0.6rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    transition: border-color 0.2s ease;
+    -moz-appearance: textfield;
+    flex-shrink: 0;
+  }
+  .round-player-input::-webkit-outer-spin-button,
+  .round-player-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .round-player-input:focus {
+    outline: none;
+    border-color: var(--magenta);
+  }
+
+  /* Totales mobile (apilados horizontal scroll) */
+  .totals-mobile {
+    display: none;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--ink-soft);
+    border: 2px solid var(--gold);
+  }
+  @media (max-width: 720px) {
+    .totals-mobile { display: block; }
+  }
+  .totals-mobile-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 0.75rem;
+    text-align: center;
+  }
+  .totals-mobile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  .totals-mobile-cell {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.65rem 0.85rem;
+    background: var(--ink);
+    border: 1px solid var(--ink-line);
+  }
+  .totals-mobile-cell.winning {
+    border-color: var(--green);
+    box-shadow: inset 0 0 0 1px var(--green);
+  }
+  .totals-mobile-name {
+    font-size: 13px;
+    color: var(--paper);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .totals-mobile-value {
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    color: var(--gold);
+    margin-left: 0.5rem;
+  }
+  .totals-mobile-cell.winning .totals-mobile-value {
+    color: var(--green);
   }
 
   .scoreboard {
@@ -341,6 +477,72 @@
     font-size: 13px;
   }
 
+  /* Histórico */
+  .history-block {
+    background: var(--ink-soft);
+    border: 1px solid var(--ink-line);
+    margin-bottom: 1.5rem;
+  }
+  .history-summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 0.85rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    transition: color 0.2s ease;
+  }
+  .history-summary::-webkit-details-marker { display: none; }
+  .history-summary:hover { color: var(--paper); }
+  .history-icon { font-size: 14px; }
+  .history-arrow {
+    margin-left: auto;
+    transition: transform 0.2s ease;
+    color: var(--gold);
+  }
+  .history-block[open] .history-arrow { transform: rotate(180deg); }
+
+  .history-list {
+    border-top: 1px solid var(--ink-line);
+    padding: 0.5rem 0;
+  }
+  .history-item {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .history-item:last-child { border-bottom: none; }
+  .history-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.4rem;
+    gap: 1rem;
+  }
+  .history-winner {
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    font-size: 16px;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+  }
+  .history-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--dim);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .history-meta {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+  }
+
   @media (max-width: 600px) {
     .setup-row { gap: 0.5rem; }
     .mode-hint { margin-left: 0; display: block; margin-top: 0.5rem; width: 100%; }
@@ -370,11 +572,21 @@
   <h1 class="tool-title">Anota puntos.</h1>
   <p class="tool-subtitle">Ideal para fillers tipo Toma 6, Welcome to, Skull King — o cualquier juego con puntos por rondas. Hasta 12 jugadores, rondas ilimitadas.</p>
 
+  <!-- Histórico: solo aparece si hay partidas guardadas -->
+  <details id="history-block" class="history-block" hidden>
+    <summary class="history-summary">
+      <span class="history-icon">📜</span>
+      <span>Últimas partidas</span>
+      <span class="history-arrow" aria-hidden="true">▾</span>
+    </summary>
+    <div id="history-list" class="history-list"></div>
+  </details>
+
   <!-- Setup: jugadores y modo -->
   <div id="setup">
     <div class="hint">Jugadores</div>
     <div class="add-player-input">
-      <input id="new-player-name" type="text" maxlength="20" placeholder="Nombre del jugador" aria-label="Nombre del jugador a agregar" />
+      <input id="new-player-name" type="text" maxlength="20" placeholder="Nombre del jugador" aria-label="Nombre del jugador a agregar" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" />
       <button id="add-player-btn" class="btn btn-primary">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
         Agregar
@@ -395,6 +607,7 @@
 
   <!-- Marcador (oculto hasta tener jugadores) -->
   <div id="scoreboard-wrap" hidden>
+    <!-- Tabla (desktop) -->
     <div class="scoreboard-wrap">
       <table class="scoreboard">
         <thead>
@@ -410,6 +623,15 @@
           </tr>
         </tfoot>
       </table>
+    </div>
+
+    <!-- Cards (mobile) -->
+    <div id="scoreboard-cards" class="scoreboard-cards"></div>
+
+    <!-- Totales mobile -->
+    <div id="totals-mobile" class="totals-mobile" hidden>
+      <div class="totals-mobile-title">Total acumulado</div>
+      <div id="totals-mobile-grid" class="totals-mobile-grid"></div>
     </div>
 
     <div class="scoreboard-actions">
@@ -477,6 +699,8 @@
 
 <script>
   const STORAGE_KEY = 'cjmvr-marcador-v1';
+  const HISTORY_KEY = 'cjmvr-marcador-history-v1';
+  const MAX_HISTORY = 3;
   const MAX_JUGADORES = 12;
 
   // Estado
@@ -502,6 +726,93 @@
     } catch (e) {}
   }
 
+  // === Histórico ===
+  function loadHistory() {
+    try {
+      const raw = localStorage.getItem(HISTORY_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch (e) {}
+    return [];
+  }
+
+  function saveHistory(history) {
+    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); } catch (e) {}
+  }
+
+  function archivarPartidaActual() {
+    // Solo archivar si hay datos relevantes: 2+ jugadores y 1+ ronda con valores
+    if (state.players.length < 2) return;
+    const tieneDatos = state.rounds.some(r => r.some(v => v !== null && v !== undefined && v !== ''));
+    if (!tieneDatos) return;
+
+    const totals = state.players.map((_, pIdx) =>
+      state.rounds.reduce((sum, round) => sum + (Number(round[pIdx]) || 0), 0)
+    );
+
+    let winnerIdx;
+    if (state.mode === 'higher') {
+      winnerIdx = totals.indexOf(Math.max(...totals));
+    } else {
+      winnerIdx = totals.indexOf(Math.min(...totals));
+    }
+
+    const snapshot = {
+      date: Date.now(),
+      players: [...state.players],
+      totals: totals,
+      winner: state.players[winnerIdx],
+      winnerScore: totals[winnerIdx],
+      mode: state.mode,
+      rounds: state.rounds.length
+    };
+
+    const history = loadHistory();
+    history.unshift(snapshot);
+    if (history.length > MAX_HISTORY) history.length = MAX_HISTORY;
+    saveHistory(history);
+  }
+
+  function formatRelativeDate(ts) {
+    const diffMs = Date.now() - ts;
+    const min = Math.floor(diffMs / 60000);
+    const h = Math.floor(min / 60);
+    const d = Math.floor(h / 24);
+    if (min < 1) return 'recién';
+    if (min < 60) return `hace ${min} min`;
+    if (h < 24) return `hace ${h}h`;
+    if (d === 1) return 'ayer';
+    if (d < 7) return `hace ${d} días`;
+    const date = new Date(ts);
+    return date.toLocaleDateString('es-CL', { day: 'numeric', month: 'short' });
+  }
+
+  function renderHistory() {
+    const history = loadHistory();
+    if (history.length === 0) {
+      historyBlock.hidden = true;
+      return;
+    }
+    historyBlock.hidden = false;
+    historyList.innerHTML = '';
+    history.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'history-item';
+      const otrosJugadores = item.players.filter(p => p !== item.winner).join(', ') || 'sin otros';
+      const modeLabel = item.mode === 'higher' ? 'mayor gana' : 'menor gana';
+      div.innerHTML = `
+        <div class="history-item-header">
+          <div class="history-winner">🏆 ${escapeHtml(item.winner)} · ${item.winnerScore} pts</div>
+          <div class="history-date">${formatRelativeDate(item.date)}</div>
+        </div>
+        <div class="history-meta">${item.players.length} jug · ${item.rounds} rondas · ${modeLabel}</div>
+      `;
+      historyList.appendChild(div);
+    });
+  }
+
   // === Refs DOM ===
   const newPlayerInput = document.getElementById('new-player-name');
   const addPlayerBtn = document.getElementById('add-player-btn');
@@ -511,6 +822,9 @@
   const modeLowerBtn = document.getElementById('mode-lower');
   const modeHintEl = document.getElementById('mode-hint');
   const scoreboardWrap = document.getElementById('scoreboard-wrap');
+  const cardsContainer = document.getElementById('scoreboard-cards');
+  const totalsMobileEl = document.getElementById('totals-mobile');
+  const totalsMobileGrid = document.getElementById('totals-mobile-grid');
   const headerRow = document.getElementById('header-row');
   const roundsBody = document.getElementById('rounds-body');
   const totalsRow = document.getElementById('totals-row');
@@ -526,6 +840,8 @@
   const confirmYes = document.getElementById('confirm-yes');
   const shareBtn = document.getElementById('share');
   const shareLabel = document.getElementById('share-label');
+  const historyBlock = document.getElementById('history-block');
+  const historyList = document.getElementById('history-list');
 
   // === Render ===
   function renderChips() {
@@ -557,6 +873,35 @@
     }
   }
 
+  // Crea un input de score (factory) — ambas vistas lo usan
+  function crearScoreInput(rIdx, pIdx, className) {
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.className = className;
+    const val = state.rounds[rIdx][pIdx];
+    input.value = (val !== null && val !== undefined) ? val : '';
+    input.placeholder = '0';
+    input.setAttribute('inputmode', 'numeric');
+    input.setAttribute('autocomplete', 'off');
+    input.setAttribute('autocorrect', 'off');
+    input.setAttribute('spellcheck', 'false');
+    input.setAttribute('aria-label', `Puntos de ${state.players[pIdx]} en ronda ${rIdx + 1}`);
+    input.dataset.r = rIdx;
+    input.dataset.p = pIdx;
+    input.addEventListener('input', () => {
+      const v = input.value === '' ? null : Number(input.value);
+      state.rounds[rIdx][pIdx] = isNaN(v) ? null : v;
+      // Sincroniza el input gemelo (otra vista)
+      const selector = `input[data-r="${rIdx}"][data-p="${pIdx}"]`;
+      document.querySelectorAll(selector).forEach(el => {
+        if (el !== input) el.value = input.value;
+      });
+      updateTotals();
+      save();
+    });
+    return input;
+  }
+
   function renderScoreboard() {
     if (state.players.length < 2) {
       scoreboardWrap.hidden = true;
@@ -566,7 +911,7 @@
     emptyStateEl.hidden = true;
     scoreboardWrap.hidden = false;
 
-    // Header
+    // === Vista TABLA (desktop) ===
     headerRow.innerHTML = '<th>Ronda</th>';
     state.players.forEach(name => {
       const th = document.createElement('th');
@@ -574,7 +919,6 @@
       headerRow.appendChild(th);
     });
 
-    // Body (rondas)
     roundsBody.innerHTML = '';
     state.rounds.forEach((round, rIdx) => {
       const tr = document.createElement('tr');
@@ -585,37 +929,48 @@
 
       state.players.forEach((_, pIdx) => {
         const td = document.createElement('td');
-        const input = document.createElement('input');
-        input.type = 'number';
-        input.className = 'score-input';
-        input.value = round[pIdx] !== null && round[pIdx] !== undefined ? round[pIdx] : '';
-        input.placeholder = '0';
-        input.setAttribute('inputmode', 'numeric');
-        input.addEventListener('input', () => {
-          const val = input.value === '' ? null : Number(input.value);
-          state.rounds[rIdx][pIdx] = isNaN(val) ? null : val;
-          updateTotals();
-          save();
-        });
-        // Tab navega bien naturalmente
-        td.appendChild(input);
+        td.appendChild(crearScoreInput(rIdx, pIdx, 'score-input'));
         tr.appendChild(td);
       });
       roundsBody.appendChild(tr);
     });
 
-    // Totals
+    // === Vista CARDS (mobile) ===
+    cardsContainer.innerHTML = '';
+    state.rounds.forEach((round, rIdx) => {
+      const card = document.createElement('div');
+      card.className = 'round-card';
+      const sumaRonda = round.reduce((s, n) => s + (Number(n) || 0), 0);
+      card.innerHTML = `
+        <div class="round-card-header">
+          <div class="round-card-num">Ronda ${rIdx + 1}</div>
+          <div class="round-card-sum">Σ ${sumaRonda}</div>
+        </div>
+        <div class="round-card-body"></div>
+      `;
+      const body = card.querySelector('.round-card-body');
+      state.players.forEach((pName, pIdx) => {
+        const row = document.createElement('div');
+        row.className = 'round-player-row';
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'round-player-name';
+        nameSpan.textContent = pName;
+        row.appendChild(nameSpan);
+        row.appendChild(crearScoreInput(rIdx, pIdx, 'round-player-input'));
+        body.appendChild(row);
+      });
+      cardsContainer.appendChild(card);
+    });
+
     updateTotals();
     updateUndoBtn();
   }
 
   function updateTotals() {
-    totalsRow.innerHTML = '<td>Total</td>';
     const totals = state.players.map((_, pIdx) =>
       state.rounds.reduce((sum, round) => sum + (Number(round[pIdx]) || 0), 0)
     );
 
-    // Determina ganador
     let winnerIdx = -1;
     if (state.rounds.length > 0) {
       if (state.mode === 'higher') {
@@ -627,11 +982,39 @@
       }
     }
 
+    // === Tabla desktop ===
+    totalsRow.innerHTML = '<td>Total</td>';
     totals.forEach((total, i) => {
       const td = document.createElement('td');
       td.textContent = total;
       if (i === winnerIdx) td.classList.add('winning');
       totalsRow.appendChild(td);
+    });
+
+    // === Cards mobile ===
+    if (state.rounds.length > 0) {
+      totalsMobileEl.hidden = false;
+      totalsMobileGrid.innerHTML = '';
+      totals.forEach((total, i) => {
+        const cell = document.createElement('div');
+        cell.className = 'totals-mobile-cell' + (i === winnerIdx ? ' winning' : '');
+        cell.innerHTML = `
+          <span class="totals-mobile-name">${escapeHtml(state.players[i])}</span>
+          <span class="totals-mobile-value">${total}</span>
+        `;
+        totalsMobileGrid.appendChild(cell);
+      });
+    } else {
+      totalsMobileEl.hidden = true;
+    }
+
+    // Actualiza también las sumas por ronda en cards
+    document.querySelectorAll('.round-card').forEach((card, rIdx) => {
+      const round = state.rounds[rIdx];
+      if (!round) return;
+      const suma = round.reduce((s, n) => s + (Number(n) || 0), 0);
+      const sumEl = card.querySelector('.round-card-sum');
+      if (sumEl) sumEl.textContent = `Σ ${suma}`;
     });
   }
 
@@ -712,11 +1095,13 @@
   }
 
   function newGame() {
+    archivarPartidaActual();
     state = { players: [], rounds: [], mode: 'higher' };
     save();
     renderChips();
     renderModeUI();
     renderScoreboard();
+    renderHistory();
     podiumEl.hidden = true;
     newPlayerInput.focus();
   }
@@ -807,6 +1192,7 @@
 
   // === Init ===
   load();
+  renderHistory();
   renderChips();
   renderModeUI();
   renderScoreboard();
