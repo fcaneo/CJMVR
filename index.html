@@ -895,77 +895,70 @@
 
   <div class="max-w-7xl mx-auto px-6 lg:px-10 relative">
 
-    <div class="flex items-end justify-between mb-16 flex-wrap gap-6">
+    <div class="flex items-end justify-between mb-12 flex-wrap gap-6">
       <div>
         <div class="section-num cyan mb-4">/ 04 — LUDOTECA</div>
-        <h2 class="display text-5xl md:text-7xl text-paper">Lo que<br/>jugamos<span class="text-cyan">.</span></h2>
+        <h2 class="display text-5xl md:text-7xl text-paper">Lo que<br/>te puedes<br/>encontrar<span class="text-cyan">.</span></h2>
       </div>
       <p class="max-w-md text-paper/70 text-lg">
-        Algunos clásicos que casi siempre están sobre la mesa. Hay para 5 minutos, para 5 horas, y para todos los que se animen a probar algo nuevo.
+        El club no se define por una lista fija de juegos — se define por la <strong class="text-paper">variedad</strong>. Estos son los géneros que siempre están vivos en la mesa.
       </p>
+    </div>
+
+    <!-- Dado jugable: invita a tirar para recomendación al azar -->
+    <div class="mb-12 relative overflow-hidden bg-gradient-to-br from-cyan/10 via-transparent to-magenta/10 border border-cyan/30">
+      <div class="grid md:grid-cols-[auto_1fr_auto] items-center gap-6 p-6 md:p-8">
+        <!-- Dado interactivo -->
+        <button id="dice-launcher" class="group relative w-20 h-20 md:w-24 md:h-24 flex-shrink-0 transition-transform hover:scale-110 focus-visible:scale-110" aria-label="Tirar el dado y recibir una recomendación de juego">
+          <svg viewBox="0 0 64 64" fill="none" class="w-full h-full transition-transform group-hover:rotate-12" aria-hidden="true">
+            <rect x="6" y="6" width="52" height="52" rx="10" fill="#F5B700" stroke="#0E0E10" stroke-width="3"/>
+            <circle cx="20" cy="20" r="4" fill="#0E0E10"/>
+            <circle cx="44" cy="20" r="4" fill="#0E0E10"/>
+            <circle cx="32" cy="32" r="4" fill="#0E0E10"/>
+            <circle cx="20" cy="44" r="4" fill="#0E0E10"/>
+            <circle cx="44" cy="44" r="4" fill="#0E0E10"/>
+          </svg>
+          <!-- Pulso decorativo sutil -->
+          <span class="absolute inset-0 rounded-lg bg-gold/30 -z-10 blur-xl group-hover:bg-gold/50 transition-colors" aria-hidden="true"></span>
+        </button>
+
+        <!-- Copy -->
+        <div>
+          <div class="font-mono text-[11px] tracking-[0.25em] uppercase text-cyan mb-2">¿Indeciso?</div>
+          <h3 class="display text-2xl md:text-3xl text-paper leading-tight">Tira el dado y deja que te recomiende.</h3>
+          <p class="text-paper/60 text-sm mt-2">Una selección al azar del top 50 de BoardGameGeek — los mejores del mundo, según los jugadores.</p>
+        </div>
+
+        <!-- CTA -->
+        <button id="dice-launcher-cta" class="btn-primary px-6 py-3 font-bold tracking-wide inline-flex items-center gap-2 self-stretch md:self-auto">
+          Tirar
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path d="M21 12a9 9 0 11-3-6.7L21 8M21 3v5h-5"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-      <!-- Toma 6 -->
+      <!-- Party games -->
       <article class="tilt-card bg-inkSoft border border-inkLine p-7 group relative overflow-hidden">
         <div class="absolute -top-6 -right-6 w-32 h-32 bg-magenta/10 rounded-full blur-2xl group-hover:bg-magenta/20 transition-colors"></div>
         <div class="flex items-start justify-between mb-4 relative">
           <svg class="w-14 h-14 text-magenta" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
-            <rect x="14" y="10" width="28" height="40" rx="3" transform="rotate(-8 28 30)"/>
-            <rect x="22" y="14" width="28" height="40" rx="3" transform="rotate(8 36 34)"/>
+            <circle cx="20" cy="22" r="6"/>
+            <circle cx="44" cy="22" r="6"/>
+            <circle cx="32" cy="44" r="6"/>
+            <path d="M20 28v6M44 28v6M32 36V30"/>
           </svg>
-          <span class="pill text-paper/70 border-paper/20">Cartas</span>
+          <span class="pill text-paper/70 border-paper/20">~30 min</span>
         </div>
-        <h3 class="display text-3xl text-paper mt-4">Toma 6</h3>
-        <p class="text-paper/60 text-sm mt-2 font-mono">2-10 jugadores · 45 min</p>
-        <p class="text-paper/80 mt-4 leading-relaxed">¿No sabes qué jugar con 8 personas? Esto. Cinco minutos de reglas, cero tiempo muerto, gritos garantizados.</p>
+        <h3 class="display text-3xl text-paper mt-4">Party games</h3>
+        <p class="text-paper/60 text-sm mt-2 font-mono">Mesas grandes · risas garantizadas</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">Cuando llegan 8+ y nadie quiere pensar mucho. Reglas en 5 minutos, gritos los siguientes 25.</p>
       </article>
 
-      <!-- Wingspan -->
-      <article class="tilt-card bg-inkSoft border border-inkLine p-7 group relative overflow-hidden">
-        <div class="absolute -top-6 -right-6 w-32 h-32 bg-gold/10 rounded-full blur-2xl group-hover:bg-gold/20 transition-colors"></div>
-        <div class="flex items-start justify-between mb-4 relative">
-          <svg class="w-14 h-14 text-gold" viewBox="0 0 64 64" fill="currentColor">
-            <path d="M32 12c-4 0-8 2-10 6-3-2-7-2-10 0-2 2-2 5 0 8l8 6c-1 3 0 6 3 8s7 2 10 0c3 2 7 2 10 0s4-5 3-8l8-6c2-3 2-6 0-8-3-2-7-2-10 0-2-4-6-6-12-6z"/>
-          </svg>
-          <span class="pill text-paper/70 border-paper/20">Eurogame</span>
-        </div>
-        <h3 class="display text-3xl text-paper mt-4">Wingspan</h3>
-        <p class="text-paper/60 text-sm mt-2 font-mono">1-5 jugadores · 60-90 min</p>
-        <p class="text-paper/80 mt-4 leading-relaxed">Cartas de aves bellísimas y motores que combean solos. Si te gusta optimizar sin pelear con nadie, este es tu vicio nuevo.</p>
-      </article>
-
-      <!-- Ark Nova -->
-      <article class="tilt-card bg-inkSoft border border-inkLine p-7 group relative overflow-hidden">
-        <div class="absolute -top-6 -right-6 w-32 h-32 bg-cyan/10 rounded-full blur-2xl group-hover:bg-cyan/20 transition-colors"></div>
-        <div class="flex items-start justify-between mb-4 relative">
-          <svg class="w-14 h-14 text-cyan" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
-            <rect x="8" y="16" width="48" height="36" rx="4"/>
-            <path d="M8 28h48M20 16v36M44 16v36"/>
-          </svg>
-          <span class="pill text-paper/70 border-paper/20">Pesado</span>
-        </div>
-        <h3 class="display text-3xl text-paper mt-4">Ark Nova</h3>
-        <p class="text-paper/60 text-sm mt-2 font-mono">1-4 jugadores · 2-3 horas</p>
-        <p class="text-paper/80 mt-4 leading-relaxed">250 cartas. Tres horas. Un zoológico moderno por construir. Pide la mesa entera y la noche entera — y la dan, gustosos.</p>
-      </article>
-
-      <!-- Amazonas -->
-      <article class="tilt-card bg-inkSoft border border-inkLine p-7 group relative overflow-hidden">
-        <div class="absolute -top-6 -right-6 w-32 h-32 bg-magenta/10 rounded-full blur-2xl group-hover:bg-magenta/20 transition-colors"></div>
-        <div class="flex items-start justify-between mb-4 relative">
-          <svg class="w-14 h-14 text-magenta" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
-            <path d="M12 52c8-8 16-8 20 0M32 52c8-8 16-8 20 0M22 32c4-6 12-6 16 0M32 12v40"/>
-          </svg>
-          <span class="pill text-paper/70 border-paper/20">Familiar</span>
-        </div>
-        <h3 class="display text-3xl text-paper mt-4">Amazonas</h3>
-        <p class="text-paper/60 text-sm mt-2 font-mono">3-4 jugadores · 60 min</p>
-        <p class="text-paper/80 mt-4 leading-relaxed">Klaus-Jürgen Wrede haciendo lo suyo: reglas que aprendes en 5 minutos, decisiones que duelen los 60.</p>
-      </article>
-
-      <!-- Brass: Birmingham -->
+      <!-- Eurogames -->
       <article class="tilt-card bg-inkSoft border border-inkLine p-7 group relative overflow-hidden">
         <div class="absolute -top-6 -right-6 w-32 h-32 bg-gold/10 rounded-full blur-2xl group-hover:bg-gold/20 transition-colors"></div>
         <div class="flex items-start justify-between mb-4 relative">
@@ -975,26 +968,73 @@
             <rect x="42" y="10" width="12" height="44"/>
             <path d="M6 54h54"/>
           </svg>
-          <span class="pill text-paper/70 border-paper/20">BGG · Top</span>
+          <span class="pill text-paper/70 border-paper/20">~90 min</span>
         </div>
-        <h3 class="display text-3xl text-paper mt-4">Brass: Birmingham</h3>
-        <p class="text-paper/60 text-sm mt-2 font-mono">2-4 jugadores · 2 horas</p>
-        <p class="text-paper/80 mt-4 leading-relaxed">Año tras año, top 1 en BGG. No es para cualquiera: pide pensar 5 jugadas adelante. Vale cada minuto.</p>
+        <h3 class="display text-3xl text-paper mt-4">Eurogames</h3>
+        <p class="text-paper/60 text-sm mt-2 font-mono">Estrategia · construir motores</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">Para los que disfrutan optimizar sin pelear con nadie. Recursos, rutas, combos elegantes. El género que define al club.</p>
       </article>
 
-      <!-- Concordia -->
+      <!-- Cooperativos -->
       <article class="tilt-card bg-inkSoft border border-inkLine p-7 group relative overflow-hidden">
         <div class="absolute -top-6 -right-6 w-32 h-32 bg-cyan/10 rounded-full blur-2xl group-hover:bg-cyan/20 transition-colors"></div>
         <div class="flex items-start justify-between mb-4 relative">
           <svg class="w-14 h-14 text-cyan" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
-            <path d="M10 50V20l22-12 22 12v30"/>
-            <path d="M10 50h44M22 50V32h20v18M28 32v-6M36 32v-6"/>
+            <circle cx="32" cy="20" r="6"/>
+            <path d="M20 52v-6a8 8 0 0124 0v6"/>
+            <circle cx="14" cy="28" r="4"/>
+            <circle cx="50" cy="28" r="4"/>
+            <path d="M8 50v-4a6 6 0 0112 0M44 50v-4a6 6 0 0112 0"/>
           </svg>
-          <span class="pill text-paper/70 border-paper/20">Eurogame puro</span>
+          <span class="pill text-paper/70 border-paper/20">~60 min</span>
         </div>
-        <h3 class="display text-3xl text-paper mt-4">Concordia</h3>
-        <p class="text-paper/60 text-sm mt-2 font-mono">2-5 jugadores · 90 min</p>
-        <p class="text-paper/80 mt-4 leading-relaxed">Sin dados. Sin azar. Solo decisiones, y todas duras. Eurogame puro para los que disfrutan culpar solo a sí mismos cuando pierden.</p>
+        <h3 class="display text-3xl text-paper mt-4">Cooperativos</h3>
+        <p class="text-paper/60 text-sm mt-2 font-mono">Todos contra el juego</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">Ganas con los demás o pierdes con los demás. Ideal para grupos donde nadie quiere ser el villano de la noche.</p>
+      </article>
+
+      <!-- Pesados -->
+      <article class="tilt-card bg-inkSoft border border-inkLine p-7 group relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-32 h-32 bg-magenta/10 rounded-full blur-2xl group-hover:bg-magenta/20 transition-colors"></div>
+        <div class="flex items-start justify-between mb-4 relative">
+          <svg class="w-14 h-14 text-magenta" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
+            <path d="M8 56h48M16 56V32l16-12 16 12v24"/>
+            <path d="M24 56V44h16v12M28 32h8"/>
+          </svg>
+          <span class="pill text-paper/70 border-paper/20">~3 horas</span>
+        </div>
+        <h3 class="display text-3xl text-paper mt-4">Pesados</h3>
+        <p class="text-paper/60 text-sm mt-2 font-mono">Apartas la noche y vas con todo</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">El tipo de juego que pide despejar la mesa, traer snacks y comprometerse. Los que terminan a las 2am pero los recuerdas para siempre.</p>
+      </article>
+
+      <!-- Cartas rápidas -->
+      <article class="tilt-card bg-inkSoft border border-inkLine p-7 group relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-32 h-32 bg-gold/10 rounded-full blur-2xl group-hover:bg-gold/20 transition-colors"></div>
+        <div class="flex items-start justify-between mb-4 relative">
+          <svg class="w-14 h-14 text-gold" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
+            <rect x="14" y="10" width="28" height="40" rx="3" transform="rotate(-8 28 30)"/>
+            <rect x="22" y="14" width="28" height="40" rx="3" transform="rotate(8 36 34)"/>
+          </svg>
+          <span class="pill text-paper/70 border-paper/20">~20 min</span>
+        </div>
+        <h3 class="display text-3xl text-paper mt-4">Cartas rápidas</h3>
+        <p class="text-paper/60 text-sm mt-2 font-mono">Para llenar tiempos muertos</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">Mientras se arma una mesa más larga, mientras llegan los rezagados, mientras alguien va por más cerveza. Siempre hay un mazo a mano.</p>
+      </article>
+
+      <!-- Novedades -->
+      <article class="tilt-card bg-inkSoft border border-inkLine p-7 group relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-32 h-32 bg-cyan/10 rounded-full blur-2xl group-hover:bg-cyan/20 transition-colors"></div>
+        <div class="flex items-start justify-between mb-4 relative">
+          <svg class="w-14 h-14 text-cyan" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
+            <path d="M32 8l5 14h14l-11 9 4 15-12-9-12 9 4-15-11-9h14z"/>
+          </svg>
+          <span class="pill text-paper/70 border-paper/20">Recién salido</span>
+        </div>
+        <h3 class="display text-3xl text-paper mt-4">Novedades del mes</h3>
+        <p class="text-paper/60 text-sm mt-2 font-mono">Lo último de BGG · pruebas en vivo</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">Siempre hay alguien probando algo recién salido o trayendo el último hit del momento. ¿Quieres saber qué? Pásate un jueves.</p>
       </article>
 
     </div>
@@ -1372,7 +1412,7 @@
     <button id="dice-modal-close" class="absolute top-3 right-3 w-10 h-10 flex items-center justify-center text-paper/60 hover:text-gold transition-colors text-2xl" aria-label="Cerrar">×</button>
 
     <!-- Eyebrow -->
-    <div class="font-mono text-[11px] tracking-[0.3em] uppercase text-gold mb-4">★ El dado ha hablado</div>
+    <div class="font-mono text-[11px] tracking-[0.3em] uppercase text-gold mb-4">★ El dado ha hablado · Top 50 BGG</div>
 
     <!-- Dado animándose -->
     <div id="dice-spinner" class="w-24 h-24 mx-auto mb-6">
@@ -1515,13 +1555,54 @@
   // 5. Easter egg: 5 clicks al dado del nav abre modal con juego al azar
   (function() {
     try {
+      // Top 50 BGG (filtrado: sin secuelas/expansiones del mismo IP)
+      // Fuente: boardgamegeek.com/browse/boardgame
       const juegos = [
-        { name: 'Toma 6', meta: '2-10 jug · 45 min · Cartas', blurb: 'Sencillo de explicar, imposible de ganar siempre. Perfecto para mesas grandes.' },
-        { name: 'Wingspan', meta: '1-5 jug · 60-90 min · Eurogame', blurb: 'Aves, hábitats y combos hermosos. Construir motores económicos sin pelear.' },
-        { name: 'Ark Nova', meta: '1-4 jug · 2-3 horas · Pesado', blurb: 'Construye un zoológico moderno. Pide despejar la mesa y tomarse la noche entera.' },
-        { name: 'Amazonas', meta: '3-4 jug · 60 min · Familiar', blurb: 'Expedición por la selva. Simple por fuera, profundo por dentro.' },
-        { name: 'Brass: Birmingham', meta: '2-4 jug · 2 horas · BGG Top', blurb: 'Redes industriales en la Inglaterra victoriana. Cada jugada es ingeniería.' },
-        { name: 'Concordia', meta: '2-5 jug · 90 min · Eurogame puro', blurb: 'Comerciantes en el imperio romano. Sin dados, sin azar — solo decisiones.' }
+        { name: 'Brass: Birmingham', meta: '2-4 jug · 2h · #1 BGG', blurb: 'Redes industriales en la Inglaterra victoriana. Cada jugada es ingeniería pura.' },
+        { name: 'Ark Nova', meta: '1-4 jug · 2-3h · Pesado', blurb: 'Construye un zoológico moderno con 250 cartas. Pide la mesa entera y la noche entera.' },
+        { name: 'Pandemic Legacy: Season 1', meta: '2-4 jug · 60 min · Legacy', blurb: 'Cooperativo que cambia mes a mes. Cada partida deja huella permanente en el tablero.' },
+        { name: 'Gloomhaven', meta: '1-4 jug · 2-3h · Campaña épica', blurb: 'Mazmorras tácticas en una campaña de 95+ escenarios. Para los que quieren compromiso.' },
+        { name: 'Dune: Imperium – Uprising', meta: '1-6 jug · 90 min · Deck-building', blurb: 'Casas nobles peleándose por Arrakis. Mezcla worker placement con construcción de mazo.' },
+        { name: 'Twilight Imperium: Fourth Edition', meta: '3-6 jug · 6-8h · Épico', blurb: 'Conquista galáctica que toma una tarde entera. Diplomacia, traición, naves espaciales.' },
+        { name: 'War of the Ring: Second Edition', meta: '2-4 jug · 3h · Tematico', blurb: 'La Guerra del Anillo en una mesa. Bien o mal, todos quieren ser Sauron al menos una vez.' },
+        { name: 'Terraforming Mars', meta: '1-5 jug · 2h · Ciencia', blurb: 'Convierte Marte en un planeta habitable. Combos, cartas y mucha optimización.' },
+        { name: 'Star Wars: Rebellion', meta: '2-4 jug · 3-4h · Asimétrico', blurb: 'El Imperio busca, los Rebeldes huyen. Tensión narrativa de película.' },
+        { name: 'Spirit Island', meta: '1-4 jug · 90 min · Cooperativo', blurb: 'Espíritus de una isla expulsando colonizadores. El cooperativo más político y satisfactorio.' },
+        { name: 'Gaia Project', meta: '1-4 jug · 2h · Pesado eurogame', blurb: 'Razas alienígenas terraformando planetas. Pesado, pesadísimo, pero con caminos infinitos.' },
+        { name: 'Twilight Struggle', meta: '2 jug · 3h · Histórico', blurb: 'La Guerra Fría en cartas. EE.UU. vs URSS, tensión real, cada partida una crisis distinta.' },
+        { name: 'The Castles of Burgundy', meta: '2-4 jug · 90 min · Clásico', blurb: 'Stefan Feld en su mejor versión. Dados que no pelean contigo, decisiones que sí.' },
+        { name: 'SETI: Search for Extraterrestrial Intelligence', meta: '1-4 jug · 2h · Reciente', blurb: 'Buscar vida en el sistema solar. Un eurogame moderno con tema cósmico real.' },
+        { name: 'Slay the Spire: The Board Game', meta: '1-4 jug · 1-2h · Deck-building', blurb: 'El videojuego de culto, ahora en mesa. Subir la torre construyendo un mazo letal.' },
+        { name: 'Through the Ages', meta: '2-4 jug · 2-3h · Civilización', blurb: 'Construye una civilización desde la antigüedad. Cartas, militares, cultura, ciencia.' },
+        { name: 'The Lord of the Rings: Duel for Middle-earth', meta: '2 jug · 30 min · Para 2', blurb: 'Versión 7 Wonders Duel del universo Tolkien. Elegante y rápido.' },
+        { name: 'Great Western Trail: Second Edition', meta: '2-4 jug · 2h · Eurogame', blurb: 'Arreas ganado por el viejo oeste. Alex Pfister haciendo magia con un tema poco común.' },
+        { name: 'Eclipse: Second Dawn for the Galaxy', meta: '2-6 jug · 2-3h · 4X', blurb: 'Imperios espaciales construyendo, expandiendo, exterminando. Versión refinada del clásico.' },
+        { name: '7 Wonders Duel', meta: '2 jug · 30 min · Para 2', blurb: 'Civilizaciones dueleando en cartas. Si necesitas algo bueno para 2, este es.' },
+        { name: 'Nemesis', meta: '1-5 jug · 2-3h · Tematico', blurb: 'Aliens en una nave espacial. Cooperativo... hasta que no lo es. Traición pura.' },
+        { name: 'Scythe', meta: '1-5 jug · 2h · Asimétrico', blurb: 'Europa alternativa con mechas. Cinco facciones distintas, mismas reglas, partidas dispares.' },
+        { name: 'A Feast for Odin', meta: '1-4 jug · 2-3h · Eurogame', blurb: 'Vikingos en su feria anual. Uwe Rosenberg con tablero gigante y mil acciones.' },
+        { name: 'Clank! Legacy: Acquisitions Incorporated', meta: '2-4 jug · 90 min · Legacy', blurb: 'Deck-building de saqueo en mazmorras, con campaña que evoluciona partida a partida.' },
+        { name: 'Concordia', meta: '2-5 jug · 90 min · Eurogame puro', blurb: 'Sin dados. Sin azar. Solo decisiones, todas duras. Romanos comerciantes.' },
+        { name: 'Lost Ruins of Arnak', meta: '1-4 jug · 90 min · Aventura', blurb: 'Exploración de una isla perdida. Worker placement con deck-building. Aventura ligera.' },
+        { name: 'Arkham Horror: The Card Game', meta: '1-2 jug · 90 min · LCG', blurb: 'Lovecraft en formato campaña. Cartas que te van llevando por una historia oscura.' },
+        { name: 'Sky Team', meta: '2 jug · 15 min · Cooperativo', blurb: 'Pilotear un avión cooperando con tu copiloto, sin hablar. Más tenso de lo que suena.' },
+        { name: 'Root', meta: '2-4 jug · 60-90 min · Asimétrico', blurb: 'Animalitos del bosque en guerra. Cuatro facciones radicalmente distintas, una mesa, caos delicioso.' },
+        { name: 'Terra Mystica', meta: '2-5 jug · 2h · Pesado', blurb: 'Razas fantásticas terraformando un mundo. Eurogame durísimo, sin azar, infinitamente rejugable.' },
+        { name: 'Orléans', meta: '2-4 jug · 90 min · Bag-building', blurb: 'Saca trabajadores de una bolsa para hacer cosas en la Francia medieval. Reinhard Staupe puro.' },
+        { name: 'Too Many Bones', meta: '1-4 jug · 2-3h · Dungeon crawler', blurb: 'Cooperativo de aventureros con dados de habilidad. Componentes premium, decisión heroica.' },
+        { name: 'Wingspan', meta: '1-5 jug · 60-90 min · Eurogame', blurb: 'Aves, hábitats y combos hermosos. Si te gusta optimizar sin pelear, este es tu vicio.' },
+        { name: 'Mage Knight Board Game', meta: '1-4 jug · 2-3h · Solo king', blurb: 'El mejor juego solitario jamás hecho. Aventura, conquista, decisiones que paralizan.' },
+        { name: 'Barrage', meta: '2-4 jug · 2h · Pesado eurogame', blurb: 'Construir represas hidroeléctricas. Suena aburrido — es un golpe a la cara estratégico.' },
+        { name: 'Hegemony: Lead Your Class to Victory', meta: '2-4 jug · 2-3h · Asimétrico', blurb: 'Lucha de clases sociales en un país ficticio. Político, pesado, perfecto para discutir hasta tarde.' },
+        { name: 'Everdell', meta: '1-4 jug · 60 min · Familiar', blurb: 'Animalitos construyendo aldeas bajo un árbol. Hermoso visualmente, sólido mecánicamente.' },
+        { name: 'The Crew: Mission Deep Sea', meta: '2-5 jug · 30 min · Cooperativo', blurb: 'Trick-taking cooperativo, sin hablar. Cada misión es un puzzle con tu equipo.' },
+        { name: 'Viticulture Essential Edition', meta: '1-6 jug · 90 min · Eurogame', blurb: 'Hacer vino en la Toscana. Worker placement temático, accesible, con karma incluido.' },
+        { name: 'Kanban EV', meta: '2-4 jug · 2-3h · Pesado', blurb: 'Trabajas en una fábrica de autos eléctricos con un jefe IA implacable. Estrés laboral en mesa.' },
+        { name: 'Crokinole', meta: '2-4 jug · 30 min · Habilidad', blurb: 'Tirar discos con el dedo. Sí, ese juego del 1876 sigue siendo top BGG. Por algo será.' },
+        { name: 'Heat: Pedal to the Metal', meta: '1-6 jug · 60 min · Carreras', blurb: 'Carreras de Fórmula 1 retro con cartas. Tenso, rápido, accesible. Combos motor explícitos.' },
+        { name: 'Marvel Champions: The Card Game', meta: '1-4 jug · 60 min · LCG', blurb: 'Cooperativo de superhéroes Marvel construyendo mazos. Cada héroe juega completamente distinto.' },
+        { name: 'Food Chain Magnate', meta: '2-5 jug · 2-4h · Capitalista', blurb: 'Cadenas de fast food peleando. El juego más cruel que vas a jugar. Sin perdón.' },
+        { name: 'Underwater Cities', meta: '1-4 jug · 2h · Eurogame', blurb: 'Ciudades submarinas en el futuro. Vladimír Suchý destilando estrategia pura.' }
       ];
 
       const navDice = document.querySelector('.nav-dice');
@@ -1599,6 +1680,12 @@
           abrirModal();
         }
       });
+
+      // Dado jugable visible en sección Juegos: 1 click abre modal
+      const launcher = document.getElementById('dice-launcher');
+      const launcherCta = document.getElementById('dice-launcher-cta');
+      if (launcher) launcher.addEventListener('click', abrirModal);
+      if (launcherCta) launcherCta.addEventListener('click', abrirModal);
 
       closeBtn.addEventListener('click', cerrarModal);
       rerollBtn.addEventListener('click', tirarDado);
