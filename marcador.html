@@ -158,15 +158,19 @@
   .round-player-row:last-child { border-bottom: none; }
   .round-player-name {
     flex: 1 1 auto !important;
-    min-width: 0;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--paper) !important;
+    min-width: 80px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: #FFFFFF !important;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    display: inline-block !important;
+    display: block !important;
     visibility: visible !important;
+    opacity: 1 !important;
+    text-indent: 0 !important;
+    line-height: 1.2 !important;
+    padding-left: 4px;
   }
   .round-player-input {
     width: 75px;
@@ -482,6 +486,20 @@
     font-size: 13px;
   }
 
+  /* Quitar la "X" de los inputs type=search (cosmético) */
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-decoration,
+  input[type="search"]::-webkit-search-results-button,
+  input[type="search"]::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+  }
+  input[type="search"] {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
   /* Histórico */
   .history-block {
     background: var(--ink-soft);
@@ -591,7 +609,7 @@
   <div id="setup">
     <div class="hint">Jugadores</div>
     <div class="add-player-input">
-      <input id="new-player-name" type="text" maxlength="20" placeholder="Nombre del jugador" aria-label="Nombre del jugador a agregar" name="cjmvr-player-input" autocomplete="off-cjmvr-name" autocorrect="off" autocapitalize="words" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" />
+      <input id="new-player-name" type="search" maxlength="20" placeholder="Nombre del jugador" aria-label="Nombre del jugador a agregar" name="cjmvr-player-input" autocomplete="off-cjmvr-name" autocorrect="off" autocapitalize="words" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" enterkeyhint="done" />
       <button id="add-player-btn" class="btn btn-primary">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
         Agregar
@@ -881,15 +899,16 @@
   // Crea un input de score (factory) — ambas vistas lo usan
   function crearScoreInput(rIdx, pIdx, className) {
     const input = document.createElement('input');
-    // type="text" + pattern para evitar que Chrome lo confunda con campo de pago/tarjeta
-    input.type = 'text';
+    // type="search" + inputmode="decimal" → iOS no sugiere autocompletar (ni passwords ni tarjetas)
+    input.type = 'search';
     input.className = className;
     const val = state.rounds[rIdx][pIdx];
     input.value = (val !== null && val !== undefined) ? val : '';
     input.placeholder = '0';
-    // Permite negativos (Skull King, Welcome to)
-    input.setAttribute('inputmode', 'numeric');
+    // decimal en iOS muestra teclado numérico con punto (no de tarjeta), permite negativos
+    input.setAttribute('inputmode', 'decimal');
     input.setAttribute('pattern', '-?[0-9]*');
+    input.setAttribute('enterkeyhint', 'next');
     input.setAttribute('name', `cjmvr-score-${rIdx}-${pIdx}`);
     input.setAttribute('autocomplete', 'off-cjmvr-score');
     input.setAttribute('autocorrect', 'off');
@@ -971,10 +990,10 @@
       state.players.forEach((pName, pIdx) => {
         const row = document.createElement('div');
         row.className = 'round-player-row';
-        const nameSpan = document.createElement('span');
-        nameSpan.className = 'round-player-name';
-        nameSpan.textContent = pName || `Jugador ${pIdx + 1}`;
-        row.appendChild(nameSpan);
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'round-player-name';
+        nameDiv.textContent = pName || `Jugador ${pIdx + 1}`;
+        row.appendChild(nameDiv);
         row.appendChild(crearScoreInput(rIdx, pIdx, 'round-player-input'));
         body.appendChild(row);
       });
