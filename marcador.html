@@ -895,23 +895,26 @@
   // Crea un input de score (factory) — ambas vistas lo usan
   function crearScoreInput(rIdx, pIdx, className) {
     const input = document.createElement('input');
-    // type="search" + inputmode="decimal" → iOS no sugiere autocompletar (ni passwords ni tarjetas)
+    // type="search" desactiva autocomplete en iOS Chrome/Safari
     input.type = 'search';
     input.className = className;
     const val = state.rounds[rIdx][pIdx];
     input.value = (val !== null && val !== undefined) ? val : '';
     input.placeholder = '0';
-    // decimal en iOS muestra teclado numérico con punto (no de tarjeta), permite negativos
-    input.setAttribute('inputmode', 'decimal');
-    input.setAttribute('pattern', '-?[0-9]*');
+    // numeric: teclado numérico simple, sin contexto de "tarjeta" o "decimal"
+    input.setAttribute('inputmode', 'numeric');
     input.setAttribute('enterkeyhint', 'next');
-    input.setAttribute('name', `cjmvr-score-${rIdx}-${pIdx}`);
-    input.setAttribute('autocomplete', 'off-cjmvr-score');
+    // name único random: iOS no puede cachear sugerencias entre sesiones
+    const randomSuffix = Math.random().toString(36).slice(2, 8);
+    input.setAttribute('name', `score-${randomSuffix}`);
+    input.setAttribute('autocomplete', 'off-cjmvr');
     input.setAttribute('autocorrect', 'off');
     input.setAttribute('spellcheck', 'false');
     input.setAttribute('data-form-type', 'other');
     input.setAttribute('data-lpignore', 'true');
     input.setAttribute('data-1p-ignore', 'true');
+    // role="textbox" hint a iOS de que NO es un campo estructurado
+    input.setAttribute('role', 'textbox');
     input.setAttribute('aria-label', `Puntos de ${state.players[pIdx]} en ronda ${rIdx + 1}`);
     input.dataset.r = rIdx;
     input.dataset.p = pIdx;
