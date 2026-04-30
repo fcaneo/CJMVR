@@ -13,7 +13,9 @@
 <meta property="og:description" content="Herramienta del Club Juegos de Mesa Quinta Región para llevar puntaje en juegos." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://fcaneo.github.io/CJMVR/marcador.html" />
-<meta property="og:image" content="https://fcaneo.github.io/CJMVR/assets/images/curva-54.jpg" />
+<meta property="og:image" content="https://fcaneo.github.io/CJMVR/assets/images/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='6' width='52' height='52' rx='10' fill='%23F5B700' stroke='%230E0E10' stroke-width='4'/%3E%3Ccircle cx='20' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%230E0E10'/%3E%3Ccircle cx='20' cy='44' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='44' r='5' fill='%230E0E10'/%3E%3C/svg%3E" />
 
@@ -496,6 +498,25 @@
     appearance: none;
   }
 
+  /* Voz del juego: comentario sutil tras cada ronda */
+  .game-voice {
+    margin: 1rem 0 0;
+    padding: 0.85rem 1rem;
+    text-align: center;
+    background: rgba(63, 169, 214, 0.06);
+    border-left: 3px solid var(--cyan);
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.75);
+    font-style: italic;
+    animation: voiceIn 0.4s ease-out;
+  }
+  @keyframes voiceIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* Histórico */
   .history-block {
     background: var(--ink-soft);
@@ -653,6 +674,11 @@
       <div id="totals-mobile-grid" class="totals-mobile-grid"></div>
     </div>
 
+    <!-- Voz del juego: comentario sarcástico tras cada ronda -->
+    <div id="game-voice" class="game-voice" hidden>
+      <span id="game-voice-text">—</span>
+    </div>
+
     <div class="scoreboard-actions">
       <div class="left">
         <button id="add-round" class="btn btn-magenta btn-small">
@@ -676,7 +702,7 @@
 
     <!-- Podio (oculto hasta solicitar) -->
     <div id="podium" class="podium" hidden>
-      <div class="podium-title">★ Resultado final</div>
+      <div id="podium-title" class="podium-title">★ Resultado final</div>
       <div id="podium-spots" class="podium-spots"></div>
     </div>
   </div>
@@ -721,6 +747,51 @@
   const HISTORY_KEY = 'cjmvr-marcador-history-v1';
   const MAX_HISTORY = 3;
   const MAX_JUGADORES = 12;
+
+  // Frases intermedias (después de cada ronda agregada)
+  // Algunas se interpolan con el nombre del que va liderando: usar {leader}
+  const FRASES_INTERMEDIAS = [
+    'La mesa se calienta...',
+    'Todo puede cambiar todavía',
+    'El que va último también juega',
+    'Mantén la calma. O no.',
+    'Una ronda más, una traición menos',
+    'La partida está viva',
+    '{leader} va liderando, pero no se confíe',
+    'Anota bien, después no llores',
+    'Esto recién empieza',
+    'Estrategia o suerte, decide tú',
+    '{leader} está jugando muy bien... sospechoso',
+    'Sin presiones, es solo un juego',
+    'El ego de {leader} crece con cada ronda',
+    'Falta poco para el llanto',
+    'Respira. Cuenta los puntos. Respira.',
+    'Algunos números no mienten. Otros sí.',
+    'Que gane el menos malo',
+    '{leader} ya se cree mucho',
+    'Pónganse las pilas, los demás'
+  ];
+
+  // Frases del podio final (cuando se ve resultado)
+  const FRASES_PODIO = [
+    'Hubo un campeón.',
+    'Y el ganador es...',
+    'La gloria es de:',
+    'Dominó la mesa esta noche:',
+    'Imbatible:',
+    'Sin oposición real:',
+    'El imperio cayó en manos de:',
+    'Hoy se va con la corona:',
+    'No hubo manera de pararlo:',
+    'Los demás jugaron, este ganó:',
+    'Resultado oficial e inapelable:',
+    'Alguien tenía que ganar. Le tocó a:',
+    'Felicitaciones (con resentimiento):',
+    'A guardar el ego, ganó:',
+    'Trofeo virtual para:'
+  ];
+
+  function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
   // Estado
   let state = {
@@ -1091,6 +1162,7 @@
     state.rounds.push(state.players.map(() => null));
     save();
     renderScoreboard();
+    mostrarFraseIntermedia();
     // Foco al primer input de la ronda nueva
     setTimeout(() => {
       const inputs = roundsBody.querySelectorAll('.score-input');
@@ -1099,12 +1171,58 @@
     }, 50);
   }
 
+  function mostrarFraseIntermedia() {
+    // Solo desde la 2ª ronda con datos para que tenga sentido
+    if (state.rounds.length < 2) {
+      hideGameVoice();
+      return;
+    }
+
+    const voiceEl = document.getElementById('game-voice');
+    const voiceText = document.getElementById('game-voice-text');
+    if (!voiceEl || !voiceText) return;
+
+    // Quién va liderando hasta ahora
+    const totals = state.players.map((_, pIdx) =>
+      state.rounds.reduce((sum, r) => sum + (Number(r[pIdx]) || 0), 0)
+    );
+    let leaderName = '';
+    if (totals.some(t => t !== 0)) {
+      const winnerIdx = state.mode === 'higher'
+        ? totals.indexOf(Math.max(...totals))
+        : totals.indexOf(Math.min(...totals));
+      leaderName = state.players[winnerIdx];
+    }
+
+    // Filtrar frases con {leader} si no tenemos líder claro
+    let pool = FRASES_INTERMEDIAS;
+    if (!leaderName) {
+      pool = FRASES_INTERMEDIAS.filter(f => !f.includes('{leader}'));
+    }
+
+    let frase = pick(pool);
+    frase = frase.replace('{leader}', leaderName);
+
+    // Animar entrada
+    voiceEl.hidden = false;
+    voiceEl.style.animation = 'none';
+    void voiceEl.offsetWidth;
+    voiceEl.style.animation = '';
+    voiceText.textContent = frase;
+  }
+
+  function hideGameVoice() {
+    const voiceEl = document.getElementById('game-voice');
+    if (voiceEl) voiceEl.hidden = true;
+  }
+
   function undoRound() {
     if (state.rounds.length === 0) return;
     state.rounds.pop();
     save();
     renderScoreboard();
     podiumEl.hidden = true;
+    hideGameVoice();
   }
 
   function showPodium() {
@@ -1114,6 +1232,10 @@
       total: state.rounds.reduce((sum, r) => sum + (Number(r[pIdx]) || 0), 0)
     }));
     totals.sort((a, b) => state.mode === 'higher' ? b.total - a.total : a.total - b.total);
+
+    // Frase sarcástica al podio
+    const titleEl = document.getElementById('podium-title');
+    if (titleEl) titleEl.textContent = '★ ' + pick(FRASES_PODIO);
 
     const medals = ['🥇', '🥈', '🥉'];
     podiumSpotsEl.innerHTML = '';
@@ -1139,6 +1261,7 @@
     renderModeUI();
     renderScoreboard();
     renderHistory();
+    hideGameVoice();
     podiumEl.hidden = true;
     newPlayerInput.focus();
   }
