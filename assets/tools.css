@@ -30,13 +30,17 @@
 *, *::before, *::after { border-radius: 0; }
 
 /* Excepciones explícitas: solo lo que SEMÁNTICAMENTE es circular */
-.tool-brand .brand-logo,
-.tool-footer .footer-logo,
 .help-btn,
 button[aria-label*="circular"],
 .fab-circle,
 .player-row .pulse-dot {
   border-radius: 50%;
+}
+
+/* El logo NO es circular — debe quedar sin radius para no cortarlo */
+.tool-brand .brand-logo,
+.tool-footer .footer-logo {
+  border-radius: 0;
 }
 
 /* SVG icons consistentes (Feather/Lucide style) */
