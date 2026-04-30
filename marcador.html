@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#0E0E10" />
+<title>Marcador · Anota puntos por rondas · Club Juegos de Mesa Quinta Región</title>
+<meta name="description" content="Marcador de juegos de mesa. Anota nombres y suma puntos por rondas. Ideal para fillers como Toma 6, Skull King, Welcome to..." />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://fcaneo.github.io/CJMVR/marcador.html" />
+
+<meta property="og:title" content="Marcador · Anota puntos por rondas" />
+<meta property="og:description" content="Herramienta del Club Juegos de Mesa Quinta Región para llevar puntaje en juegos." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://fcaneo.github.io/CJMVR/marcador.html" />
+<meta property="og:image" content="https://fcaneo.github.io/CJMVR/assets/images/curva-54.jpg" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='6' width='52' height='52' rx='10' fill='%23F5B700' stroke='%230E0E10' stroke-width='4'/%3E%3Ccircle cx='20' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%230E0E10'/%3E%3Ccircle cx='20' cy='44' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='44' r='5' fill='%230E0E10'/%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/tools.css">
+
+<style>
+  /* Marcador específico */
+
+  .tool-main { max-width: 1100px; }
+
+  /* Setup view */
+  .setup-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Toggle mayor/menor */
+  .mode-toggle {
+    display: inline-flex;
+    background: var(--ink-soft);
+    border: 1px solid var(--ink-line);
+    padding: 4px;
+  }
+  .mode-toggle button {
+    background: transparent;
+    border: none;
+    color: var(--dim);
+    padding: 0.5rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .mode-toggle button.active {
+    background: var(--gold);
+    color: var(--ink);
+  }
+
+  /* Player setup chips */
+  .player-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+  .player-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--ink-soft);
+    border: 1px solid var(--ink-line);
+    padding: 0.5rem 0.85rem;
+    font-size: 14px;
+  }
+  .player-chip button {
+    background: transparent;
+    border: none;
+    color: var(--dim);
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+  }
+  .player-chip button:hover { color: var(--magenta); }
+
+  .add-player-input {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .add-player-input input { flex: 1; }
+
+  /* Tabla del marcador */
+  .scoreboard-wrap {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    border: 1px solid var(--ink-line);
+  }
+
+  .scoreboard {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+  }
+
+  .scoreboard th, .scoreboard td {
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid var(--ink-line);
+    border-right: 1px solid var(--ink-line);
+  }
+  .scoreboard th:last-child, .scoreboard td:last-child {
+    border-right: none;
+  }
+
+  /* Header con nombres */
+  .scoreboard thead th {
+    background: var(--ink-soft);
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    color: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  .scoreboard thead th:first-child {
+    color: var(--dim);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    width: 80px;
+  }
+
+  /* Inputs de score */
+  .score-input {
+    width: 70px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--paper);
+    text-align: center;
+    padding: 0.4rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+    -moz-appearance: textfield;
+  }
+  .score-input::-webkit-outer-spin-button,
+  .score-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .score-input:focus {
+    outline: none;
+    border-color: var(--magenta);
+  }
+
+  /* Round number */
+  .round-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.15em;
+  }
+
+  /* Total row */
+  .total-row {
+    background: var(--ink-soft);
+  }
+  .total-row td {
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    color: var(--gold);
+    border-top: 2px solid var(--gold);
+    padding: 0.85rem 0.75rem;
+  }
+  .total-row td:first-child {
+    color: var(--dim);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+  }
+  /* Total: ganador en verde */
+  .total-row td.winning {
+    color: var(--green);
+    text-shadow: 0 0 12px rgba(37, 211, 102, 0.4);
+  }
+
+  /* Acciones flotantes */
+  .scoreboard-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  .scoreboard-actions .left,
+  .scoreboard-actions .right {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  /* Podio */
+  .podium {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(245, 183, 0, 0.1), transparent, rgba(233, 30, 99, 0.1));
+    border: 1px solid rgba(245, 183, 0, 0.3);
+    text-align: center;
+  }
+  .podium-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .podium-spots {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .podium-spot {
+    text-align: center;
+    flex: 0 0 100px;
+  }
+  .podium-medal {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .podium-name {
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    font-size: 18px;
+    color: var(--paper);
+    margin-bottom: 0.25rem;
+  }
+  .podium-score {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    color: var(--gold);
+  }
+  .podium-spot.first .podium-name { color: var(--gold); font-size: 22px; }
+
+  /* Empty state */
+  .empty-msg {
+    text-align: center;
+    color: var(--dim);
+    padding: 3rem 1rem;
+    font-style: italic;
+  }
+
+  /* Hint para ronda actual */
+  .hint {
+    color: var(--dim);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .share-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 1.5rem;
+    color: var(--dim);
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .share-link:hover { color: var(--gold); }
+
+  .footer-tools {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  /* Confirm dialog */
+  .confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(14, 14, 16, 0.9);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .confirm-overlay.show { display: flex; }
+  .confirm-box {
+    background: var(--ink-soft);
+    border: 2px solid var(--magenta);
+    padding: 2rem;
+    max-width: 400px;
+    text-align: center;
+  }
+  .confirm-box h3 {
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .confirm-box p {
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 1.5rem;
+  }
+  .confirm-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  /* Mode hint */
+  .mode-hint {
+    display: inline-block;
+    margin-left: 1rem;
+    color: var(--dim);
+    font-size: 13px;
+  }
+
+  @media (max-width: 600px) {
+    .setup-row { gap: 0.5rem; }
+    .mode-hint { margin-left: 0; display: block; margin-top: 0.5rem; width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<header class="tool-header">
+  <a href="/CJMVR/" class="tool-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Volver al club
+  </a>
+  <a href="/CJMVR/" class="tool-brand">
+    <svg class="dice-mini" viewBox="0 0 64 64" fill="none">
+      <rect x="6" y="6" width="52" height="52" rx="10" fill="var(--gold)" stroke="var(--ink)" stroke-width="3"/>
+      <circle cx="20" cy="20" r="4" fill="var(--ink)"/>
+      <circle cx="44" cy="20" r="4" fill="var(--ink)"/>
+      <circle cx="32" cy="32" r="4" fill="var(--ink)"/>
+      <circle cx="20" cy="44" r="4" fill="var(--ink)"/>
+      <circle cx="44" cy="44" r="4" fill="var(--ink)"/>
+    </svg>
+    <span class="text">
+      <span class="name">Club Juegos de Mesa</span>
+      <span class="sub">Quinta Región</span>
+    </span>
+  </a>
+</header>
+
+<main class="tool-main">
+  <div class="tool-eyebrow gold">★ Marcador de partida</div>
+  <h1 class="tool-title">Anota puntos.</h1>
+  <p class="tool-subtitle">Ideal para fillers tipo Toma 6, Welcome to, Skull King — o cualquier juego con puntos por rondas. Hasta 12 jugadores, rondas ilimitadas.</p>
+
+  <!-- Setup: jugadores y modo -->
+  <div id="setup">
+    <div class="hint">Jugadores</div>
+    <div class="add-player-input">
+      <input id="new-player-name" type="text" maxlength="20" placeholder="Nombre del jugador" aria-label="Nombre del jugador a agregar" />
+      <button id="add-player-btn" class="btn btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Agregar
+      </button>
+    </div>
+
+    <div id="player-chips" class="player-chips"></div>
+
+    <div class="setup-row" id="mode-row" style="display: none;">
+      <span class="hint" style="margin: 0;">Modo:</span>
+      <div class="mode-toggle" role="group" aria-label="Modo de puntaje">
+        <button id="mode-higher" class="active" type="button">Mayor gana</button>
+        <button id="mode-lower" type="button">Menor gana</button>
+      </div>
+      <span id="mode-hint" class="mode-hint">↑ El que más puntos suma, gana</span>
+    </div>
+  </div>
+
+  <!-- Marcador (oculto hasta tener jugadores) -->
+  <div id="scoreboard-wrap" hidden>
+    <div class="scoreboard-wrap">
+      <table class="scoreboard">
+        <thead>
+          <tr id="header-row">
+            <th>Ronda</th>
+          </tr>
+        </thead>
+        <tbody id="rounds-body">
+        </tbody>
+        <tfoot>
+          <tr id="totals-row" class="total-row">
+            <td>Total</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="scoreboard-actions">
+      <div class="left">
+        <button id="add-round" class="btn btn-magenta btn-small">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          Agregar ronda
+        </button>
+        <button id="undo" class="btn btn-ghost btn-small" disabled>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 7v6h6M21 17a9 9 0 00-15-6.7L3 13"/></svg>
+          Deshacer
+        </button>
+      </div>
+      <div class="right">
+        <button id="show-podium" class="btn btn-primary btn-small">
+          🏆 Ver podio
+        </button>
+        <button id="new-game" class="btn btn-ghost btn-small">
+          Nueva partida
+        </button>
+      </div>
+    </div>
+
+    <!-- Podio (oculto hasta solicitar) -->
+    <div id="podium" class="podium" hidden>
+      <div class="podium-title">★ Resultado final</div>
+      <div id="podium-spots" class="podium-spots"></div>
+    </div>
+  </div>
+
+  <div id="empty-state" class="empty-msg" hidden>
+    Agrega al menos 2 jugadores para empezar a anotar.
+  </div>
+
+  <div class="footer-tools">
+    <button id="share" class="share-link" type="button">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+      <span id="share-label">Compartir esta herramienta</span>
+    </button>
+  </div>
+</main>
+
+<!-- Confirm modal para "Nueva partida" -->
+<div id="confirm-overlay" class="confirm-overlay" role="dialog" aria-modal="true">
+  <div class="confirm-box">
+    <h3>¿Empezar nueva partida?</h3>
+    <p>Se borrarán los nombres y todos los puntos. Esta acción no se puede deshacer.</p>
+    <div class="confirm-actions">
+      <button id="confirm-cancel" class="btn btn-ghost">Cancelar</button>
+      <button id="confirm-yes" class="btn btn-magenta">Sí, empezar</button>
+    </div>
+  </div>
+</div>
+
+<footer class="tool-footer">
+  Una herramienta del <a href="/CJMVR/">Club Juegos de Mesa Quinta Región</a> · Viña del Mar
+</footer>
+
+<script>
+  const STORAGE_KEY = 'cjmvr-marcador-v1';
+  const MAX_JUGADORES = 12;
+
+  // Estado
+  let state = {
+    players: [],     // ['Pancho', 'María', ...]
+    rounds: [],      // [[10, 5, 8], [3, 7, 12], ...]  cada ronda es un array con un puntaje por player
+    mode: 'higher'   // 'higher' | 'lower'
+  };
+
+  // === Persistencia ===
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function load() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && Array.isArray(parsed.players) && Array.isArray(parsed.rounds)) {
+          state = { players: parsed.players, rounds: parsed.rounds, mode: parsed.mode || 'higher' };
+        }
+      }
+    } catch (e) {}
+  }
+
+  // === Refs DOM ===
+  const newPlayerInput = document.getElementById('new-player-name');
+  const addPlayerBtn = document.getElementById('add-player-btn');
+  const playerChipsEl = document.getElementById('player-chips');
+  const modeRow = document.getElementById('mode-row');
+  const modeHigherBtn = document.getElementById('mode-higher');
+  const modeLowerBtn = document.getElementById('mode-lower');
+  const modeHintEl = document.getElementById('mode-hint');
+  const scoreboardWrap = document.getElementById('scoreboard-wrap');
+  const headerRow = document.getElementById('header-row');
+  const roundsBody = document.getElementById('rounds-body');
+  const totalsRow = document.getElementById('totals-row');
+  const addRoundBtn = document.getElementById('add-round');
+  const undoBtn = document.getElementById('undo');
+  const podiumBtn = document.getElementById('show-podium');
+  const newGameBtn = document.getElementById('new-game');
+  const podiumEl = document.getElementById('podium');
+  const podiumSpotsEl = document.getElementById('podium-spots');
+  const emptyStateEl = document.getElementById('empty-state');
+  const confirmOverlay = document.getElementById('confirm-overlay');
+  const confirmCancel = document.getElementById('confirm-cancel');
+  const confirmYes = document.getElementById('confirm-yes');
+  const shareBtn = document.getElementById('share');
+  const shareLabel = document.getElementById('share-label');
+
+  // === Render ===
+  function renderChips() {
+    playerChipsEl.innerHTML = '';
+    state.players.forEach((name, i) => {
+      const chip = document.createElement('span');
+      chip.className = 'player-chip';
+      chip.innerHTML = `
+        <span>${escapeHtml(name)}</span>
+        <button type="button" aria-label="Quitar a ${escapeHtml(name)}" data-idx="${i}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      `;
+      chip.querySelector('button').addEventListener('click', () => removePlayer(i));
+      playerChipsEl.appendChild(chip);
+    });
+  }
+
+  function renderModeUI() {
+    modeRow.style.display = state.players.length >= 1 ? 'flex' : 'none';
+    if (state.mode === 'higher') {
+      modeHigherBtn.classList.add('active');
+      modeLowerBtn.classList.remove('active');
+      modeHintEl.textContent = '↑ El que más puntos suma, gana';
+    } else {
+      modeHigherBtn.classList.remove('active');
+      modeLowerBtn.classList.add('active');
+      modeHintEl.textContent = '↓ El que menos puntos suma, gana';
+    }
+  }
+
+  function renderScoreboard() {
+    if (state.players.length < 2) {
+      scoreboardWrap.hidden = true;
+      emptyStateEl.hidden = false;
+      return;
+    }
+    emptyStateEl.hidden = true;
+    scoreboardWrap.hidden = false;
+
+    // Header
+    headerRow.innerHTML = '<th>Ronda</th>';
+    state.players.forEach(name => {
+      const th = document.createElement('th');
+      th.textContent = name;
+      headerRow.appendChild(th);
+    });
+
+    // Body (rondas)
+    roundsBody.innerHTML = '';
+    state.rounds.forEach((round, rIdx) => {
+      const tr = document.createElement('tr');
+      const tdNum = document.createElement('td');
+      tdNum.className = 'round-num';
+      tdNum.textContent = `R${rIdx + 1}`;
+      tr.appendChild(tdNum);
+
+      state.players.forEach((_, pIdx) => {
+        const td = document.createElement('td');
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.className = 'score-input';
+        input.value = round[pIdx] !== null && round[pIdx] !== undefined ? round[pIdx] : '';
+        input.placeholder = '0';
+        input.setAttribute('inputmode', 'numeric');
+        input.addEventListener('input', () => {
+          const val = input.value === '' ? null : Number(input.value);
+          state.rounds[rIdx][pIdx] = isNaN(val) ? null : val;
+          updateTotals();
+          save();
+        });
+        // Tab navega bien naturalmente
+        td.appendChild(input);
+        tr.appendChild(td);
+      });
+      roundsBody.appendChild(tr);
+    });
+
+    // Totals
+    updateTotals();
+    updateUndoBtn();
+  }
+
+  function updateTotals() {
+    totalsRow.innerHTML = '<td>Total</td>';
+    const totals = state.players.map((_, pIdx) =>
+      state.rounds.reduce((sum, round) => sum + (Number(round[pIdx]) || 0), 0)
+    );
+
+    // Determina ganador
+    let winnerIdx = -1;
+    if (state.rounds.length > 0) {
+      if (state.mode === 'higher') {
+        const maxVal = Math.max(...totals);
+        winnerIdx = totals.indexOf(maxVal);
+      } else {
+        const minVal = Math.min(...totals);
+        winnerIdx = totals.indexOf(minVal);
+      }
+    }
+
+    totals.forEach((total, i) => {
+      const td = document.createElement('td');
+      td.textContent = total;
+      if (i === winnerIdx) td.classList.add('winning');
+      totalsRow.appendChild(td);
+    });
+  }
+
+  function updateUndoBtn() {
+    undoBtn.disabled = state.rounds.length === 0;
+  }
+
+  // === Acciones ===
+  function addPlayer(name) {
+    name = name.trim();
+    if (!name) return;
+    if (state.players.length >= MAX_JUGADORES) return;
+    if (state.players.some(p => p.toLowerCase() === name.toLowerCase())) {
+      flashError(newPlayerInput, 'Ya existe ese jugador');
+      return;
+    }
+    state.players.push(name);
+    // Si ya hay rondas, agrego columna nueva con null
+    state.rounds.forEach(r => r.push(null));
+    save();
+    renderChips();
+    renderModeUI();
+    renderScoreboard();
+  }
+
+  function removePlayer(idx) {
+    state.players.splice(idx, 1);
+    state.rounds.forEach(r => r.splice(idx, 1));
+    // Si quedan rondas vacías sin players válidos, mantenerlas
+    save();
+    renderChips();
+    renderModeUI();
+    renderScoreboard();
+  }
+
+  function addRound() {
+    state.rounds.push(state.players.map(() => null));
+    save();
+    renderScoreboard();
+    // Foco al primer input de la ronda nueva
+    setTimeout(() => {
+      const inputs = roundsBody.querySelectorAll('.score-input');
+      const lastRowFirstInput = inputs[inputs.length - state.players.length];
+      if (lastRowFirstInput) lastRowFirstInput.focus();
+    }, 50);
+  }
+
+  function undoRound() {
+    if (state.rounds.length === 0) return;
+    state.rounds.pop();
+    save();
+    renderScoreboard();
+    podiumEl.hidden = true;
+  }
+
+  function showPodium() {
+    if (state.rounds.length === 0) return;
+    const totals = state.players.map((name, pIdx) => ({
+      name,
+      total: state.rounds.reduce((sum, r) => sum + (Number(r[pIdx]) || 0), 0)
+    }));
+    totals.sort((a, b) => state.mode === 'higher' ? b.total - a.total : a.total - b.total);
+
+    const medals = ['🥇', '🥈', '🥉'];
+    podiumSpotsEl.innerHTML = '';
+    totals.slice(0, 3).forEach((p, i) => {
+      const spot = document.createElement('div');
+      spot.className = 'podium-spot' + (i === 0 ? ' first' : '');
+      spot.innerHTML = `
+        <div class="podium-medal">${medals[i]}</div>
+        <div class="podium-name">${escapeHtml(p.name)}</div>
+        <div class="podium-score">${p.total} pts</div>
+      `;
+      podiumSpotsEl.appendChild(spot);
+    });
+    podiumEl.hidden = false;
+    podiumEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function newGame() {
+    state = { players: [], rounds: [], mode: 'higher' };
+    save();
+    renderChips();
+    renderModeUI();
+    renderScoreboard();
+    podiumEl.hidden = true;
+    newPlayerInput.focus();
+  }
+
+  function flashError(el, msg) {
+    const orig = el.placeholder;
+    el.value = '';
+    el.placeholder = msg;
+    el.style.borderColor = 'var(--magenta)';
+    setTimeout(() => {
+      el.placeholder = orig;
+      el.style.borderColor = '';
+    }, 2000);
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // === Listeners ===
+  addPlayerBtn.addEventListener('click', () => {
+    addPlayer(newPlayerInput.value);
+    newPlayerInput.value = '';
+    newPlayerInput.focus();
+  });
+
+  newPlayerInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addPlayer(newPlayerInput.value);
+      newPlayerInput.value = '';
+    }
+  });
+
+  modeHigherBtn.addEventListener('click', () => {
+    state.mode = 'higher';
+    save();
+    renderModeUI();
+    if (state.rounds.length) updateTotals();
+  });
+
+  modeLowerBtn.addEventListener('click', () => {
+    state.mode = 'lower';
+    save();
+    renderModeUI();
+    if (state.rounds.length) updateTotals();
+  });
+
+  addRoundBtn.addEventListener('click', addRound);
+  undoBtn.addEventListener('click', undoRound);
+  podiumBtn.addEventListener('click', showPodium);
+
+  newGameBtn.addEventListener('click', () => {
+    if (state.players.length === 0 && state.rounds.length === 0) {
+      newGame();
+      return;
+    }
+    confirmOverlay.classList.add('show');
+  });
+  confirmCancel.addEventListener('click', () => confirmOverlay.classList.remove('show'));
+  confirmYes.addEventListener('click', () => {
+    confirmOverlay.classList.remove('show');
+    newGame();
+  });
+  confirmOverlay.addEventListener('click', (e) => {
+    if (e.target === confirmOverlay) confirmOverlay.classList.remove('show');
+  });
+
+  shareBtn.addEventListener('click', async () => {
+    const url = 'https://fcaneo.github.io/CJMVR/marcador.html';
+    const data = {
+      title: 'Marcador · Anota puntos por rondas',
+      text: 'Marcador para juegos de mesa, listo para fillers.',
+      url: url
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(data);
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(url);
+        shareLabel.textContent = '¡Link copiado!';
+        setTimeout(() => { shareLabel.textContent = 'Compartir esta herramienta'; }, 2000);
+      }
+    } catch (e) { /* cancelado */ }
+  });
+
+  // === Init ===
+  load();
+  renderChips();
+  renderModeUI();
+  renderScoreboard();
+  // Si no hay nada cargado, foco al input
+  if (state.players.length === 0) newPlayerInput.focus();
+</script>
+
+</body>
+</html>

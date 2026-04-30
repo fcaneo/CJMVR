@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#0E0E10" />
+<title>Tira el dado · Top 50 BGG · Club Juegos de Mesa Quinta Región</title>
+<meta name="description" content="¿Indeciso sobre qué jugar? Tira el dado y recibe una recomendación al azar del top 50 de BoardGameGeek." />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://fcaneo.github.io/CJMVR/dado.html" />
+
+<!-- OG -->
+<meta property="og:title" content="Tira el dado · Top 50 BGG" />
+<meta property="og:description" content="Herramienta del Club Juegos de Mesa Quinta Región para elegir juego al azar." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://fcaneo.github.io/CJMVR/dado.html" />
+<meta property="og:image" content="https://fcaneo.github.io/CJMVR/assets/images/curva-54.jpg" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='6' width='52' height='52' rx='10' fill='%23F5B700' stroke='%230E0E10' stroke-width='4'/%3E%3Ccircle cx='20' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%230E0E10'/%3E%3Ccircle cx='20' cy='44' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='44' r='5' fill='%230E0E10'/%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/tools.css">
+
+<style>
+  /* Específico del dado */
+  .dice-stage {
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+  }
+
+  .dice-big {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 2rem;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .dice-big:hover { transform: scale(1.05); }
+  .dice-big:active { transform: scale(0.95); }
+
+  @keyframes diceTumble {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(180deg) scale(1.2); }
+    50% { transform: rotate(360deg) scale(0.9); }
+    75% { transform: rotate(540deg) scale(1.1); }
+    100% { transform: rotate(720deg) scale(1); }
+  }
+  .dice-tumble { animation: diceTumble 1s cubic-bezier(0.4, 0.2, 0.2, 1); }
+
+  .result-card {
+    background: var(--ink-soft);
+    border: 2px solid var(--gold);
+    padding: 2rem;
+    margin-top: 1.5rem;
+    text-align: left;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .result-card { animation: fadeInUp 0.5s ease-out; }
+
+  .result-name {
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .result-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 1rem;
+  }
+
+  .result-blurb {
+    color: rgba(255,255,255,0.85);
+    line-height: 1.6;
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    justify-content: center;
+  }
+
+  .share-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 1.5rem;
+    color: var(--dim);
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .share-link:hover { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- Floaters -->
+<div class="floater" style="top: 10%; left: 8%; width: 40px; height: 40px; background: var(--cyan); --r: 12deg;"></div>
+<div class="floater" style="bottom: 15%; right: 10%; width: 32px; height: 32px; background: var(--magenta); --r: -10deg; animation-delay: 1.5s;"></div>
+<div class="floater" style="top: 50%; right: 5%; width: 24px; height: 24px; background: var(--gold); --r: 45deg; animation-delay: 0.7s;"></div>
+
+<header class="tool-header">
+  <a href="/CJMVR/" class="tool-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Volver al club
+  </a>
+  <a href="/CJMVR/" class="tool-brand">
+    <svg class="dice-mini" viewBox="0 0 64 64" fill="none">
+      <rect x="6" y="6" width="52" height="52" rx="10" fill="var(--gold)" stroke="var(--ink)" stroke-width="3"/>
+      <circle cx="20" cy="20" r="4" fill="var(--ink)"/>
+      <circle cx="44" cy="20" r="4" fill="var(--ink)"/>
+      <circle cx="32" cy="32" r="4" fill="var(--ink)"/>
+      <circle cx="20" cy="44" r="4" fill="var(--ink)"/>
+      <circle cx="44" cy="44" r="4" fill="var(--ink)"/>
+    </svg>
+    <span class="text">
+      <span class="name">Club Juegos de Mesa</span>
+      <span class="sub">Quinta Región</span>
+    </span>
+  </a>
+</header>
+
+<main class="tool-main">
+  <div class="tool-eyebrow gold">★ Top 50 BGG · Tirada al azar</div>
+  <h1 class="tool-title">Tira el dado.</h1>
+  <p class="tool-subtitle">Toca el dado y deja que decida por ti. Una selección al azar del top 50 de BoardGameGeek — los mejores del mundo, según los jugadores.</p>
+
+  <div class="dice-stage">
+    <button id="dice-trigger" class="dice-big" aria-label="Tirar el dado">
+      <svg viewBox="0 0 64 64" fill="none">
+        <rect x="6" y="6" width="52" height="52" rx="10" fill="var(--gold)" stroke="var(--ink)" stroke-width="3"/>
+        <circle cx="20" cy="20" r="4" fill="var(--ink)"/>
+        <circle cx="44" cy="20" r="4" fill="var(--ink)"/>
+        <circle cx="32" cy="32" r="4" fill="var(--ink)"/>
+        <circle cx="20" cy="44" r="4" fill="var(--ink)"/>
+        <circle cx="44" cy="44" r="4" fill="var(--ink)"/>
+      </svg>
+    </button>
+
+    <div id="result" hidden>
+      <div class="result-card">
+        <div id="r-name" class="result-name">—</div>
+        <div id="r-meta" class="result-meta">—</div>
+        <div id="r-blurb" class="result-blurb">—</div>
+      </div>
+
+      <div class="actions">
+        <button id="reroll" class="btn btn-primary">
+          Tirar otra vez
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 11-3-6.7L21 8M21 3v5h-5"/></svg>
+        </button>
+      </div>
+
+      <div style="text-align: center;">
+        <button id="share" class="share-link" type="button">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+          <span id="share-label">Compartir esta herramienta</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="tool-footer">
+  Una herramienta del <a href="/CJMVR/">Club Juegos de Mesa Quinta Región</a> · Viña del Mar
+</footer>
+
+<script>
+  // Top 50 BGG (filtrado: sin secuelas/expansiones del mismo IP)
+  const juegos = [
+    { name: 'Brass: Birmingham', meta: '2-4 jug · 2h · #1 BGG', blurb: 'Redes industriales en la Inglaterra victoriana. Cada jugada es ingeniería pura.' },
+    { name: 'Ark Nova', meta: '1-4 jug · 2-3h · Pesado', blurb: 'Construye un zoológico moderno con 250 cartas. Pide la mesa entera y la noche entera.' },
+    { name: 'Pandemic Legacy: Season 1', meta: '2-4 jug · 60 min · Legacy', blurb: 'Cooperativo que cambia mes a mes. Cada partida deja huella permanente en el tablero.' },
+    { name: 'Gloomhaven', meta: '1-4 jug · 2-3h · Campaña épica', blurb: 'Mazmorras tácticas en una campaña de 95+ escenarios. Para los que quieren compromiso.' },
+    { name: 'Dune: Imperium – Uprising', meta: '1-6 jug · 90 min · Deck-building', blurb: 'Casas nobles peleándose por Arrakis. Mezcla worker placement con construcción de mazo.' },
+    { name: 'Twilight Imperium: Fourth Edition', meta: '3-6 jug · 6-8h · Épico', blurb: 'Conquista galáctica que toma una tarde entera. Diplomacia, traición, naves espaciales.' },
+    { name: 'War of the Ring: Second Edition', meta: '2-4 jug · 3h · Tematico', blurb: 'La Guerra del Anillo en una mesa. Bien o mal, todos quieren ser Sauron al menos una vez.' },
+    { name: 'Terraforming Mars', meta: '1-5 jug · 2h · Ciencia', blurb: 'Convierte Marte en un planeta habitable. Combos, cartas y mucha optimización.' },
+    { name: 'Star Wars: Rebellion', meta: '2-4 jug · 3-4h · Asimétrico', blurb: 'El Imperio busca, los Rebeldes huyen. Tensión narrativa de película.' },
+    { name: 'Spirit Island', meta: '1-4 jug · 90 min · Cooperativo', blurb: 'Espíritus de una isla expulsando colonizadores. El cooperativo más político y satisfactorio.' },
+    { name: 'Gaia Project', meta: '1-4 jug · 2h · Pesado eurogame', blurb: 'Razas alienígenas terraformando planetas. Pesado, pesadísimo, pero con caminos infinitos.' },
+    { name: 'Twilight Struggle', meta: '2 jug · 3h · Histórico', blurb: 'La Guerra Fría en cartas. EE.UU. vs URSS, tensión real, cada partida una crisis distinta.' },
+    { name: 'The Castles of Burgundy', meta: '2-4 jug · 90 min · Clásico', blurb: 'Stefan Feld en su mejor versión. Dados que no pelean contigo, decisiones que sí.' },
+    { name: 'SETI: Search for Extraterrestrial Intelligence', meta: '1-4 jug · 2h · Reciente', blurb: 'Buscar vida en el sistema solar. Un eurogame moderno con tema cósmico real.' },
+    { name: 'Slay the Spire: The Board Game', meta: '1-4 jug · 1-2h · Deck-building', blurb: 'El videojuego de culto, ahora en mesa. Subir la torre construyendo un mazo letal.' },
+    { name: 'Through the Ages', meta: '2-4 jug · 2-3h · Civilización', blurb: 'Construye una civilización desde la antigüedad. Cartas, militares, cultura, ciencia.' },
+    { name: 'The Lord of the Rings: Duel for Middle-earth', meta: '2 jug · 30 min · Para 2', blurb: 'Versión 7 Wonders Duel del universo Tolkien. Elegante y rápido.' },
+    { name: 'Great Western Trail: Second Edition', meta: '2-4 jug · 2h · Eurogame', blurb: 'Arreas ganado por el viejo oeste. Alex Pfister haciendo magia con un tema poco común.' },
+    { name: 'Eclipse: Second Dawn for the Galaxy', meta: '2-6 jug · 2-3h · 4X', blurb: 'Imperios espaciales construyendo, expandiendo, exterminando. Versión refinada del clásico.' },
+    { name: '7 Wonders Duel', meta: '2 jug · 30 min · Para 2', blurb: 'Civilizaciones dueleando en cartas. Si necesitas algo bueno para 2, este es.' },
+    { name: 'Nemesis', meta: '1-5 jug · 2-3h · Tematico', blurb: 'Aliens en una nave espacial. Cooperativo... hasta que no lo es. Traición pura.' },
+    { name: 'Scythe', meta: '1-5 jug · 2h · Asimétrico', blurb: 'Europa alternativa con mechas. Cinco facciones distintas, mismas reglas, partidas dispares.' },
+    { name: 'A Feast for Odin', meta: '1-4 jug · 2-3h · Eurogame', blurb: 'Vikingos en su feria anual. Uwe Rosenberg con tablero gigante y mil acciones.' },
+    { name: 'Clank! Legacy: Acquisitions Incorporated', meta: '2-4 jug · 90 min · Legacy', blurb: 'Deck-building de saqueo en mazmorras, con campaña que evoluciona partida a partida.' },
+    { name: 'Concordia', meta: '2-5 jug · 90 min · Eurogame puro', blurb: 'Sin dados. Sin azar. Solo decisiones, todas duras. Romanos comerciantes.' },
+    { name: 'Lost Ruins of Arnak', meta: '1-4 jug · 90 min · Aventura', blurb: 'Exploración de una isla perdida. Worker placement con deck-building. Aventura ligera.' },
+    { name: 'Arkham Horror: The Card Game', meta: '1-2 jug · 90 min · LCG', blurb: 'Lovecraft en formato campaña. Cartas que te van llevando por una historia oscura.' },
+    { name: 'Sky Team', meta: '2 jug · 15 min · Cooperativo', blurb: 'Pilotear un avión cooperando con tu copiloto, sin hablar. Más tenso de lo que suena.' },
+    { name: 'Root', meta: '2-4 jug · 60-90 min · Asimétrico', blurb: 'Animalitos del bosque en guerra. Cuatro facciones radicalmente distintas, una mesa, caos delicioso.' },
+    { name: 'Terra Mystica', meta: '2-5 jug · 2h · Pesado', blurb: 'Razas fantásticas terraformando un mundo. Eurogame durísimo, sin azar, infinitamente rejugable.' },
+    { name: 'Orléans', meta: '2-4 jug · 90 min · Bag-building', blurb: 'Saca trabajadores de una bolsa para hacer cosas en la Francia medieval. Reinhard Staupe puro.' },
+    { name: 'Too Many Bones', meta: '1-4 jug · 2-3h · Dungeon crawler', blurb: 'Cooperativo de aventureros con dados de habilidad. Componentes premium, decisión heroica.' },
+    { name: 'Wingspan', meta: '1-5 jug · 60-90 min · Eurogame', blurb: 'Aves, hábitats y combos hermosos. Si te gusta optimizar sin pelear, este es tu vicio.' },
+    { name: 'Mage Knight Board Game', meta: '1-4 jug · 2-3h · Solo king', blurb: 'El mejor juego solitario jamás hecho. Aventura, conquista, decisiones que paralizan.' },
+    { name: 'Barrage', meta: '2-4 jug · 2h · Pesado eurogame', blurb: 'Construir represas hidroeléctricas. Suena aburrido — es un golpe a la cara estratégico.' },
+    { name: 'Hegemony: Lead Your Class to Victory', meta: '2-4 jug · 2-3h · Asimétrico', blurb: 'Lucha de clases sociales en un país ficticio. Político, pesado, perfecto para discutir hasta tarde.' },
+    { name: 'Everdell', meta: '1-4 jug · 60 min · Familiar', blurb: 'Animalitos construyendo aldeas bajo un árbol. Hermoso visualmente, sólido mecánicamente.' },
+    { name: 'The Crew: Mission Deep Sea', meta: '2-5 jug · 30 min · Cooperativo', blurb: 'Trick-taking cooperativo, sin hablar. Cada misión es un puzzle con tu equipo.' },
+    { name: 'Viticulture Essential Edition', meta: '1-6 jug · 90 min · Eurogame', blurb: 'Hacer vino en la Toscana. Worker placement temático, accesible, con karma incluido.' },
+    { name: 'Kanban EV', meta: '2-4 jug · 2-3h · Pesado', blurb: 'Trabajas en una fábrica de autos eléctricos con un jefe IA implacable. Estrés laboral en mesa.' },
+    { name: 'Crokinole', meta: '2-4 jug · 30 min · Habilidad', blurb: 'Tirar discos con el dedo. Sí, ese juego del 1876 sigue siendo top BGG. Por algo será.' },
+    { name: 'Heat: Pedal to the Metal', meta: '1-6 jug · 60 min · Carreras', blurb: 'Carreras de Fórmula 1 retro con cartas. Tenso, rápido, accesible. Combos motor explícitos.' },
+    { name: 'Marvel Champions: The Card Game', meta: '1-4 jug · 60 min · LCG', blurb: 'Cooperativo de superhéroes Marvel construyendo mazos. Cada héroe juega completamente distinto.' },
+    { name: 'Food Chain Magnate', meta: '2-5 jug · 2-4h · Capitalista', blurb: 'Cadenas de fast food peleando. El juego más cruel que vas a jugar. Sin perdón.' },
+    { name: 'Underwater Cities', meta: '1-4 jug · 2h · Eurogame', blurb: 'Ciudades submarinas en el futuro. Vladimír Suchý destilando estrategia pura.' }
+  ];
+
+  const trigger = document.getElementById('dice-trigger');
+  const reroll = document.getElementById('reroll');
+  const result = document.getElementById('result');
+  const nameEl = document.getElementById('r-name');
+  const metaEl = document.getElementById('r-meta');
+  const blurbEl = document.getElementById('r-blurb');
+  const shareBtn = document.getElementById('share');
+  const shareLabel = document.getElementById('share-label');
+
+  let lastIndex = -1;
+
+  function tirar() {
+    trigger.classList.remove('dice-tumble');
+    void trigger.offsetWidth;
+    trigger.classList.add('dice-tumble');
+
+    setTimeout(() => {
+      // Evita repetir el mismo dos veces seguidas
+      let i = Math.floor(Math.random() * juegos.length);
+      if (i === lastIndex && juegos.length > 1) {
+        i = (i + 1) % juegos.length;
+      }
+      lastIndex = i;
+      const j = juegos[i];
+      nameEl.textContent = j.name;
+      metaEl.textContent = j.meta;
+      blurbEl.textContent = j.blurb;
+      result.hidden = false;
+    }, 900);
+  }
+
+  trigger.addEventListener('click', tirar);
+  reroll.addEventListener('click', tirar);
+
+  // Compartir
+  shareBtn.addEventListener('click', async () => {
+    const url = 'https://fcaneo.github.io/CJMVR/dado.html';
+    const data = {
+      title: 'Tira el dado · Top 50 BGG',
+      text: '¿Qué jugamos hoy? Tira el dado.',
+      url: url
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(data);
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(url);
+        shareLabel.textContent = '¡Link copiado!';
+        setTimeout(() => { shareLabel.textContent = 'Compartir esta herramienta'; }, 2000);
+      }
+    } catch (e) { /* usuario canceló */ }
+  });
+
+  // Tirar al cargar para que el primer dado ya tenga resultado
+  setTimeout(tirar, 300);
+</script>
+
+</body>
+</html>

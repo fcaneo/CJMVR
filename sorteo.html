@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#0E0E10" />
+<title>¿Quién parte? · Sorteo de turno · Club Juegos de Mesa Quinta Región</title>
+<meta name="description" content="Sortea el orden de turno entre hasta 6 jugadores. Sin discutir, sin perder tiempo." />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://fcaneo.github.io/CJMVR/sorteo.html" />
+
+<meta property="og:title" content="¿Quién parte? · Sorteo de turno" />
+<meta property="og:description" content="Herramienta del Club Juegos de Mesa Quinta Región para sortear el orden de jugadores." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://fcaneo.github.io/CJMVR/sorteo.html" />
+<meta property="og:image" content="https://fcaneo.github.io/CJMVR/assets/images/curva-54.jpg" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='6' width='52' height='52' rx='10' fill='%23F5B700' stroke='%230E0E10' stroke-width='4'/%3E%3Ccircle cx='20' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%230E0E10'/%3E%3Ccircle cx='20' cy='44' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='44' r='5' fill='%230E0E10'/%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/tools.css">
+
+<style>
+  /* Específico del sorteo */
+  .player-list {
+    list-style: none;
+    margin: 0 0 1rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .player-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .player-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--dim);
+    width: 24px;
+    text-align: right;
+  }
+  .remove-player {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dim);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .remove-player:hover { color: var(--magenta); }
+
+  .add-player-btn {
+    width: 100%;
+    padding: 0.85rem;
+    margin-bottom: 1.5rem;
+    border: 1px dashed rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.7);
+    background: transparent;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+  }
+  .add-player-btn:hover {
+    border-color: var(--magenta);
+    color: var(--magenta);
+  }
+  .add-player-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .actions-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .error-msg {
+    color: var(--magenta);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* Resultado */
+  .result-view { text-align: center; }
+
+  .result-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 0.5rem;
+  }
+
+  .winner {
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    font-size: clamp(3rem, 9vw, 5.5rem);
+    color: var(--gold);
+    line-height: 0.95;
+    margin-bottom: 0.5rem;
+  }
+
+  @keyframes winnerReveal {
+    0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+    60% { opacity: 1; transform: scale(1.15) rotate(2deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+  .winner-reveal { animation: winnerReveal 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+  .order-list {
+    list-style: none;
+    margin: 1.5rem auto 2rem;
+    max-width: 320px;
+  }
+  .order-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.4rem 0;
+    opacity: 0;
+    animation: slideIn 0.3s ease-out forwards;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .order-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    width: 30px;
+    text-align: right;
+  }
+  .order-num.first { color: var(--gold); font-weight: 700; }
+  .order-name {
+    color: rgba(255,255,255,0.7);
+  }
+  .order-name.first { color: var(--paper); font-weight: 700; }
+
+  .actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .share-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 1.5rem;
+    color: var(--dim);
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .share-link:hover { color: var(--magenta); }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<div class="floater" style="top: 12%; right: 10%; width: 32px; height: 32px; background: var(--gold); --r: 12deg;"></div>
+<div class="floater" style="bottom: 18%; left: 8%; width: 40px; height: 40px; background: var(--cyan); --r: -10deg; animation-delay: 1.2s;"></div>
+
+<header class="tool-header">
+  <a href="/CJMVR/" class="tool-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Volver al club
+  </a>
+  <a href="/CJMVR/" class="tool-brand">
+    <svg class="dice-mini" viewBox="0 0 64 64" fill="none">
+      <rect x="6" y="6" width="52" height="52" rx="10" fill="var(--gold)" stroke="var(--ink)" stroke-width="3"/>
+      <circle cx="20" cy="20" r="4" fill="var(--ink)"/>
+      <circle cx="44" cy="20" r="4" fill="var(--ink)"/>
+      <circle cx="32" cy="32" r="4" fill="var(--ink)"/>
+      <circle cx="20" cy="44" r="4" fill="var(--ink)"/>
+      <circle cx="44" cy="44" r="4" fill="var(--ink)"/>
+    </svg>
+    <span class="text">
+      <span class="name">Club Juegos de Mesa</span>
+      <span class="sub">Quinta Región</span>
+    </span>
+  </a>
+</header>
+
+<main class="tool-main">
+  <!-- Vista 1: input -->
+  <div id="input-view">
+    <div class="tool-eyebrow magenta">★ Sorteo de turno</div>
+    <h1 class="tool-title">¿Quién parte<span style="color: var(--magenta)">?</span></h1>
+    <p class="tool-subtitle">Agrega los nombres de los jugadores. El sorteo decide el orden completo.</p>
+
+    <ul id="player-list" class="player-list"></ul>
+
+    <button id="add-player" class="add-player-btn" type="button">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      Agregar jugador
+    </button>
+
+    <div class="actions-row">
+      <span id="error-msg" class="error-msg"></span>
+      <button id="do-shuffle" class="btn btn-magenta">
+        Sortear
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 11-3-6.7L21 8M21 3v5h-5"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Vista 2: resultado -->
+  <div id="result-view" class="result-view" hidden>
+    <div class="result-eyebrow">Parte</div>
+    <div id="winner" class="winner">—</div>
+    <div class="result-eyebrow" style="margin-top: 1.5rem;">Orden completo</div>
+    <ol id="order" class="order-list"></ol>
+
+    <div class="actions">
+      <button id="shuffle-again" class="btn btn-magenta">
+        Sortear de nuevo
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 11-3-6.7L21 8M21 3v5h-5"/></svg>
+      </button>
+      <button id="edit-names" class="btn btn-ghost">Editar nombres</button>
+    </div>
+
+    <div>
+      <button id="share" class="share-link" type="button">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+        <span id="share-label">Compartir esta herramienta</span>
+      </button>
+    </div>
+  </div>
+</main>
+
+<footer class="tool-footer">
+  Una herramienta del <a href="/CJMVR/">Club Juegos de Mesa Quinta Región</a> · Viña del Mar
+</footer>
+
+<script>
+  const MAX_JUGADORES = 6;
+  const MIN_JUGADORES = 2;
+
+  const inputView = document.getElementById('input-view');
+  const resultView = document.getElementById('result-view');
+  const playerList = document.getElementById('player-list');
+  const addBtn = document.getElementById('add-player');
+  const doBtn = document.getElementById('do-shuffle');
+  const errorEl = document.getElementById('error-msg');
+  const winnerEl = document.getElementById('winner');
+  const orderEl = document.getElementById('order');
+  const againBtn = document.getElementById('shuffle-again');
+  const editBtn = document.getElementById('edit-names');
+  const shareBtn = document.getElementById('share');
+  const shareLabel = document.getElementById('share-label');
+
+  let ultimosNombres = [];
+
+  function crearFila(num) {
+    const li = document.createElement('li');
+    li.className = 'player-row';
+    li.innerHTML = `
+      <span class="player-num">${num}.</span>
+      <input type="text" maxlength="20" placeholder="Nombre del jugador ${num}" aria-label="Jugador ${num}" />
+      <button type="button" class="remove-player" aria-label="Quitar jugador">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    `;
+    li.querySelector('.remove-player').addEventListener('click', () => {
+      if (playerList.children.length <= MIN_JUGADORES) {
+        mostrarError(`Mínimo ${MIN_JUGADORES} jugadores.`);
+        return;
+      }
+      li.remove();
+      renumerar();
+      actualizarBotonAgregar();
+    });
+    li.querySelector('input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        sortear();
+      }
+    });
+    return li;
+  }
+
+  function renumerar() {
+    Array.from(playerList.children).forEach((li, i) => {
+      const num = i + 1;
+      li.querySelector('.player-num').textContent = `${num}.`;
+      const input = li.querySelector('input');
+      input.placeholder = `Nombre del jugador ${num}`;
+      input.setAttribute('aria-label', `Jugador ${num}`);
+    });
+  }
+
+  function actualizarBotonAgregar() {
+    addBtn.disabled = playerList.children.length >= MAX_JUGADORES;
+  }
+
+  function inicializarLista(nombres = []) {
+    playerList.innerHTML = '';
+    const arr = nombres.length >= MIN_JUGADORES ? nombres : ['', ''];
+    arr.forEach((nombre, i) => {
+      const fila = crearFila(i + 1);
+      fila.querySelector('input').value = nombre || '';
+      playerList.appendChild(fila);
+    });
+    actualizarBotonAgregar();
+  }
+
+  function mostrarError(msg) {
+    errorEl.textContent = msg;
+    setTimeout(() => { errorEl.textContent = ''; }, 3000);
+  }
+
+  function obtenerNombres() {
+    return Array.from(playerList.querySelectorAll('input'))
+      .map(i => i.value.trim())
+      .filter(n => n.length > 0);
+  }
+
+  function sortear() {
+    const nombres = obtenerNombres();
+    if (nombres.length < MIN_JUGADORES) {
+      mostrarError(`Necesitas al menos ${MIN_JUGADORES} nombres.`);
+      return;
+    }
+    const set = new Set(nombres.map(n => n.toLowerCase()));
+    if (set.size !== nombres.length) {
+      mostrarError('Hay nombres repetidos.');
+      return;
+    }
+    ultimosNombres = nombres;
+    const orden = [...nombres];
+    for (let i = orden.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [orden[i], orden[j]] = [orden[j], orden[i]];
+    }
+    mostrarResultado(orden);
+  }
+
+  function mostrarResultado(orden) {
+    inputView.hidden = true;
+    resultView.hidden = false;
+
+    winnerEl.textContent = orden[0];
+    winnerEl.classList.remove('winner-reveal');
+    void winnerEl.offsetWidth;
+    winnerEl.classList.add('winner-reveal');
+
+    orderEl.innerHTML = '';
+    orden.forEach((nombre, i) => {
+      const li = document.createElement('li');
+      const esGanador = i === 0;
+      li.innerHTML = `
+        <span class="order-num ${esGanador ? 'first' : ''}">${i + 1}°</span>
+        <span class="order-name ${esGanador ? 'first' : ''}">${escapeHtml(nombre)}</span>
+      `;
+      li.style.animationDelay = `${i * 80}ms`;
+      orderEl.appendChild(li);
+    });
+
+    setTimeout(() => againBtn.focus(), 100);
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  addBtn.addEventListener('click', () => {
+    if (playerList.children.length >= MAX_JUGADORES) return;
+    const fila = crearFila(playerList.children.length + 1);
+    playerList.appendChild(fila);
+    actualizarBotonAgregar();
+    fila.querySelector('input').focus();
+  });
+
+  doBtn.addEventListener('click', sortear);
+
+  againBtn.addEventListener('click', () => {
+    const orden = [...ultimosNombres];
+    for (let i = orden.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [orden[i], orden[j]] = [orden[j], orden[i]];
+    }
+    mostrarResultado(orden);
+  });
+
+  editBtn.addEventListener('click', () => {
+    inputView.hidden = false;
+    resultView.hidden = true;
+    inicializarLista(ultimosNombres);
+    const firstInput = playerList.querySelector('input');
+    if (firstInput) firstInput.focus();
+  });
+
+  shareBtn.addEventListener('click', async () => {
+    const url = 'https://fcaneo.github.io/CJMVR/sorteo.html';
+    const data = {
+      title: '¿Quién parte? · Sorteo de turno',
+      text: 'Sortea el orden de jugadores sin discutir.',
+      url: url
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(data);
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(url);
+        shareLabel.textContent = '¡Link copiado!';
+        setTimeout(() => { shareLabel.textContent = 'Compartir esta herramienta'; }, 2000);
+      }
+    } catch (e) { /* cancelado */ }
+  });
+
+  inicializarLista();
+</script>
+
+</body>
+</html>
