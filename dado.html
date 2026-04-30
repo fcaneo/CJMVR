@@ -40,9 +40,22 @@
     margin: 0 auto 2rem;
     cursor: pointer;
     transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    /* Reset de button para que el SVG se vea limpio */
+    background: transparent;
+    border: none;
+    padding: 0;
+    display: block;
+    -webkit-appearance: none;
+    appearance: none;
   }
   .dice-big:hover { transform: scale(1.05); }
   .dice-big:active { transform: scale(0.95); }
+  .dice-big:focus { outline: none; }
+  .dice-big:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 8px;
+    border-radius: 12px;
+  }
 
   @keyframes diceTumble {
     0% { transform: rotate(0deg) scale(1); }
@@ -54,18 +67,48 @@
   .dice-tumble { animation: diceTumble 1s cubic-bezier(0.4, 0.2, 0.2, 1); }
 
   .result-card {
+    position: relative;
     background: var(--ink-soft);
     border: 2px solid var(--gold);
     padding: 2rem;
     margin-top: 1.5rem;
     text-align: left;
+    overflow: hidden;
   }
 
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
+  /* Glow del borde al aparecer */
+  @keyframes borderGlow {
+    0% { box-shadow: 0 0 0 0 rgba(245, 183, 0, 0.6); }
+    50% { box-shadow: 0 0 30px 8px rgba(245, 183, 0, 0.2); }
+    100% { box-shadow: 0 0 0 0 rgba(245, 183, 0, 0); }
   }
-  .result-card { animation: fadeInUp 0.5s ease-out; }
+
+  /* Efecto barrido cuando se revela */
+  .result-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(245, 183, 0, 0.15) 50%,
+      transparent 100%
+    );
+    transform: translateX(-100%);
+    pointer-events: none;
+  }
+
+  .result-card.revealed {
+    animation: borderGlow 1.2s ease-out;
+  }
+  .result-card.revealed::before {
+    animation: sweep 0.9s cubic-bezier(0.4, 0.2, 0.2, 1);
+  }
+
+  @keyframes sweep {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
 
   .result-name {
     font-family: 'Anton', sans-serif;
@@ -74,6 +117,9 @@
     color: var(--gold);
     line-height: 1;
     margin-bottom: 0.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .result-meta {
@@ -83,11 +129,35 @@
     text-transform: uppercase;
     color: var(--dim);
     margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s;
   }
 
   .result-blurb {
     color: rgba(255,255,255,0.85);
     line-height: 1.6;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s;
+  }
+
+  /* Cuando la card está "in" todo aparece con stagger */
+  .result-card.revealed .result-name,
+  .result-card.revealed .result-meta,
+  .result-card.revealed .result-blurb {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Efecto pulso muy sutil en el nombre tras revelar */
+  @keyframes nameImpact {
+    0% { transform: translateY(0) scale(1); }
+    40% { transform: translateY(-4px) scale(1.04); }
+    100% { transform: translateY(0) scale(1); }
+  }
+  .result-card.revealed .result-name {
+    animation: nameImpact 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.05s;
   }
 
   .actions {
@@ -257,11 +327,15 @@
   const shareLabel = document.getElementById('share-label');
 
   let lastIndex = -1;
+  const resultCard = result.querySelector('.result-card');
 
   function tirar() {
     trigger.classList.remove('dice-tumble');
     void trigger.offsetWidth;
     trigger.classList.add('dice-tumble');
+
+    // Si ya estaba revelado, "reseteo" la animación quitando la clase
+    resultCard.classList.remove('revealed');
 
     setTimeout(() => {
       // Evita repetir el mismo dos veces seguidas
@@ -275,6 +349,9 @@
       metaEl.textContent = j.meta;
       blurbEl.textContent = j.blurb;
       result.hidden = false;
+      // Force reflow para re-disparar animación
+      void resultCard.offsetWidth;
+      resultCard.classList.add('revealed');
     }, 900);
   }
 
