@@ -22,6 +22,8 @@ Sitio web del **Club Juegos de Mesa Quinta Región**, Viña del Mar.
 | [`/sorteo.html`](https://fcaneo.github.io/CJMVR/sorteo.html) | Sorteo de orden de turno (hasta 12 jugadores) |
 | [`/marcador.html`](https://fcaneo.github.io/CJMVR/marcador.html) | Marcador de partidas con persistencia y podio |
 | [`/wordle.html`](https://fcaneo.github.io/CJMVR/wordle.html) | Wordle del día en español, 5 letras, 6 intentos |
+| [`/temporizador.html`](https://fcaneo.github.io/CJMVR/temporizador.html) | Chess clock para juegos de mesa largos (hasta 12 jugadores) |
+| [`/dados.html`](https://fcaneo.github.io/CJMVR/dados.html) | Multi-dado D4 a D20, hasta 10 dados con suma e historial |
 | [`/404.html`](https://fcaneo.github.io/CJMVR/404.html) | Página de error con personalidad |
 
 ## Estructura del repositorio
@@ -34,6 +36,8 @@ CJMVR/
 ├── sorteo.html             # Herramienta: sorteo de orden
 ├── marcador.html           # Herramienta: marcador con persistencia
 ├── wordle.html             # Juego: Wordle del día en español
+├── temporizador.html       # Herramienta: chess clock multi-jugador
+├── dados.html              # Herramienta: multi-dado D4-D20
 ├── 404.html                # Página de error
 ├── robots.txt              # Permite indexación, apunta al sitemap
 ├── sitemap.xml             # Sitemap XML para buscadores

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#0E0E10" />
+<title>Tirar dados · D4 D6 D8 D10 D12 D20 · Club Juegos de Mesa Quinta Región</title>
+<meta name="description" content="Tira hasta 10 dados a la vez. Configura tipo (D4 a D20) y cantidad. Suma automática e historial." />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://fcaneo.github.io/CJMVR/dados.html" />
+
+<meta property="og:title" content="Tirar dados · Club Juegos de Mesa" />
+<meta property="og:description" content="Multi-dado online: D4, D6, D8, D10, D12, D20. Hasta 10 a la vez." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://fcaneo.github.io/CJMVR/dados.html" />
+<meta property="og:image" content="https://fcaneo.github.io/CJMVR/assets/images/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='6' width='52' height='52' rx='10' fill='%23F5B700' stroke='%230E0E10' stroke-width='4'/%3E%3Ccircle cx='20' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%230E0E10'/%3E%3Ccircle cx='20' cy='44' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='44' r='5' fill='%230E0E10'/%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/tools.css">
+
+<style>
+  .config-section { margin-bottom: 1.5rem; }
+
+  .label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 0.65rem;
+  }
+
+  /* Selector de tipo de dado */
+  .dice-type-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.4rem;
+  }
+  .dice-type-btn {
+    background: var(--ink-soft);
+    border: 1px solid var(--ink-line);
+    color: var(--paper);
+    padding: 0.85rem 0.4rem;
+    font-family: 'Anton', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-transform: uppercase;
+  }
+  .dice-type-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .dice-type-btn.active {
+    background: var(--gold);
+    color: var(--ink);
+    border-color: var(--gold);
+  }
+
+  /* Selector de cantidad */
+  .count-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .count-btn {
+    width: 44px;
+    height: 44px;
+    background: var(--ink-soft);
+    border: 1px solid var(--ink-line);
+    color: var(--paper);
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .count-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .count-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .count-display {
+    flex: 1;
+    text-align: center;
+    font-family: 'Anton', sans-serif;
+    font-size: 32px;
+    color: var(--paper);
+    line-height: 1;
+  }
+  .count-display .count-label-mini {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--dim);
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+
+  /* Botón TIRAR gigante */
+  .roll-btn {
+    width: 100%;
+    padding: 1.5rem;
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    font-size: clamp(1.4rem, 5vw, 2rem);
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .roll-btn:hover { background: #ffce40; transform: translateY(-2px); }
+  .roll-btn:active { transform: translateY(0) scale(0.98); }
+
+  /* Resultado actual */
+  .result-area {
+    margin-bottom: 2rem;
+  }
+
+  .dice-result-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    min-height: 80px;
+  }
+
+  .die {
+    width: 70px;
+    height: 70px;
+    background: var(--ink-soft);
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Anton', sans-serif;
+    font-size: 32px;
+    line-height: 1;
+    border-radius: 8px;
+    position: relative;
+  }
+
+  /* Animación de la tirada (rolling) */
+  @keyframes diceRoll {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(180deg) scale(1.15); }
+    50% { transform: rotate(360deg) scale(0.9); }
+    75% { transform: rotate(540deg) scale(1.1); }
+    100% { transform: rotate(720deg) scale(1); }
+  }
+  .die.rolling {
+    animation: diceRoll 0.8s cubic-bezier(0.4, 0.2, 0.2, 1);
+  }
+
+  /* Reveal final con fade */
+  @keyframes diceLand {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .die.landed {
+    animation: diceLand 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  /* Dado crítico (mejor o peor resultado posible) */
+  .die.crit {
+    background: var(--gold);
+    color: var(--ink);
+    box-shadow: 0 0 20px rgba(245, 183, 0, 0.5);
+  }
+  .die.crit-fail {
+    background: var(--ink-soft);
+    color: var(--magenta);
+    border-color: var(--magenta);
+  }
+
+  .die-label {
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  /* Suma total */
+  .sum-display {
+    text-align: center;
+    padding: 1rem;
+    background: var(--ink-soft);
+    border-top: 2px solid var(--gold);
+  }
+  .sum-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 0.35rem;
+  }
+  .sum-value {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 3.5rem);
+    color: var(--gold);
+    line-height: 1;
+  }
+  .sum-formula {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--dim);
+    margin-top: 0.5rem;
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--dim);
+    font-style: italic;
+  }
+
+  /* Historial */
+  .history-section {
+    margin-top: 2rem;
+  }
+  .history-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 0.75rem;
+  }
+  .history-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background: var(--ink-soft);
+    border: 1px solid var(--ink-line);
+    border-bottom: none;
+    font-size: 14px;
+  }
+  .history-item:last-child { border-bottom: 1px solid var(--ink-line); }
+  .history-formula {
+    font-family: 'Space Mono', monospace;
+    color: rgba(255,255,255,0.7);
+  }
+  .history-result {
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    color: var(--gold);
+  }
+  .history-time {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    margin-left: 0.85rem;
+  }
+
+  .clear-history-btn {
+    background: transparent;
+    border: none;
+    color: var(--dim);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s ease;
+  }
+  .clear-history-btn:hover { color: var(--magenta); }
+
+  @media (max-width: 480px) {
+    .die { width: 60px; height: 60px; font-size: 26px; }
+    .dice-type-btn { font-size: 14px; padding: 0.7rem 0.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<header class="tool-header">
+  <div class="tool-nav">
+    <a href="/CJMVR/" class="tool-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Volver al club
+    </a>
+    <a href="mesa.html" class="tool-link">
+      🎲 Mesa de juego
+    </a>
+  </div>
+  <a href="/CJMVR/" class="tool-brand" aria-label="Volver al sitio del Club Juegos de Mesa Quinta Región">
+    <span class="text">
+      <span class="name">Club Juegos de Mesa</span>
+      <span class="sub">Quinta Región · Viña</span>
+    </span>
+    <img src="assets/logo/cjmvr-logo-blanco.png" alt="" class="brand-logo" width="880" height="886" />
+  </a>
+</header>
+
+<main class="tool-main">
+  <div class="tool-eyebrow gold">★ Multi-dado</div>
+  <h1 class="tool-title">Tira dados.</h1>
+  <p class="tool-subtitle">¿Se perdió el dado del juego? Aquí tienes todos los que necesitas.</p>
+
+  <!-- Tipo de dado -->
+  <div class="config-section">
+    <div class="label">Tipo de dado</div>
+    <div class="dice-type-row" id="dice-types">
+      <button class="dice-type-btn" data-sides="4" type="button">D4</button>
+      <button class="dice-type-btn active" data-sides="6" type="button">D6</button>
+      <button class="dice-type-btn" data-sides="8" type="button">D8</button>
+      <button class="dice-type-btn" data-sides="10" type="button">D10</button>
+      <button class="dice-type-btn" data-sides="12" type="button">D12</button>
+      <button class="dice-type-btn" data-sides="20" type="button">D20</button>
+    </div>
+  </div>
+
+  <!-- Cantidad -->
+  <div class="config-section">
+    <div class="label">Cantidad</div>
+    <div class="count-row">
+      <button id="count-minus" class="count-btn" type="button" aria-label="Disminuir cantidad">−</button>
+      <div class="count-display">
+        <span id="count-num">1</span>
+        <span class="count-label-mini" id="count-label">dado</span>
+      </div>
+      <button id="count-plus" class="count-btn" type="button" aria-label="Aumentar cantidad">+</button>
+    </div>
+  </div>
+
+  <!-- Botón TIRAR -->
+  <button id="roll-btn" class="roll-btn" type="button">
+    <svg width="22" height="22" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <rect x="6" y="6" width="52" height="52" rx="10" fill="#0E0E10" stroke="currentColor" stroke-width="4"/>
+      <circle cx="20" cy="20" r="5" fill="currentColor"/>
+      <circle cx="44" cy="20" r="5" fill="currentColor"/>
+      <circle cx="32" cy="32" r="5" fill="currentColor"/>
+      <circle cx="20" cy="44" r="5" fill="currentColor"/>
+      <circle cx="44" cy="44" r="5" fill="currentColor"/>
+    </svg>
+    <span id="roll-label">Tirar</span>
+  </button>
+
+  <!-- Resultado actual -->
+  <div class="result-area">
+    <div id="dice-grid" class="dice-result-grid">
+      <div class="empty-state">Toca "Tirar" para empezar</div>
+    </div>
+    <div id="sum-display" class="sum-display" hidden>
+      <div class="sum-label">Suma total</div>
+      <div id="sum-value" class="sum-value">—</div>
+      <div id="sum-formula" class="sum-formula"></div>
+    </div>
+  </div>
+
+  <!-- Historial -->
+  <div id="history-section" class="history-section" hidden>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="history-title">Últimas 5 tiradas</div>
+      <button id="clear-history" class="clear-history-btn" type="button">Limpiar</button>
+    </div>
+    <div id="history-list"></div>
+  </div>
+</main>
+
+<footer class="tool-footer">
+  <div class="footer-content">
+    <a href="/CJMVR/" aria-label="Volver al Club Juegos de Mesa Quinta Región">
+      <img src="assets/logo/cjmvr-logo-blanco.png" alt="" class="footer-logo" width="880" height="886" />
+    </a>
+    <span class="footer-tag">
+      Una herramienta del <a href="/CJMVR/">Club Juegos de Mesa Quinta Región</a> · Viña del Mar
+    </span>
+  </div>
+</footer>
+
+<script>
+  const STORAGE_KEY = 'cjmvr-dados-v1';
+  const HISTORY_KEY = 'cjmvr-dados-history-v1';
+  const MAX_HISTORY = 5;
+  const MAX_COUNT = 10;
+  const MIN_COUNT = 1;
+
+  // Estado
+  let state = {
+    sides: 6,
+    count: 1
+  };
+
+  let history = [];
+
+  // === DOM ===
+  const typesEl = document.getElementById('dice-types');
+  const countNumEl = document.getElementById('count-num');
+  const countLabelEl = document.getElementById('count-label');
+  const countMinusBtn = document.getElementById('count-minus');
+  const countPlusBtn = document.getElementById('count-plus');
+  const rollBtn = document.getElementById('roll-btn');
+  const rollLabelEl = document.getElementById('roll-label');
+  const diceGridEl = document.getElementById('dice-grid');
+  const sumDisplayEl = document.getElementById('sum-display');
+  const sumValueEl = document.getElementById('sum-value');
+  const sumFormulaEl = document.getElementById('sum-formula');
+  const historySection = document.getElementById('history-section');
+  const historyListEl = document.getElementById('history-list');
+  const clearHistoryBtn = document.getElementById('clear-history');
+
+  // === Persistencia ===
+  function saveState() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && parsed.sides && parsed.count) {
+          state = parsed;
+        }
+      }
+    } catch (e) {}
+  }
+  function saveHistory() {
+    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(history)); } catch (e) {}
+  }
+  function loadHistory() {
+    try {
+      const raw = localStorage.getItem(HISTORY_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) history = parsed;
+      }
+    } catch (e) {}
+  }
+  function clearHistoryStorage() {
+    try { localStorage.removeItem(HISTORY_KEY); } catch (e) {}
+  }
+
+  // === Render ===
+  function renderConfig() {
+    // Tipo
+    Array.from(typesEl.children).forEach(b => {
+      b.classList.toggle('active', parseInt(b.dataset.sides, 10) === state.sides);
+    });
+    // Cantidad
+    countNumEl.textContent = state.count;
+    countLabelEl.textContent = state.count === 1 ? 'dado' : 'dados';
+    countMinusBtn.disabled = state.count <= MIN_COUNT;
+    countPlusBtn.disabled = state.count >= MAX_COUNT;
+    // Label del botón
+    rollLabelEl.textContent = `Tirar ${state.count}D${state.sides}`;
+  }
+
+  function renderHistory() {
+    if (history.length === 0) {
+      historySection.hidden = true;
+      return;
+    }
+    historySection.hidden = false;
+    historyListEl.innerHTML = '';
+    history.forEach(h => {
+      const item = document.createElement('div');
+      item.className = 'history-item';
+      const ago = relativeTime(h.ts);
+      item.innerHTML = `
+        <div>
+          <span class="history-formula">${h.count}D${h.sides}</span>
+          <span class="history-time">· ${ago}</span>
+        </div>
+        <div class="history-result">${h.total}</div>
+      `;
+      historyListEl.appendChild(item);
+    });
+  }
+
+  function relativeTime(ts) {
+    const diff = (Date.now() - ts) / 1000;
+    if (diff < 60) return 'recién';
+    if (diff < 3600) return `hace ${Math.floor(diff / 60)} min`;
+    if (diff < 86400) return `hace ${Math.floor(diff / 3600)} h`;
+    return `hace ${Math.floor(diff / 86400)} d`;
+  }
+
+  // === Roll ===
+  function roll() {
+    const { sides, count } = state;
+    // Genera valores
+    const values = [];
+    for (let i = 0; i < count; i++) {
+      values.push(Math.floor(Math.random() * sides) + 1);
+    }
+    const total = values.reduce((s, v) => s + v, 0);
+
+    // Construye el grid de dados con animación
+    diceGridEl.innerHTML = '';
+    values.forEach((v, i) => {
+      const die = document.createElement('div');
+      die.className = 'die rolling';
+      // Mientras anima, muestra valores aleatorios cambiantes (efecto)
+      die.textContent = '?';
+      // Tag debajo
+      const label = document.createElement('span');
+      label.className = 'die-label';
+      label.textContent = `D${sides}`;
+      die.appendChild(label);
+      diceGridEl.appendChild(die);
+
+      // Cambia el número durante la animación cada 100ms
+      const flickerInterval = setInterval(() => {
+        const fakeVal = Math.floor(Math.random() * sides) + 1;
+        die.firstChild.nodeValue = fakeVal;
+      }, 100);
+
+      // Al terminar la animación, muestra valor real
+      setTimeout(() => {
+        clearInterval(flickerInterval);
+        die.classList.remove('rolling');
+        die.classList.add('landed');
+        die.firstChild.nodeValue = v;
+        // Marcar críticos
+        if (v === sides && sides >= 6) die.classList.add('crit');
+        else if (v === 1 && sides >= 6) die.classList.add('crit-fail');
+      }, 800 + i * 80); // pequeño stagger
+    });
+
+    // Muestra suma después de que todos los dados aterrizan
+    const totalDelay = 800 + (count - 1) * 80 + 200;
+    setTimeout(() => {
+      sumDisplayEl.hidden = false;
+      sumValueEl.textContent = total;
+      if (count > 1) {
+        sumFormulaEl.textContent = values.join(' + ') + ' = ' + total;
+      } else {
+        sumFormulaEl.textContent = '';
+      }
+
+      // Agrega al historial
+      history.unshift({ sides, count, values, total, ts: Date.now() });
+      if (history.length > MAX_HISTORY) history.length = MAX_HISTORY;
+      saveHistory();
+      renderHistory();
+    }, totalDelay);
+  }
+
+  // === Listeners ===
+  typesEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('.dice-type-btn');
+    if (!btn) return;
+    state.sides = parseInt(btn.dataset.sides, 10);
+    saveState();
+    renderConfig();
+  });
+
+  countMinusBtn.addEventListener('click', () => {
+    if (state.count > MIN_COUNT) {
+      state.count--;
+      saveState();
+      renderConfig();
+    }
+  });
+  countPlusBtn.addEventListener('click', () => {
+    if (state.count < MAX_COUNT) {
+      state.count++;
+      saveState();
+      renderConfig();
+    }
+  });
+
+  rollBtn.addEventListener('click', roll);
+
+  // Atajo: barra espaciadora tira
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.code === 'Space') {
+      e.preventDefault();
+      roll();
+    }
+  });
+
+  clearHistoryBtn.addEventListener('click', () => {
+    history = [];
+    clearHistoryStorage();
+    renderHistory();
+  });
+
+  // === Init ===
+  loadState();
+  loadHistory();
+  renderConfig();
+  renderHistory();
+</script>
+
+</body>
+</html>
