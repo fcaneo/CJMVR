@@ -525,6 +525,9 @@
     inputView.hidden = true;
     resultView.hidden = false;
 
+    // Asegura que el resultado esté visible (scroll al top de la vista)
+    resultView.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
     // Frase sorpresa al azar
     const phraseEl = document.getElementById('winner-phrase');
     if (phraseEl) {
@@ -597,8 +600,9 @@
     inputView.hidden = false;
     resultView.hidden = true;
     inicializarLista(ultimosNombres);
+    inputView.scrollIntoView({ behavior: 'smooth', block: 'start' });
     const firstInput = playerList.querySelector('input');
-    if (firstInput) firstInput.focus();
+    if (firstInput) firstInput.focus({ preventScroll: true });
   });
 
   // Compartir el resultado del sorteo (texto formateado)
