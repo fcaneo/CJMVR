@@ -148,20 +148,25 @@
     padding: 0.5rem 0.75rem;
   }
   .round-player-row {
-    display: flex;
+    display: flex !important;
     align-items: center;
     gap: 0.75rem;
-    padding: 0.5rem 0;
+    padding: 0.6rem 0;
     border-bottom: 1px solid rgba(255,255,255,0.05);
+    min-height: 44px;
   }
   .round-player-row:last-child { border-bottom: none; }
   .round-player-name {
-    flex: 1;
-    font-size: 14px;
-    color: var(--paper);
+    flex: 1 1 auto !important;
+    min-width: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--paper) !important;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    display: inline-block !important;
+    visibility: visible !important;
   }
   .round-player-input {
     width: 75px;
@@ -586,7 +591,7 @@
   <div id="setup">
     <div class="hint">Jugadores</div>
     <div class="add-player-input">
-      <input id="new-player-name" type="text" maxlength="20" placeholder="Nombre del jugador" aria-label="Nombre del jugador a agregar" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" />
+      <input id="new-player-name" type="text" maxlength="20" placeholder="Nombre del jugador" aria-label="Nombre del jugador a agregar" name="cjmvr-player-input" autocomplete="off-cjmvr-name" autocorrect="off" autocapitalize="words" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" />
       <button id="add-player-btn" class="btn btn-primary">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
         Agregar
@@ -876,20 +881,34 @@
   // Crea un input de score (factory) — ambas vistas lo usan
   function crearScoreInput(rIdx, pIdx, className) {
     const input = document.createElement('input');
-    input.type = 'number';
+    // type="text" + pattern para evitar que Chrome lo confunda con campo de pago/tarjeta
+    input.type = 'text';
     input.className = className;
     const val = state.rounds[rIdx][pIdx];
     input.value = (val !== null && val !== undefined) ? val : '';
     input.placeholder = '0';
+    // Permite negativos (Skull King, Welcome to)
     input.setAttribute('inputmode', 'numeric');
-    input.setAttribute('autocomplete', 'off');
+    input.setAttribute('pattern', '-?[0-9]*');
+    input.setAttribute('name', `cjmvr-score-${rIdx}-${pIdx}`);
+    input.setAttribute('autocomplete', 'off-cjmvr-score');
     input.setAttribute('autocorrect', 'off');
     input.setAttribute('spellcheck', 'false');
+    input.setAttribute('data-form-type', 'other');
+    input.setAttribute('data-lpignore', 'true');
+    input.setAttribute('data-1p-ignore', 'true');
     input.setAttribute('aria-label', `Puntos de ${state.players[pIdx]} en ronda ${rIdx + 1}`);
     input.dataset.r = rIdx;
     input.dataset.p = pIdx;
     input.addEventListener('input', () => {
-      const v = input.value === '' ? null : Number(input.value);
+      // Filtrar caracteres no numéricos (excepto -)
+      const cleaned = input.value.replace(/[^0-9-]/g, '').replace(/(?!^)-/g, '');
+      if (cleaned !== input.value) {
+        const cursorPos = input.selectionStart - (input.value.length - cleaned.length);
+        input.value = cleaned;
+        try { input.setSelectionRange(cursorPos, cursorPos); } catch (e) {}
+      }
+      const v = input.value === '' || input.value === '-' ? null : Number(input.value);
       state.rounds[rIdx][pIdx] = isNaN(v) ? null : v;
       // Sincroniza el input gemelo (otra vista)
       const selector = `input[data-r="${rIdx}"][data-p="${pIdx}"]`;
@@ -954,7 +973,7 @@
         row.className = 'round-player-row';
         const nameSpan = document.createElement('span');
         nameSpan.className = 'round-player-name';
-        nameSpan.textContent = pName;
+        nameSpan.textContent = pName || `Jugador ${pIdx + 1}`;
         row.appendChild(nameSpan);
         row.appendChild(crearScoreInput(rIdx, pIdx, 'round-player-input'));
         body.appendChild(row);
