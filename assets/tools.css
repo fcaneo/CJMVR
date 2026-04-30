@@ -333,7 +333,8 @@ body::before {
   box-shadow: none !important;
 }
 
-/* Inputs (incluyendo type="search" porque marcador y temporizador lo usan) */
+/* Inputs (incluyendo type="search" porque marcador y temporizador lo usan).
+   font-size 16px MÍNIMO para evitar zoom automático de iOS al enfocar. */
 input[type="text"],
 input[type="number"],
 input[type="search"],
@@ -342,12 +343,10 @@ input[type="tel"] {
   background: var(--ink-soft);
   border: 1px solid var(--ink-line);
   color: var(--paper);
-  padding: 0.65rem 0.75rem;
+  padding: 0.55rem 0.75rem;
   font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
+  font-size: 16px; /* iOS no hace zoom si es >= 16px */
   transition: border-color 0.2s ease;
-  /* width: 100% removido — empujaba inputs específicos como .round-player-input fuera de su layout flex.
-     Si un input necesita 100%, debe declararlo en su clase. */
   border-radius: 0;
   -webkit-appearance: none;
   appearance: none;
