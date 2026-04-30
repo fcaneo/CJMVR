@@ -1,0 +1,8 @@
+# Club Juegos de Mesa Quinta Región
+# https://fcaneo.github.io/CJMVR/
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://fcaneo.github.io/CJMVR/sitemap.xml
