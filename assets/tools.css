@@ -91,8 +91,8 @@ body::before {
 .tool-brand:hover { opacity: 0.85; }
 
 .tool-brand .brand-logo {
-  width: 44px;
-  height: 44px;
+  width: 60px;
+  height: 60px;
   flex-shrink: 0;
 }
 
@@ -122,7 +122,7 @@ body::before {
 
 @media (max-width: 600px) {
   .tool-brand .text { display: none; }
-  .tool-brand .brand-logo { width: 40px; height: 40px; }
+  .tool-brand .brand-logo { width: 56px; height: 56px; }
 }
 
 /* Contenedor principal */
@@ -272,13 +272,13 @@ input[type="text"]:focus, input[type="number"]:focus {
   gap: 0.85rem;
 }
 .tool-footer .footer-logo {
-  width: 48px;
-  height: 48px;
+  width: 72px;
+  height: 72px;
   opacity: 0.7;
   transition: opacity 0.2s ease;
 }
 @media (max-width: 600px) {
-  .tool-footer .footer-logo { width: 44px; height: 44px; }
+  .tool-footer .footer-logo { width: 64px; height: 64px; }
 }
 .tool-footer a:hover .footer-logo { opacity: 1; }
 .tool-footer a {
