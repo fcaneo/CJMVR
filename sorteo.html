@@ -106,7 +106,10 @@
   }
 
   /* Resultado */
-  .result-view { text-align: center; }
+  .result-view {
+    text-align: center;
+    position: relative;
+  }
 
   .result-eyebrow {
     font-family: 'Space Mono', monospace;
@@ -115,6 +118,34 @@
     text-transform: uppercase;
     color: rgba(255,255,255,0.6);
     margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: fadeIn 0.4s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Dots de suspenso antes del reveal */
+  .winner-suspense {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(3rem, 9vw, 5.5rem);
+    color: var(--magenta);
+    line-height: 0.95;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.3em;
+    display: inline-block;
+  }
+  .winner-suspense span {
+    display: inline-block;
+    animation: dotBounce 0.8s ease-in-out infinite;
+  }
+  .winner-suspense span:nth-child(2) { animation-delay: 0.15s; }
+  .winner-suspense span:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes dotBounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+    30% { transform: translateY(-12px); opacity: 1; }
   }
 
   .winner {
@@ -124,14 +155,63 @@
     color: var(--gold);
     line-height: 0.95;
     margin-bottom: 0.5rem;
+    position: relative;
+    display: inline-block;
   }
 
+  /* Reveal cinemático: rota desde abajo + escala + glow */
   @keyframes winnerReveal {
-    0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
-    60% { opacity: 1; transform: scale(1.15) rotate(2deg); }
+    0% { opacity: 0; transform: scale(0.3) rotate(-15deg) translateY(40px); filter: blur(10px); }
+    50% { opacity: 1; transform: scale(1.25) rotate(3deg) translateY(0); filter: blur(0); }
+    70% { transform: scale(0.95) rotate(-1deg); }
     100% { transform: scale(1) rotate(0deg); }
   }
-  .winner-reveal { animation: winnerReveal 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+  /* Glow dorado pulsante alrededor del ganador */
+  @keyframes winnerGlow {
+    0% { text-shadow: 0 0 0 rgba(245, 183, 0, 0); }
+    40% { text-shadow: 0 0 30px rgba(245, 183, 0, 0.8), 0 0 60px rgba(245, 183, 0, 0.4); }
+    100% { text-shadow: 0 0 12px rgba(245, 183, 0, 0.5); }
+  }
+
+  .winner-reveal {
+    animation:
+      winnerReveal 0.9s cubic-bezier(0.2, 0.8, 0.2, 1),
+      winnerGlow 1.4s ease-out;
+  }
+
+  /* Confetti de piezas saliendo del nombre */
+  .confetti-burst {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: visible;
+    z-index: 1;
+  }
+  .confetti-piece {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    opacity: 0;
+  }
+  .confetti-piece.show {
+    animation: confettiFly 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+  @keyframes confettiFly {
+    0% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+    }
+    100% {
+      opacity: 0;
+      transform:
+        translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px)))
+        scale(1)
+        rotate(var(--rot, 360deg));
+    }
+  }
 
   .order-list {
     list-style: none;
@@ -144,11 +224,19 @@
     gap: 12px;
     padding: 0.4rem 0;
     opacity: 0;
-    animation: slideIn 0.3s ease-out forwards;
+    animation: slideIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   }
   @keyframes slideIn {
-    from { opacity: 0; transform: translateX(-10px); }
-    to { opacity: 1; transform: translateX(0); }
+    from { opacity: 0; transform: translateX(-15px) scale(0.95); }
+    to { opacity: 1; transform: translateX(0) scale(1); }
+  }
+  .order-list li.first {
+    animation-name: slideInGold;
+  }
+  @keyframes slideInGold {
+    0% { opacity: 0; transform: translateX(-15px) scale(0.95); }
+    60% { opacity: 1; transform: translateX(2px) scale(1.05); background: rgba(245, 183, 0, 0.1); }
+    100% { opacity: 1; transform: translateX(0) scale(1); background: transparent; }
   }
   .order-num {
     font-family: 'Space Mono', monospace;
@@ -241,7 +329,10 @@
   <!-- Vista 2: resultado -->
   <div id="result-view" class="result-view" hidden>
     <div id="winner-phrase" class="result-eyebrow">Parte</div>
-    <div id="winner" class="winner">—</div>
+    <div style="position: relative; display: inline-block;">
+      <div id="winner" class="winner">—</div>
+      <div id="confetti" class="confetti-burst" aria-hidden="true"></div>
+    </div>
     <div class="result-eyebrow" style="margin-top: 1.5rem;">Orden completo</div>
     <ol id="order" class="order-list"></ol>
 
@@ -398,6 +489,34 @@
     mostrarResultado(orden);
   }
 
+  function lanzarConfetti() {
+    const container = document.getElementById('confetti');
+    if (!container) return;
+    container.innerHTML = '';
+    const colors = ['#F5B700', '#3FA9D6', '#E91E63', '#FFFFFF'];
+    const N = 18;
+    for (let i = 0; i < N; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      const angle = (i / N) * Math.PI * 2 + (Math.random() - 0.5) * 0.6;
+      const dist = 80 + Math.random() * 100;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist;
+      const rot = (Math.random() - 0.5) * 720;
+      const color = colors[i % colors.length];
+      const size = 6 + Math.random() * 8;
+      piece.style.background = color;
+      piece.style.width = size + 'px';
+      piece.style.height = size + 'px';
+      piece.style.setProperty('--dx', dx + 'px');
+      piece.style.setProperty('--dy', dy + 'px');
+      piece.style.setProperty('--rot', rot + 'deg');
+      container.appendChild(piece);
+      // Trigger anim un tick después
+      requestAnimationFrame(() => piece.classList.add('show'));
+    }
+  }
+
   function mostrarResultado(orden) {
     inputView.hidden = true;
     resultView.hidden = false;
@@ -406,26 +525,43 @@
     const phraseEl = document.getElementById('winner-phrase');
     if (phraseEl) {
       phraseEl.textContent = FRASES_SORTEO[Math.floor(Math.random() * FRASES_SORTEO.length)];
+      phraseEl.style.animation = 'none';
+      void phraseEl.offsetWidth;
+      phraseEl.style.animation = '';
     }
 
-    winnerEl.textContent = orden[0];
+    // FASE 1: Suspenso (3 dots animados)
     winnerEl.classList.remove('winner-reveal');
-    void winnerEl.offsetWidth;
-    winnerEl.classList.add('winner-reveal');
+    winnerEl.innerHTML = '<span class="winner-suspense"><span>·</span><span>·</span><span>·</span></span>';
 
+    // Lista vacía durante suspenso
     orderEl.innerHTML = '';
-    orden.forEach((nombre, i) => {
-      const li = document.createElement('li');
-      const esGanador = i === 0;
-      li.innerHTML = `
-        <span class="order-num ${esGanador ? 'first' : ''}">${i + 1}°</span>
-        <span class="order-name ${esGanador ? 'first' : ''}">${escapeHtml(nombre)}</span>
-      `;
-      li.style.animationDelay = `${i * 80}ms`;
-      orderEl.appendChild(li);
-    });
 
-    setTimeout(() => againBtn.focus(), 100);
+    // FASE 2: Reveal del ganador (después de ~700ms)
+    setTimeout(() => {
+      winnerEl.textContent = orden[0];
+      void winnerEl.offsetWidth;
+      winnerEl.classList.add('winner-reveal');
+
+      // Confetti coincide con el reveal
+      lanzarConfetti();
+
+      // FASE 3: Lista del orden con stagger más marcado
+      orderEl.innerHTML = '';
+      orden.forEach((nombre, i) => {
+        const li = document.createElement('li');
+        const esGanador = i === 0;
+        if (esGanador) li.classList.add('first');
+        li.innerHTML = `
+          <span class="order-num ${esGanador ? 'first' : ''}">${i + 1}°</span>
+          <span class="order-name ${esGanador ? 'first' : ''}">${escapeHtml(nombre)}</span>
+        `;
+        li.style.animationDelay = `${300 + i * 120}ms`;
+        orderEl.appendChild(li);
+      });
+
+      setTimeout(() => againBtn.focus(), 600);
+    }, 700);
   }
 
   function escapeHtml(str) {

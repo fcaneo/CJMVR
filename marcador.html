@@ -356,48 +356,138 @@
   /* Podio */
   .podium {
     margin: 2rem 0;
-    padding: 2rem;
+    padding: 2rem 1rem;
     background: linear-gradient(135deg, rgba(245, 183, 0, 0.1), transparent, rgba(233, 30, 99, 0.1));
     border: 1px solid rgba(245, 183, 0, 0.3);
     text-align: center;
+    position: relative;
+    overflow: hidden;
   }
+
+  /* Barrido de luz al aparecer el podio */
+  .podium::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(245, 183, 0, 0.15), transparent);
+    transform: translateX(-100%);
+    pointer-events: none;
+  }
+  .podium.shown::before {
+    animation: podiumSweep 1.2s cubic-bezier(0.4, 0.2, 0.2, 1);
+  }
+  @keyframes podiumSweep {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
   .podium-title {
     font-family: 'Space Mono', monospace;
     font-size: 11px;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--gold);
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    opacity: 0;
   }
+  .podium.shown .podium-title {
+    animation: titleIn 0.4s ease-out forwards;
+  }
+  @keyframes titleIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   .podium-spots {
     display: flex;
     justify-content: center;
     align-items: end;
-    gap: 1rem;
+    gap: 1.5rem;
     margin-top: 1.5rem;
     flex-wrap: wrap;
   }
+
+  /* Cada spot empieza invisible debajo y sube */
   .podium-spot {
     text-align: center;
-    flex: 0 0 100px;
+    flex: 0 0 110px;
+    opacity: 0;
+    transform: translateY(40px);
+    position: relative;
+    padding: 0.85rem 0.5rem;
+    border-radius: 4px;
+    transition: background 0.3s ease;
   }
+
+  /* Anim: sube con bounce suave */
+  @keyframes podiumRise {
+    0% { opacity: 0; transform: translateY(60px); }
+    70% { opacity: 1; transform: translateY(-8px); }
+    85% { transform: translateY(2px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Reveal con stagger marcado: 3° sube primero, luego 2°, luego 1° (al medio) */
+  /* Orden DOM: hijo 1 = 2°(izq), hijo 2 = 1°(centro/oro), hijo 3 = 3°(der) */
+  .podium.shown .podium-spot:nth-child(3) { animation: podiumRise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s forwards; }
+  .podium.shown .podium-spot:nth-child(1) { animation: podiumRise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.6s forwards; }
+  .podium.shown .podium-spot.first { animation: podiumRise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 1.0s forwards; }
+
   .podium-medal {
-    font-size: 2rem;
+    font-size: 2.4rem;
     margin-bottom: 0.5rem;
+    display: inline-block;
+    transform-origin: center;
   }
+
+  /* La medalla del 1° tiene un giro extra al final */
+  @keyframes medalSpin {
+    0% { transform: scale(0.5) rotate(-180deg); opacity: 0; }
+    50% { transform: scale(1.3) rotate(15deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  .podium.shown .podium-spot.first .podium-medal {
+    animation: medalSpin 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 1.4s backwards;
+  }
+
   .podium-name {
     font-family: 'Anton', sans-serif;
     text-transform: uppercase;
     font-size: 18px;
     color: var(--paper);
     margin-bottom: 0.25rem;
+    line-height: 1.1;
   }
   .podium-score {
     font-family: 'Space Mono', monospace;
     font-size: 14px;
     color: var(--gold);
   }
-  .podium-spot.first .podium-name { color: var(--gold); font-size: 22px; }
+  .podium-spot.first .podium-name {
+    color: var(--gold);
+    font-size: 24px;
+  }
+  .podium-spot.first .podium-score {
+    font-size: 16px;
+    color: var(--paper);
+    font-weight: 700;
+  }
+
+  /* Glow dorado al ganador (override de la animación anterior con doble) */
+  @keyframes goldPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(245, 183, 0, 0); background: transparent; }
+    50% { box-shadow: 0 0 30px 4px rgba(245, 183, 0, 0.3); background: rgba(245, 183, 0, 0.06); }
+  }
+  .podium.shown .podium-spot.first {
+    animation:
+      podiumRise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 1.0s forwards,
+      goldPulse 2.5s ease-in-out 1.8s infinite;
+  }
+
+  /* Altura escalonada: 1° (centro) más alto, 2° (izq) medio, 3° (der) más bajo */
+  .podium-spot { padding-top: 1.5rem; }
+  .podium-spot:nth-child(3) { padding-top: 2.5rem; }
+  .podium-spot.first { padding-top: 0; }
 
   /* Empty state */
   .empty-msg {
@@ -1244,17 +1334,37 @@
 
     const medals = ['🥇', '🥈', '🥉'];
     podiumSpotsEl.innerHTML = '';
-    totals.slice(0, 3).forEach((p, i) => {
+
+    // Orden visual: 2° (izquierda) — 1° (centro) — 3° (derecha)
+    const top3 = totals.slice(0, 3);
+    const visualOrder = top3.length === 3
+      ? [top3[1], top3[0], top3[2]]
+      : top3.length === 2
+        ? [top3[1], top3[0]]
+        : top3;
+
+    // Mapa para identificar cuál es el 1°/2°/3° real
+    const posReal = top3.length === 3
+      ? [1, 0, 2]
+      : top3.length === 2 ? [1, 0] : [0];
+
+    visualOrder.forEach((p, visualIdx) => {
+      const realIdx = posReal[visualIdx];
       const spot = document.createElement('div');
-      spot.className = 'podium-spot' + (i === 0 ? ' first' : '');
+      spot.className = 'podium-spot' + (realIdx === 0 ? ' first' : '');
       spot.innerHTML = `
-        <div class="podium-medal">${medals[i]}</div>
+        <div class="podium-medal">${medals[realIdx]}</div>
         <div class="podium-name">${escapeHtml(p.name)}</div>
         <div class="podium-score">${p.total} pts</div>
       `;
       podiumSpotsEl.appendChild(spot);
     });
+
+    // Quitar y re-aplicar clase para re-disparar animación
     podiumEl.hidden = false;
+    podiumEl.classList.remove('shown');
+    void podiumEl.offsetWidth;
+    podiumEl.classList.add('shown');
     podiumEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 

@@ -335,6 +335,38 @@
     box-shadow: 6px 6px 0 0 #F5B700;
   }
 
+  /* Pill destacado del nav: Mesa de juego */
+  .nav-mesa-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(245, 183, 0, 0.08);
+    border: 1.5px solid rgba(245, 183, 0, 0.5);
+    border-radius: 999px;
+    color: #F5B700;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    position: relative;
+  }
+  .nav-mesa-pill:hover {
+    background: #F5B700;
+    color: #0E0E10;
+    border-color: #F5B700;
+    transform: translateY(-1px);
+  }
+  .nav-mesa-pill:hover svg rect { fill: #0E0E10; }
+  .nav-mesa-pill:hover svg circle { fill: #F5B700; }
+  /* Pulso sutil en el border */
+  @keyframes mesaNavPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(245, 183, 0, 0); }
+    50% { box-shadow: 0 0 0 4px rgba(245, 183, 0, 0.15); }
+  }
+  .nav-mesa-pill { animation: mesaNavPulse 3s ease-in-out infinite; }
+
   /* Stagger animations on load */
   @keyframes riseIn {
     from { opacity: 0; transform: translateY(30px); }
@@ -473,9 +505,19 @@
       <a href="#donde" class="link-anim text-paper/80 hover:text-paper">Dónde</a>
       <a href="#juegos" class="link-anim text-paper/80 hover:text-paper">Juegos</a>
       <a href="#eventos" class="link-anim text-paper/80 hover:text-paper">Eventos</a>
-      <a href="mesa.html" class="link-anim text-gold hover:text-paper">Mesa de juego</a>
       <a href="#asociarse" class="link-anim text-paper/80 hover:text-paper">Asociarse</a>
       <a href="#faq" class="link-anim text-paper/80 hover:text-paper">FAQ</a>
+      <a href="mesa.html" class="nav-mesa-pill" aria-label="Ir a Mesa de juego (herramientas)">
+        <svg width="14" height="14" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <rect x="6" y="6" width="52" height="52" rx="10" fill="#0E0E10"/>
+          <circle cx="20" cy="20" r="5" fill="#F5B700"/>
+          <circle cx="44" cy="20" r="5" fill="#F5B700"/>
+          <circle cx="32" cy="32" r="5" fill="#F5B700"/>
+          <circle cx="20" cy="44" r="5" fill="#F5B700"/>
+          <circle cx="44" cy="44" r="5" fill="#F5B700"/>
+        </svg>
+        Mesa de juego
+      </a>
       <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="btn-ig w-10 h-10 flex items-center justify-center" aria-label="Síguenos en Instagram" title="Instagram">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4a4 4 0 11-7.9 1.2 4 4 0 017.9-1.2zM17.5 6.5h.01"/></svg>
       </a>
@@ -498,10 +540,20 @@
       <!-- Separador visual -->
       <div class="font-mono text-[10px] tracking-[0.25em] uppercase text-dim mt-3 mb-1">Explora</div>
 
+      <a href="mesa.html" class="nav-mobile flex items-center justify-center gap-2 py-3 mb-2 border-2 border-gold/60 text-gold font-bold tracking-wide rounded">
+        <svg width="16" height="16" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <rect x="6" y="6" width="52" height="52" rx="10" fill="#0E0E10"/>
+          <circle cx="20" cy="20" r="5" fill="#F5B700"/>
+          <circle cx="44" cy="20" r="5" fill="#F5B700"/>
+          <circle cx="32" cy="32" r="5" fill="#F5B700"/>
+          <circle cx="20" cy="44" r="5" fill="#F5B700"/>
+          <circle cx="44" cy="44" r="5" fill="#F5B700"/>
+        </svg>
+        Mesa de juego
+      </a>
       <a href="#donde" class="nav-mobile text-paper/80 py-1">Dónde y cuándo</a>
       <a href="#juegos" class="nav-mobile text-paper/80 py-1">Lo que jugamos</a>
       <a href="#eventos" class="nav-mobile text-paper/80 py-1">Eventos especiales</a>
-      <a href="mesa.html" class="nav-mobile text-gold py-1">🎲 Mesa de juego</a>
       <a href="#asociarse" class="nav-mobile text-paper/80 py-1">Cómo asociarse</a>
       <a href="#faq" class="nav-mobile text-paper/80 py-1">Preguntas frecuentes</a>
 
@@ -1470,10 +1522,13 @@
 
 <!-- ========== FAB MESA DE JUEGO (aparece tras scroll, encima del WhatsApp) ========== -->
 <a id="mesa-fab" href="mesa.html"
-   class="group fixed bottom-24 right-6 z-[55] w-12 h-12 md:w-14 md:h-14 rounded-full bg-gold text-ink flex items-center justify-center shadow-lg shadow-black/40 opacity-0 pointer-events-none translate-y-4 transition-all duration-300 hover:scale-110 focus-visible:scale-110"
+   class="group fixed bottom-24 right-6 z-[55] w-14 h-14 md:w-16 md:h-16 rounded-full bg-gold text-ink flex items-center justify-center shadow-xl shadow-black/50 opacity-0 pointer-events-none translate-y-4 transition-all duration-300 hover:scale-110 focus-visible:scale-110"
+   style="position: fixed;"
    aria-label="Ir a Mesa de juego (herramientas)">
+  <!-- Anillo dorado pulsante -->
+  <span class="absolute inset-0 rounded-full bg-gold opacity-50 animate-ping pointer-events-none" aria-hidden="true"></span>
   <!-- Icono dado mini -->
-  <svg width="24" height="24" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+  <svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true" class="relative z-10">
     <rect x="6" y="6" width="52" height="52" rx="10" fill="#0E0E10"/>
     <circle cx="20" cy="20" r="4" fill="#F5B700"/>
     <circle cx="44" cy="20" r="4" fill="#F5B700"/>
@@ -1481,8 +1536,8 @@
     <circle cx="20" cy="44" r="4" fill="#F5B700"/>
     <circle cx="44" cy="44" r="4" fill="#F5B700"/>
   </svg>
-  <!-- Tooltip al hacer hover en desktop -->
-  <span class="hidden md:block absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-ink text-paper text-xs font-mono uppercase tracking-wider px-3 py-2 whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">Mesa de juego</span>
+  <!-- Label permanente abajo (visible siempre, no solo hover) -->
+  <span class="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-ink text-gold text-[9px] font-mono uppercase tracking-widest px-2 py-0.5 whitespace-nowrap pointer-events-none border border-gold/30 rounded">Mesa</span>
 </a>
 
 <!-- ========== FAB WHATSAPP (aparece tras scroll) ========== -->
