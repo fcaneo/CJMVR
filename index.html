@@ -277,6 +277,8 @@
     letter-spacing: 0.2em;
     font-size: 11px;
   }
+  .section-num.cyan { color: #3FA9D6; }
+  .section-num.magenta { color: #E91E63; }
 
   /* Ticker */
   .ticker-item::after {
@@ -376,7 +378,7 @@
       <a href="#donde" class="link-anim text-paper/80 hover:text-paper">Dónde</a>
       <a href="#juegos" class="link-anim text-paper/80 hover:text-paper">Juegos</a>
       <a href="#eventos" class="link-anim text-paper/80 hover:text-paper">Eventos</a>
-      <a href="#asociarse" class="link-anim text-paper/80 hover:text-paper">Sumarse</a>
+      <a href="#asociarse" class="link-anim text-paper/80 hover:text-paper">Asociarse</a>
       <a href="#faq" class="link-anim text-paper/80 hover:text-paper">FAQ</a>
       <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="btn-ig w-10 h-10 flex items-center justify-center" aria-label="Síguenos en Instagram" title="Instagram">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4a4 4 0 11-7.9 1.2 4 4 0 017.9-1.2zM17.5 6.5h.01"/></svg>
@@ -394,7 +396,7 @@
       <a href="#donde" class="nav-mobile text-paper/80 py-1">Dónde</a>
       <a href="#juegos" class="nav-mobile text-paper/80 py-1">Juegos</a>
       <a href="#eventos" class="nav-mobile text-paper/80 py-1">Eventos</a>
-      <a href="#asociarse" class="nav-mobile text-paper/80 py-1">Sumarse</a>
+      <a href="#asociarse" class="nav-mobile text-paper/80 py-1">Asociarse</a>
       <a href="#faq" class="nav-mobile text-paper/80 py-1">FAQ</a>
       <div class="grid grid-cols-2 gap-3 mt-2">
         <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="btn-ig px-4 py-3 font-bold tracking-wide text-center text-sm">Instagram</a>
@@ -454,7 +456,7 @@
 
         <div class="rise mt-10 max-w-2xl" style="animation-delay: 0.7s;">
           <p class="text-lg md:text-xl text-paper/80 leading-relaxed">
-            Somos el <strong class="text-paper">Club Juegos de Mesa Quinta Región</strong>. Nos juntamos dos veces por semana en Viña a desplegar juegos sobre la mesa — los que traes tú o los que ya están ahí.
+            Desde 2022 juntamos en Viña a gente que ama desplegar juegos sobre la mesa. Eurogames, party, cooperativos, lo que sea — trae el tuyo o usa los del club. <strong class="text-paper">Cero requisitos, cero juicios.</strong>
           </p>
         </div>
 
@@ -549,7 +551,7 @@
 
     <div class="flex items-end justify-between mb-16 flex-wrap gap-6">
       <div>
-        <div class="section-num mb-4">/ 01 — EN VIVO</div>
+        <div class="section-num cyan mb-4">/ 01 — EN VIVO</div>
         <h2 class="display text-5xl md:text-7xl text-paper">Lo que está<br/>pasando<span class="text-cyan">.</span></h2>
         <p class="mt-4 text-paper/70 max-w-md">Las novedades reales viven en Instagram. Acá ves lo último, en la app lo sigues todo.</p>
       </div>
@@ -667,7 +669,7 @@
           <img src="assets/images/gato-arcano.jpg" alt="Equipo de Gato Arcano frente a la fachada morada y amarilla" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
           <div class="absolute inset-0 bg-gradient-to-t from-inkSoft via-inkSoft/40 to-transparent"></div>
           <div class="absolute top-4 left-4">
-            <span class="pill text-magenta border-magenta bg-ink/90 font-bold">🔒 Solo socios</span>
+            <span class="pill text-ink bg-magenta border-magenta font-bold">🔒 Solo socios</span>
           </div>
           <div class="absolute top-4 right-4 w-10 h-10 bg-ink/80 backdrop-blur rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
@@ -706,7 +708,7 @@
     <!-- Próximo encuentro calculado -->
     <div class="mt-12 p-8 bg-gradient-to-br from-gold/10 to-transparent border border-gold/30 flex flex-wrap items-center justify-between gap-6">
       <div>
-        <div class="font-mono text-[11px] tracking-[0.25em] uppercase text-gold mb-2">Próximo encuentro abierto</div>
+        <div id="proximo-label" class="font-mono text-[11px] tracking-[0.25em] uppercase text-gold mb-2">Próximo encuentro abierto</div>
         <div id="proximo" class="display text-3xl md:text-4xl text-paper">Calculando<span class="blink text-gold">_</span></div>
       </div>
       <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="btn-wa px-6 py-3 font-bold tracking-wide inline-flex items-center gap-2">
@@ -722,11 +724,11 @@
 <section id="asociarse" class="py-24 lg:py-32 bg-inkSoft border-y border-inkLine relative overflow-hidden">
 
   <!-- Big background number -->
-  <div class="absolute -right-10 top-10 display text-[20rem] text-paper/[0.025] leading-none select-none pointer-events-none">03</div>
+  <div class="absolute -right-10 top-10 display text-[20rem] text-magenta/[0.04] leading-none select-none pointer-events-none">03</div>
 
   <div class="max-w-7xl mx-auto px-6 lg:px-10 relative">
 
-    <div class="section-num mb-4">/ 03 — SUMARSE</div>
+    <div class="section-num magenta mb-4">/ 03 — ASOCIARSE</div>
     <h2 class="display text-5xl md:text-7xl text-paper mb-16">Cómo<br/>asociarse<span class="text-magenta">.</span></h2>
 
     <div class="grid lg:grid-cols-3 gap-6">
@@ -745,7 +747,7 @@
         <div class="display text-8xl text-cyan/20 absolute top-4 right-6 group-hover:text-cyan/40 transition-colors">02</div>
         <div class="display text-2xl text-paper mb-4">Te tinca</div>
         <p class="text-paper/70 leading-relaxed">
-          Conversas con alguien del directiva, te sumas al grupo de WhatsApp y empiezas a recibir info de eventos especiales.
+          Conversas con alguien de la directiva, te sumas al grupo de WhatsApp y empiezas a recibir info de eventos especiales.
         </p>
       </div>
 
@@ -758,6 +760,18 @@
         </p>
       </div>
 
+    </div>
+
+    <!-- CTA final -->
+    <div class="mt-12 p-8 bg-gradient-to-br from-magenta/10 to-transparent border border-magenta/30 flex flex-wrap items-center justify-between gap-6">
+      <div>
+        <div class="font-mono text-[11px] tracking-[0.25em] uppercase text-magenta mb-2">¿Te convencimos?</div>
+        <div class="display text-2xl md:text-3xl text-paper">Pásate un jueves y cuéntanos.</div>
+      </div>
+      <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="btn-wa px-6 py-3 font-bold tracking-wide inline-flex items-center gap-2">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.654 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
+        Hablar por WhatsApp
+      </a>
     </div>
 
   </div>
@@ -774,7 +788,7 @@
 
     <div class="flex items-end justify-between mb-16 flex-wrap gap-6">
       <div>
-        <div class="section-num mb-4">/ 04 — LUDOTECA</div>
+        <div class="section-num cyan mb-4">/ 04 — LUDOTECA</div>
         <h2 class="display text-5xl md:text-7xl text-paper">Lo que<br/>jugamos<span class="text-cyan">.</span></h2>
       </div>
       <p class="max-w-md text-paper/70 text-lg">
@@ -788,7 +802,10 @@
       <article class="tilt-card bg-inkSoft border border-inkLine p-7 group relative overflow-hidden">
         <div class="absolute -top-6 -right-6 w-32 h-32 bg-magenta/10 rounded-full blur-2xl group-hover:bg-magenta/20 transition-colors"></div>
         <div class="flex items-start justify-between mb-4 relative">
-          <div class="display text-7xl text-magenta leading-none">06</div>
+          <svg class="w-14 h-14 text-magenta" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
+            <rect x="14" y="10" width="28" height="40" rx="3" transform="rotate(-8 28 30)"/>
+            <rect x="22" y="14" width="28" height="40" rx="3" transform="rotate(8 36 34)"/>
+          </svg>
           <span class="pill text-paper/70 border-paper/20">Cartas</span>
         </div>
         <h3 class="display text-3xl text-paper mt-4">Toma 6</h3>
@@ -873,9 +890,26 @@
 
     </div>
 
-    <p class="mt-12 text-center text-dim text-sm">
-      ¿Tienes un juego favorito que no está acá? Tráelo el jueves — alguien lo va a querer probar.
-    </p>
+    <!-- Bloque "y muchos más" + donaciones -->
+    <div class="mt-12 grid md:grid-cols-2 gap-6">
+      <div class="p-7 bg-inkSoft border border-cyan/30 relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-24 h-24 bg-cyan/10 rounded-full blur-2xl"></div>
+        <div class="font-mono text-[11px] tracking-[0.25em] uppercase text-cyan mb-3">+ Y muchos más</div>
+        <h3 class="display text-2xl text-paper mb-3">Esto es solo el aperitivo</h3>
+        <p class="text-paper/70 leading-relaxed text-sm">
+          La ludoteca tiene <strong class="text-paper">decenas de juegos más</strong> — clásicos, novedades, dungeon crawlers, party games, TCGs. ¿Tu favorito no está acá? Tráelo el jueves, alguien lo va a querer probar.
+        </p>
+      </div>
+
+      <div class="p-7 bg-inkSoft border border-magenta/30 relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-24 h-24 bg-magenta/10 rounded-full blur-2xl"></div>
+        <div class="font-mono text-[11px] tracking-[0.25em] uppercase text-magenta mb-3">♥ Donaciones</div>
+        <h3 class="display text-2xl text-paper mb-3">¿Tienes juegos arrumbados?</h3>
+        <p class="text-paper/70 leading-relaxed text-sm">
+          Si hay juegos en tu casa que ya no se usan, el club los recibe encantado. Pasan a la ludoteca común y los disfruta toda la comunidad. <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="link-anim text-magenta">Avísanos por WhatsApp</a>.
+        </p>
+      </div>
+    </div>
 
   </div>
 </section>
@@ -883,7 +917,7 @@
 <!-- ========== EVENTOS ESPECIALES ========== -->
 <section id="eventos" class="py-24 lg:py-32 bg-inkSoft border-y border-inkLine relative overflow-hidden">
 
-  <div class="absolute -left-10 bottom-10 display text-[20rem] text-paper/[0.025] leading-none select-none pointer-events-none">05</div>
+  <div class="absolute -left-10 bottom-10 display text-[20rem] text-magenta/[0.04] leading-none select-none pointer-events-none">05</div>
   <div class="absolute top-20 right-[6%] w-12 h-12 bg-magenta/30 rotate-12 mini-bounce" style="--r: 12deg;"></div>
   <div class="absolute bottom-32 right-[12%] w-8 h-8 bg-cyan/30 -rotate-12 wiggle" style="--r: -12deg;"></div>
 
@@ -891,7 +925,7 @@
 
     <div class="flex items-end justify-between mb-16 flex-wrap gap-6">
       <div>
-        <div class="section-num mb-4">/ 05 — EVENTOS</div>
+        <div class="section-num magenta mb-4">/ 05 — EVENTOS</div>
         <h2 class="display text-5xl md:text-7xl text-paper">Eventos<br/>especiales<span class="text-magenta">.</span></h2>
       </div>
       <p class="max-w-md text-paper/70 text-lg">
@@ -1017,6 +1051,16 @@
         </summary>
         <div class="px-6 pb-6 text-paper/70 leading-relaxed">
           Para nada. Hay socios que llevan los suyos y los enseñan, y siempre hay juegos del club disponibles en el lugar. Si quieres traer el tuyo, mejor — la gente ama probar cosas nuevas.
+        </div>
+      </details>
+
+      <details class="group bg-ink border border-inkLine open:border-gold/50 transition-colors">
+        <summary class="cursor-pointer p-6 flex items-center justify-between gap-4 list-none">
+          <span class="display text-xl md:text-2xl text-paper">¿Hay edad mínima?</span>
+          <span class="text-gold display text-3xl group-open:rotate-45 transition-transform">+</span>
+        </summary>
+        <div class="px-6 pb-6 text-paper/70 leading-relaxed">
+          Sí, los encuentros son <strong class="text-paper">para mayores de 18</strong> porque Curva 54 es un bar. Si tienes menos pero te apasionan los juegos, escríbenos por Instagram y vemos cómo sumarte a eventos especiales sin restricción de edad.
         </div>
       </details>
 
@@ -1161,26 +1205,43 @@
   // Año dinámico
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // Próximo jueves abierto (los lunes son solo para socios)
+  // Próximo jueves abierto (los lunes son solo para socios).
+  // Detecta también el estado "EN VIVO" cuando es jueves entre 19:30 y 23:59
   function proximoJueves() {
     const hoy = new Date();
     const dia = hoy.getDay();
     const hora = hoy.getHours();
     const min = hoy.getMinutes();
+    const horaDecimal = hora + min / 60;
     const meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 
+    const proximoEl = document.getElementById('proximo');
+    const labelEl = document.getElementById('proximo-label');
+    const enVivo = (dia === 4 && horaDecimal >= 19.5);
+
+    if (enVivo) {
+      if (labelEl) {
+        labelEl.innerHTML = '<span class="inline-block w-2.5 h-2.5 bg-green-400 rounded-full mr-2 align-middle pulse-slow"></span>ESTAMOS JUGANDO AHORA';
+        labelEl.classList.remove('text-gold');
+        labelEl.classList.add('text-green-400');
+      }
+      proximoEl.innerHTML = `<span class="text-paper">Hoy</span> en <span class="text-gold">Curva 54</span> · ven cuando quieras`;
+      return;
+    }
+
     let diff = (4 - dia + 7) % 7;
-    if (diff === 0 && (hora + min/60) >= 19.5) diff = 7;
+    if (diff === 0 && horaDecimal >= 19.5) diff = 7;
 
     const fecha = new Date(hoy);
     fecha.setDate(hoy.getDate() + diff);
     const fechaStr = `${fecha.getDate()} ${meses[fecha.getMonth()]}`;
     const cuando = diff === 0 ? 'Hoy' : diff === 1 ? 'Mañana' : 'Jueves';
 
-    document.getElementById('proximo').innerHTML =
-      `${cuando} <span class="text-gold">${fechaStr}</span> · 19:30 en Curva 54`;
+    proximoEl.innerHTML = `${cuando} <span class="text-gold">${fechaStr}</span> · 19:30 en Curva 54`;
   }
   proximoJueves();
+  // Re-evaluar cada 5 minutos por si cruza la hora del evento
+  setInterval(proximoJueves, 5 * 60 * 1000);
 
   // Contadores animados (suben de 0 al target cuando el hero aparece)
   function animateCounters() {
