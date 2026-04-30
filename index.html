@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Club Juegos de Mesa Quinta Región — Viña del Mar</title>
+<meta name="description" content="Club de juegos de mesa en Viña del Mar. Encuentro abierto los jueves en Curva 54 desde las 19:30. Trae tu juego o usa los del club." />
+<meta name="keywords" content="juegos de mesa, Viña del Mar, Quinta Región, club, board games, Valparaíso" />
+
+<!-- Open Graph -->
+<meta property="og:title" content="Club Juegos de Mesa Quinta Región" />
+<meta property="og:description" content="Club de juegos de mesa en Viña del Mar. Jueves abiertos a todos en Curva 54." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="CJDMVR_logo-nombreBlanco.png" />
+
+<!-- Schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Club Juegos de Mesa Quinta Región",
+  "description": "Club de juegos de mesa en Viña del Mar, Chile",
+  "url": "",
+  "logo": "CJDMVR_logo-nombreBlanco.png",
+  "sameAs": ["https://www.instagram.com/clubjuegosdemesaquintaregion"],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Viña del Mar",
+    "addressRegion": "Valparaíso",
+    "addressCountry": "CL"
+  },
+  "event": [
+    {
+      "@type": "Event",
+      "name": "Encuentro Abierto Jueves",
+      "description": "Encuentro semanal abierto al público",
+      "location": { "@type": "Place", "name": "Curva 54", "address": "Viña del Mar" },
+      "eventSchedule": { "@type": "Schedule", "byDay": "Thursday", "startTime": "19:30" }
+    }
+  ]
+}
+</script>
+
+<link rel="icon" type="image/png" href="CJDMVR_logo-nombreBlanco.png" />
+
+<!-- Fuentes: Anton (display chunky que dialoga con el logo) + DM Sans (body limpio) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink: '#0E0E10',
+          inkSoft: '#16161A',
+          inkLine: '#26262C',
+          gold: '#F5B700',
+          cyan: '#3FA9D6',
+          magenta: '#E91E63',
+          paper: '#FFFFFF',
+          dim: '#A0A0A8'
+        },
+        fontFamily: {
+          display: ['Anton', 'sans-serif'],
+          body: ['"DM Sans"', 'sans-serif'],
+          mono: ['"Space Mono"', 'monospace']
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body {
+    background: #0E0E10;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* Grano sutil para textura */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='3'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
+    mix-blend-mode: overlay;
+  }
+
+  /* Grilla de fondo decorativa */
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  /* Tipografía display */
+  .display { font-family: 'Anton', sans-serif; letter-spacing: 0.01em; line-height: 0.88; text-transform: uppercase; }
+
+  /* Outline text */
+  .outline-text {
+    -webkit-text-stroke: 2px #F5B700;
+    color: transparent;
+  }
+
+  /* Floating shapes */
+  @keyframes floaty {
+    0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+    50% { transform: translateY(-14px) rotate(calc(var(--r, 0deg) + 6deg)); }
+  }
+  @keyframes floatySlow {
+    0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+    50% { transform: translateY(-22px) rotate(calc(var(--r, 0deg) - 8deg)); }
+  }
+  @keyframes drift {
+    0%, 100% { transform: translate(0, 0) rotate(var(--r, 0deg)); }
+    25% { transform: translate(15px, -12px) rotate(calc(var(--r, 0deg) + 10deg)); }
+    50% { transform: translate(-8px, -22px) rotate(calc(var(--r, 0deg) - 5deg)); }
+    75% { transform: translate(-18px, -8px) rotate(calc(var(--r, 0deg) + 4deg)); }
+  }
+  @keyframes orbit {
+    0% { transform: rotate(0deg) translateX(40px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.85; }
+    50% { transform: scale(1.08); opacity: 1; }
+  }
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(var(--r, 0deg)); }
+    25% { transform: rotate(calc(var(--r, 0deg) + 8deg)); }
+    75% { transform: rotate(calc(var(--r, 0deg) - 8deg)); }
+  }
+  @keyframes diceRoll {
+    0% { transform: rotate(0deg) scale(1); }
+    20% { transform: rotate(90deg) scale(1.1); }
+    40% { transform: rotate(200deg) scale(0.95); }
+    60% { transform: rotate(310deg) scale(1.05); }
+    80% { transform: rotate(380deg) scale(1); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+  .float { animation: floaty 6s ease-in-out infinite; }
+  .float-slow { animation: floatySlow 9s ease-in-out infinite; }
+  .drift { animation: drift 12s ease-in-out infinite; }
+  .drift-slow { animation: drift 18s ease-in-out infinite reverse; }
+  .pulse-slow { animation: pulse 4s ease-in-out infinite; }
+  .wiggle { animation: wiggle 5s ease-in-out infinite; }
+
+  /* Card tilt hover */
+  .tilt-card {
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease;
+    transform-style: preserve-3d;
+  }
+  .tilt-card:hover {
+    transform: translateY(-6px) rotate(-1.2deg);
+    box-shadow: 0 20px 60px -10px rgba(245, 183, 0, 0.15);
+  }
+
+  /* Dado del nav - hover roll */
+  .nav-dice {
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .nav-dice:hover {
+    animation: diceRoll 0.7s ease-in-out;
+  }
+
+  /* Mini dados decorativos */
+  @keyframes mini-bounce {
+    0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+    50% { transform: translateY(-8px) rotate(calc(var(--r, 0deg) + 15deg)); }
+  }
+  .mini-bounce { animation: mini-bounce 3s ease-in-out infinite; }
+
+  /* Marquee */
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .marquee-track { animation: marquee 30s linear infinite; }
+
+  /* Botón principal */
+  .btn-primary {
+    position: relative;
+    background: #F5B700;
+    color: #0E0E10;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .btn-primary:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 0 #E91E63;
+  }
+  .btn-secondary {
+    background: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+    transition: all 0.2s ease;
+  }
+  .btn-secondary:hover {
+    background: #fff;
+    color: #0E0E10;
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 0 #3FA9D6;
+  }
+
+  /* Botón WhatsApp */
+  .btn-wa {
+    background: #25D366;
+    color: #0E0E10;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .btn-wa:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 0 #0E0E10;
+  }
+
+  /* Botón Instagram (gradiente oficial) */
+  .btn-ig {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    color: #fff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .btn-ig:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 0 #F5B700;
+  }
+
+  /* Stagger animations on load */
+  @keyframes riseIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .rise { opacity: 0; animation: riseIn 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+
+  /* Dado SVG anim */
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  .spin-slow { animation: spin 24s linear infinite; }
+
+  /* Section number badge */
+  .section-num {
+    font-family: 'Space Mono', monospace;
+    color: #F5B700;
+    letter-spacing: 0.2em;
+    font-size: 11px;
+  }
+
+  /* Ticker */
+  .ticker-item::after {
+    content: "✦";
+    margin: 0 2.5rem;
+    color: #F5B700;
+  }
+
+  /* Outline pill */
+  .pill {
+    border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* Link underline animated */
+  .link-anim {
+    position: relative;
+    display: inline-block;
+  }
+  .link-anim::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -3px;
+    width: 0; height: 2px;
+    background: #F5B700;
+    transition: width 0.3s ease;
+  }
+  .link-anim:hover::after { width: 100%; }
+
+  /* Meeple shape */
+  .meeple {
+    width: 22px; height: 24px;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M32 4c-5 0-9 4-9 9 0 3 1 5 3 7-7 1-12 5-15 11-2 4-2 7-2 11h10v18h26V42h10c0-4 0-7-2-11-3-6-8-10-15-11 2-2 3-4 3-7 0-5-4-9-9-9z'/></svg>") center/contain no-repeat;
+            mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M32 4c-5 0-9 4-9 9 0 3 1 5 3 7-7 1-12 5-15 11-2 4-2 7-2 11h10v18h26V42h10c0-4 0-7-2-11-3-6-8-10-15-11 2-2 3-4 3-7 0-5-4-9-9-9z'/></svg>") center/contain no-repeat;
+  }
+
+  /* Cursor blink */
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+  .blink { animation: blink 1s step-end infinite; }
+
+  /* Scroll marker */
+  @keyframes scrollHint {
+    0% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(8px); opacity: 0.4; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+  .scroll-hint { animation: scrollHint 2s ease-in-out infinite; }
+
+  /* Card patterns */
+  .card-dotted {
+    background-image: radial-gradient(circle, rgba(245,183,0,0.15) 1px, transparent 1px);
+    background-size: 14px 14px;
+  }
+
+  /* Diagonal stripes for accent */
+  .stripes {
+    background: repeating-linear-gradient(
+      45deg,
+      #F5B700,
+      #F5B700 8px,
+      #0E0E10 8px,
+      #0E0E10 16px
+    );
+  }
+</style>
+</head>
+
+<body class="font-body">
+
+<!-- ========== NAV ========== -->
+<header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-ink/70 border-b border-inkLine">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 py-4 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-3 group">
+      <svg class="nav-dice w-11 h-11" viewBox="0 0 64 64" fill="none" aria-label="Dado">
+        <rect x="6" y="6" width="52" height="52" rx="10" fill="#F5B700" stroke="#0E0E10" stroke-width="3"/>
+        <circle cx="20" cy="20" r="4" fill="#0E0E10"/>
+        <circle cx="44" cy="20" r="4" fill="#0E0E10"/>
+        <circle cx="32" cy="32" r="4" fill="#0E0E10"/>
+        <circle cx="20" cy="44" r="4" fill="#0E0E10"/>
+        <circle cx="44" cy="44" r="4" fill="#0E0E10"/>
+      </svg>
+      <div class="leading-tight">
+        <div class="display text-sm tracking-wider">Club Juegos de Mesa</div>
+        <div class="font-mono text-[10px] text-dim tracking-[0.2em] uppercase">Quinta Región · Viña</div>
+      </div>
+    </a>
+    <nav class="hidden md:flex items-center gap-8 text-sm">
+      <a href="#donde" class="link-anim text-paper/80 hover:text-paper">Dónde</a>
+      <a href="#juegos" class="link-anim text-paper/80 hover:text-paper">Juegos</a>
+      <a href="#eventos" class="link-anim text-paper/80 hover:text-paper">Eventos</a>
+      <a href="#feed" class="link-anim text-paper/80 hover:text-paper">Instagram</a>
+      <a href="#faq" class="link-anim text-paper/80 hover:text-paper">FAQ</a>
+      <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="btn-ig px-4 py-2.5 font-bold tracking-wide text-sm inline-flex items-center gap-1.5" aria-label="Instagram">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4a4 4 0 11-7.9 1.2 4 4 0 017.9-1.2zM17.5 6.5h.01"/></svg>
+        IG
+      </a>
+      <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="btn-wa px-4 py-2.5 font-bold tracking-wide text-sm inline-flex items-center gap-1.5" aria-label="WhatsApp">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
+        WSP
+      </a>
+    </nav>
+    <button class="md:hidden text-paper" aria-label="Menu" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="hidden md:hidden border-t border-inkLine bg-ink">
+    <nav class="flex flex-col p-6 gap-4 text-sm">
+      <a href="#donde" class="text-paper/80">Dónde</a>
+      <a href="#juegos" class="text-paper/80">Juegos</a>
+      <a href="#eventos" class="text-paper/80">Eventos</a>
+      <a href="#feed" class="text-paper/80">Instagram</a>
+      <a href="#faq" class="text-paper/80">FAQ</a>
+      <div class="grid grid-cols-2 gap-3 mt-2">
+        <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="btn-ig px-4 py-3 font-bold tracking-wide text-center text-sm">Instagram</a>
+        <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="btn-wa px-4 py-3 font-bold tracking-wide text-center text-sm">WhatsApp</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ========== HERO ========== -->
+<section id="top" class="relative min-h-screen pt-32 pb-24 overflow-hidden grid-bg">
+
+  <!-- Floating shapes - todas en bordes/esquinas, fuera del área de texto del hero -->
+  <div class="absolute top-32 right-[4%] w-24 h-24 bg-cyan rotate-12 drift pointer-events-none hidden md:block" style="--r: 12deg;"></div>
+  <div class="absolute top-[68%] right-[5%] w-16 h-16 bg-gold rotate-45 float-slow pointer-events-none hidden md:block" style="--r: 45deg;"></div>
+  <div class="absolute bottom-32 left-[5%] w-12 h-12 bg-magenta -rotate-12 drift-slow pointer-events-none hidden md:block" style="--r: -12deg;"></div>
+  <div class="absolute bottom-[8%] right-[4%] w-10 h-10 bg-cyan -rotate-6 wiggle pointer-events-none hidden lg:block" style="--r: -6deg;"></div>
+
+  <!-- Meeples flotando -->
+  <div class="absolute top-[40%] left-[3%] meeple text-cyan w-8 h-9 float-slow pointer-events-none hidden md:block" style="--r: -8deg;"></div>
+  <div class="absolute top-[14%] right-[28%] meeple text-paper/40 w-7 h-8 wiggle pointer-events-none hidden lg:block" style="--r: -15deg;"></div>
+
+  <!-- Dado magenta que gira -->
+  <svg class="absolute top-[18%] right-[6%] w-20 h-20 spin-slow opacity-60 hidden lg:block pointer-events-none" viewBox="0 0 64 64" fill="none">
+    <rect x="8" y="8" width="48" height="48" rx="8" fill="#E91E63" stroke="#fff" stroke-width="2"/>
+    <circle cx="20" cy="20" r="3" fill="#fff"/>
+    <circle cx="44" cy="20" r="3" fill="#fff"/>
+    <circle cx="32" cy="32" r="3" fill="#fff"/>
+    <circle cx="20" cy="44" r="3" fill="#fff"/>
+    <circle cx="44" cy="44" r="3" fill="#fff"/>
+  </svg>
+
+  <!-- Dado wireframe abajo a la izquierda -->
+  <svg class="absolute bottom-[20%] left-[3%] w-16 h-16 drift-slow opacity-70 hidden lg:block pointer-events-none" viewBox="0 0 64 64" fill="none" style="--r: 20deg;">
+    <rect x="8" y="8" width="48" height="48" rx="8" fill="none" stroke="#F5B700" stroke-width="2"/>
+    <circle cx="20" cy="20" r="3" fill="#F5B700"/>
+    <circle cx="44" cy="44" r="3" fill="#F5B700"/>
+  </svg>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 relative z-10">
+
+    <!-- Hero grid: texto + logo -->
+    <div class="grid lg:grid-cols-[1.4fr_1fr] gap-10 lg:gap-16 items-center">
+
+      <div>
+        <!-- Top eyebrow -->
+        <div class="rise flex items-center gap-3 mb-8" style="animation-delay: 0.1s;">
+          <span class="w-12 h-px bg-gold"></span>
+          <span class="font-mono text-[11px] tracking-[0.25em] uppercase text-gold">Viña del Mar · Chile · Desde 2022</span>
+        </div>
+
+        <h1 class="display text-paper">
+          <span class="rise block text-[clamp(3rem,9vw,9rem)]" style="animation-delay: 0.2s;">Juega.</span>
+          <span class="rise block text-[clamp(3rem,9vw,9rem)] outline-text" style="animation-delay: 0.35s;">Conecta.</span>
+          <span class="rise block text-[clamp(3rem,9vw,9rem)] text-gold" style="animation-delay: 0.5s;">Diviértete.</span>
+        </h1>
+
+        <div class="rise mt-10 max-w-2xl" style="animation-delay: 0.7s;">
+          <p class="text-lg md:text-xl text-paper/80 leading-relaxed">
+            Somos el <strong class="text-paper">Club Juegos de Mesa Quinta Región</strong>. Nos juntamos dos veces por semana en Viña a desplegar juegos sobre la mesa — los que traes tú o los que ya están ahí.
+          </p>
+        </div>
+
+        <div class="rise mt-10 flex flex-wrap items-center gap-3" style="animation-delay: 0.85s;">
+          <a href="#donde" class="btn-primary px-7 py-4 font-bold tracking-wide inline-flex items-center gap-2">
+            Vente un jueves
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="btn-wa px-6 py-4 font-bold tracking-wide inline-flex items-center gap-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
+            WhatsApp
+          </a>
+          <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="btn-ig px-6 py-4 font-bold tracking-wide inline-flex items-center gap-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4a4 4 0 11-7.9 1.2 4 4 0 017.9-1.2zM17.5 6.5h.01"/></svg>
+            Instagram
+          </a>
+        </div>
+      </div>
+
+      <!-- Logo grande -->
+      <div class="rise relative order-first lg:order-last flex justify-center lg:justify-end" style="animation-delay: 0.4s;">
+        <div class="relative w-full max-w-[340px] lg:max-w-[460px]">
+          <!-- Halo dorado detrás -->
+          <div class="absolute inset-0 bg-gold/10 blur-3xl scale-90 rounded-full pointer-events-none"></div>
+          <img src="CJDMVR_logo-nombreBlanco.png" alt="Club Juegos de Mesa Quinta Región — logo" class="relative w-full h-auto float-slow" style="--r: 0deg;" />
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Stats -->
+    <div class="rise mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-inkLine pt-10" style="animation-delay: 1s;">
+      <div>
+        <div class="display text-5xl text-gold"><span class="counter" data-target="50">0</span><span class="text-paper">+</span></div>
+        <div class="font-mono text-[11px] tracking-widest text-dim mt-2 uppercase">Socios activos</div>
+      </div>
+      <div>
+        <div class="display text-5xl text-gold">GRATIS</div>
+        <div class="font-mono text-[11px] tracking-widest text-dim mt-2 uppercase">Ir los jueves</div>
+      </div>
+      <div>
+        <div class="display text-4xl md:text-5xl text-gold leading-tight">EVENTOS</div>
+        <div class="font-mono text-[11px] tracking-widest text-dim mt-2 uppercase">Especiales todo el año</div>
+      </div>
+      <div>
+        <div class="display text-5xl text-gold"><span class="counter" data-target="2022" data-raw="1">0</span></div>
+        <div class="font-mono text-[11px] tracking-widest text-dim mt-2 uppercase">Jugando desde</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scroll hint (fuera del contenedor, anclado al section hero) -->
+  <a href="#feed" class="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 scroll-hint z-30 group">
+    <span class="font-mono text-[10px] tracking-[0.3em] uppercase text-dim group-hover:text-gold transition-colors">Scroll</span>
+    <svg width="14" height="20" viewBox="0 0 14 20" fill="none" stroke="currentColor" stroke-width="1.5" class="text-dim group-hover:text-gold transition-colors"><path d="M7 1v18M2 14l5 5 5-5"/></svg>
+  </a>
+</section>
+
+<!-- ========== TICKER ========== -->
+<div class="bg-gold text-ink py-4 overflow-hidden border-y-4 border-ink">
+  <div class="flex marquee-track whitespace-nowrap">
+    <div class="flex items-center display text-2xl px-4">
+      <span class="ticker-item">Trae tu juego</span>
+      <span class="ticker-item">O usa los del club</span>
+      <span class="ticker-item">Sin experiencia previa</span>
+      <span class="ticker-item">Eurogames · Party · Estrategia · Cooperativos</span>
+      <span class="ticker-item">Jueves 19:30 en Curva 54</span>
+      <span class="ticker-item">Los jueves son gratis</span>
+    </div>
+    <div class="flex items-center display text-2xl px-4" aria-hidden="true">
+      <span class="ticker-item">Trae tu juego</span>
+      <span class="ticker-item">O usa los del club</span>
+      <span class="ticker-item">Sin experiencia previa</span>
+      <span class="ticker-item">Eurogames · Party · Estrategia · Cooperativos</span>
+      <span class="ticker-item">Jueves 19:30 en Curva 54</span>
+      <span class="ticker-item">Los jueves son gratis</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== INSTAGRAM FEED (qué está pasando ahora) ========== -->
+<section id="feed" class="py-24 lg:py-32 relative">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+
+    <div class="flex items-end justify-between mb-16 flex-wrap gap-6">
+      <div>
+        <div class="section-num mb-4">/ 01 — EN VIVO</div>
+        <h2 class="display text-5xl md:text-7xl text-paper">Lo que está<br/>pasando<span class="text-cyan">.</span></h2>
+        <p class="mt-4 text-paper/70 max-w-md">Las novedades reales viven en Instagram. Acá ves lo último, en la app lo sigues todo.</p>
+      </div>
+      <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="link-anim text-paper/80 font-mono text-sm tracking-wider uppercase">
+        @clubjuegosdemesaquintaregion ↗
+      </a>
+    </div>
+
+    <!-- Placeholder para Behold widget -->
+    <!-- INSTRUCCIONES: Para conectar el feed real:
+         1. Crear cuenta gratis en behold.so con la cuenta de IG del club
+         2. Crear un widget de "Instagram Feed" (4 posts)
+         3. Reemplazar este bloque por el embed code que entrega Behold
+    -->
+    <div id="behold-widget" class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <!-- Placeholders mientras se conecta Behold -->
+      <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="aspect-square bg-inkSoft border border-inkLine flex items-center justify-center group relative overflow-hidden tilt-card">
+        <div class="absolute inset-0 card-dotted opacity-30"></div>
+        <div class="text-center relative">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F5B700" stroke-width="2" class="mx-auto mb-2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4a4 4 0 11-7.9 1.2 4 4 0 017.9-1.2zM17.5 6.5h.01"/></svg>
+          <div class="font-mono text-[10px] tracking-widest text-dim uppercase">Post</div>
+        </div>
+      </a>
+      <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="aspect-square bg-inkSoft border border-inkLine flex items-center justify-center group relative overflow-hidden tilt-card">
+        <div class="absolute inset-0 stripes opacity-10"></div>
+        <div class="text-center relative">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3FA9D6" stroke-width="2" class="mx-auto mb-2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4a4 4 0 11-7.9 1.2 4 4 0 017.9-1.2zM17.5 6.5h.01"/></svg>
+          <div class="font-mono text-[10px] tracking-widest text-dim uppercase">Post</div>
+        </div>
+      </a>
+      <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="aspect-square bg-inkSoft border border-inkLine flex items-center justify-center group relative overflow-hidden tilt-card">
+        <div class="absolute inset-0 card-dotted opacity-30"></div>
+        <div class="text-center relative">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#E91E63" stroke-width="2" class="mx-auto mb-2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4a4 4 0 11-7.9 1.2 4 4 0 017.9-1.2zM17.5 6.5h.01"/></svg>
+          <div class="font-mono text-[10px] tracking-widest text-dim uppercase">Post</div>
+        </div>
+      </a>
+      <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="aspect-square bg-inkSoft border border-inkLine flex items-center justify-center group relative overflow-hidden tilt-card">
+        <div class="absolute inset-0 stripes opacity-10"></div>
+        <div class="text-center relative">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F5B700" stroke-width="2" class="mx-auto mb-2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4a4 4 0 11-7.9 1.2 4 4 0 017.9-1.2zM17.5 6.5h.01"/></svg>
+          <div class="font-mono text-[10px] tracking-widest text-dim uppercase">Post</div>
+        </div>
+      </a>
+    </div>
+
+    <p class="mt-6 text-center text-dim font-mono text-xs tracking-wider uppercase">
+      ⚙ Espacio reservado para feed automático de Instagram (Behold.so)
+    </p>
+
+  </div>
+</section>
+
+<!-- ========== CUÁNDO Y DÓNDE ========== -->
+<section id="donde" class="py-24 lg:py-32 relative">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+
+    <div class="flex items-end justify-between mb-16 flex-wrap gap-6">
+      <div>
+        <div class="section-num mb-4">/ 02 — DÓNDE</div>
+        <h2 class="display text-5xl md:text-7xl text-paper">Dónde nos<br/>encuentras<span class="text-gold">.</span></h2>
+      </div>
+      <p class="max-w-md text-paper/70 text-lg">
+        Dos espacios cómplices en Viña. Si vienes por primera vez, <strong class="text-paper">el jueves en Curva 54</strong> es tu día — abierto, gratis y sin avisar.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <!-- Jueves en Curva 54: ABIERTO + foto -->
+      <article class="tilt-card group relative bg-inkSoft border-2 border-gold/40 overflow-hidden flex flex-col">
+        <!-- Foto -->
+        <a href="https://www.instagram.com/barcurva54/" target="_blank" rel="noopener" class="block aspect-[16/10] relative overflow-hidden bg-ink">
+          <img src="images/curva-54.jpg" alt="Socios del club jugando en Curva 54, Viña del Mar" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
+          <div class="absolute inset-0 bg-gradient-to-t from-inkSoft via-inkSoft/40 to-transparent"></div>
+          <div class="absolute top-4 left-4">
+            <span class="pill text-ink bg-gold border-gold font-bold">★ Abierto a todos · Gratis</span>
+          </div>
+          <div class="absolute top-4 right-4 w-10 h-10 bg-ink/80 backdrop-blur rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4a4 4 0 11-7.9 1.2 4 4 0 017.9-1.2zM17.5 6.5h.01"/></svg>
+          </div>
+        </a>
+
+        <div class="p-7 md:p-9 stripes-overlay relative">
+          <div class="absolute top-0 right-0 w-32 h-32 stripes opacity-5 pointer-events-none"></div>
+          <div class="flex items-baseline gap-4">
+            <div class="display text-6xl md:text-7xl text-gold leading-none">JUE</div>
+            <div class="display text-xl md:text-2xl text-paper">Curva 54</div>
+          </div>
+
+          <div class="mt-6 space-y-2.5 text-paper/80 text-sm">
+            <div class="flex items-center gap-3">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F5B700" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span><strong class="text-paper">Desde 19:30</strong> hasta tarde</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F5B700" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              <span>Llega solo o con amigos, sin avisar</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F5B700" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4a4 4 0 11-7.9 1.2 4 4 0 017.9-1.2z"/></svg>
+              <span><a href="https://www.instagram.com/barcurva54/" target="_blank" rel="noopener" class="link-anim">@barcurva54</a></span>
+            </div>
+          </div>
+
+          <a href="https://www.google.com/maps/search/?api=1&query=Curva+54+bar+Viña+del+Mar" target="_blank" rel="noopener" class="link-anim mt-6 inline-block text-gold font-mono text-xs tracking-wider uppercase">
+            Cómo llegar →
+          </a>
+        </div>
+      </article>
+
+      <!-- Lunes en Gato Arcano: SOLO SOCIOS + foto -->
+      <article class="tilt-card group relative bg-inkSoft border-2 border-magenta/40 overflow-hidden flex flex-col">
+        <a href="https://gatoarcano.cl/" target="_blank" rel="noopener" class="block aspect-[16/10] relative overflow-hidden bg-ink">
+          <img src="images/gato-arcano.jpg" alt="Equipo de Gato Arcano frente a la fachada morada y amarilla" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
+          <div class="absolute inset-0 bg-gradient-to-t from-inkSoft via-inkSoft/40 to-transparent"></div>
+          <div class="absolute top-4 left-4">
+            <span class="pill text-magenta border-magenta bg-ink/90 font-bold">🔒 Solo socios</span>
+          </div>
+          <div class="absolute top-4 right-4 w-10 h-10 bg-ink/80 backdrop-blur rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          </div>
+        </a>
+
+        <div class="p-7 md:p-9 relative">
+          <div class="absolute top-0 right-0 w-32 h-32 card-dotted opacity-30 pointer-events-none"></div>
+          <div class="flex items-baseline gap-4">
+            <div class="display text-6xl md:text-7xl text-magenta leading-none">LUN</div>
+            <div class="display text-xl md:text-2xl text-paper">Gato Arcano</div>
+          </div>
+
+          <div class="mt-6 space-y-2.5 text-paper/80 text-sm">
+            <div class="flex items-center gap-3">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E91E63" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span><strong class="text-paper">Desde 20:00</strong> hasta tarde</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E91E63" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>1 Oriente 406, Viña del Mar</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E91E63" stroke-width="2"><path d="M9 11V7a3 3 0 016 0v4"/><rect x="5" y="11" width="14" height="10" rx="2"/></svg>
+              <span>Reservado para socios al día</span>
+            </div>
+          </div>
+
+          <a href="https://gatoarcano.cl/" target="_blank" rel="noopener" class="link-anim mt-6 inline-block text-magenta font-mono text-xs tracking-wider uppercase">
+            gatoarcano.cl →
+          </a>
+        </div>
+      </article>
+    </div>
+
+    <!-- Próximo encuentro calculado -->
+    <div class="mt-12 p-8 bg-gradient-to-br from-gold/10 to-transparent border border-gold/30 flex flex-wrap items-center justify-between gap-6">
+      <div>
+        <div class="font-mono text-[11px] tracking-[0.25em] uppercase text-gold mb-2">Próximo encuentro abierto</div>
+        <div id="proximo" class="display text-3xl md:text-4xl text-paper">Calculando<span class="blink text-gold">_</span></div>
+      </div>
+      <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="btn-primary px-6 py-3 font-bold tracking-wide">Avisa que vas →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== ASOCIARSE ========== -->
+<section id="asociarse" class="py-24 lg:py-32 bg-inkSoft border-y border-inkLine relative overflow-hidden">
+
+  <!-- Big background number -->
+  <div class="absolute -right-10 top-10 display text-[20rem] text-paper/[0.025] leading-none select-none pointer-events-none">03</div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 relative">
+
+    <div class="section-num mb-4">/ 03 — SUMARSE</div>
+    <h2 class="display text-5xl md:text-7xl text-paper mb-16">Cómo<br/>asociarse<span class="text-magenta">.</span></h2>
+
+    <div class="grid lg:grid-cols-3 gap-6">
+
+      <!-- Step 1 -->
+      <div class="bg-ink border border-inkLine p-8 relative group hover:border-gold/50 transition-colors">
+        <div class="display text-8xl text-gold/20 absolute top-4 right-6 group-hover:text-gold/40 transition-colors">01</div>
+        <div class="display text-2xl text-paper mb-4">Aparece</div>
+        <p class="text-paper/70 leading-relaxed">
+          Pásate cualquier jueves sin avisar. Ir es gratis, siempre. Ven a ver el ambiente, conoce a la gente, juega algo.
+        </p>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="bg-ink border border-inkLine p-8 relative group hover:border-cyan/50 transition-colors">
+        <div class="display text-8xl text-cyan/20 absolute top-4 right-6 group-hover:text-cyan/40 transition-colors">02</div>
+        <div class="display text-2xl text-paper mb-4">Te tinca</div>
+        <p class="text-paper/70 leading-relaxed">
+          Conversas con alguien del directiva, te sumas al grupo de WhatsApp y empiezas a recibir info de eventos especiales.
+        </p>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="bg-ink border border-inkLine p-8 relative group hover:border-magenta/50 transition-colors">
+        <div class="display text-8xl text-magenta/20 absolute top-4 right-6 group-hover:text-magenta/40 transition-colors">03</div>
+        <div class="display text-2xl text-paper mb-4">Aportas</div>
+        <p class="text-paper/70 leading-relaxed">
+          Una cuota simbólica de <span class="text-paper font-semibold">$2.500 al mes</span> ayuda a mantener la ludoteca y organizar eventos para todo el club.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== LO QUE JUGAMOS ========== -->
+<section id="juegos" class="py-24 lg:py-32 relative overflow-hidden">
+
+  <!-- Decorative floaters -->
+  <div class="absolute top-20 right-[6%] w-14 h-14 bg-cyan/30 rotate-12 drift-slow" style="--r: 12deg;"></div>
+  <div class="absolute bottom-20 left-[8%] w-10 h-10 bg-magenta/30 -rotate-12 mini-bounce" style="--r: -12deg;"></div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 relative">
+
+    <div class="flex items-end justify-between mb-16 flex-wrap gap-6">
+      <div>
+        <div class="section-num mb-4">/ 04 — LUDOTECA</div>
+        <h2 class="display text-5xl md:text-7xl text-paper">Lo que<br/>jugamos<span class="text-cyan">.</span></h2>
+      </div>
+      <p class="max-w-md text-paper/70 text-lg">
+        Algunos clásicos que casi siempre están sobre la mesa. Hay para 5 minutos, para 5 horas, y para todos los que se animen a probar algo nuevo.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Toma 6 -->
+      <article class="tilt-card bg-inkSoft border border-inkLine p-7 group relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-32 h-32 bg-magenta/10 rounded-full blur-2xl group-hover:bg-magenta/20 transition-colors"></div>
+        <div class="flex items-start justify-between mb-4 relative">
+          <div class="display text-7xl text-magenta leading-none">06</div>
+          <span class="pill text-paper/70 border-paper/20">Cartas</span>
+        </div>
+        <h3 class="display text-3xl text-paper mt-4">Toma 6</h3>
+        <p class="text-paper/60 text-sm mt-2 font-mono">2-10 jugadores · 45 min</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">El clásico que rompe el hielo. Sencillo de explicar, imposible de ganar siempre. Ideal para mesas grandes y recién llegados.</p>
+      </article>
+
+      <!-- Wingspan -->
+      <article class="tilt-card bg-inkSoft border border-inkLine p-7 group relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-32 h-32 bg-gold/10 rounded-full blur-2xl group-hover:bg-gold/20 transition-colors"></div>
+        <div class="flex items-start justify-between mb-4 relative">
+          <svg class="w-14 h-14 text-gold" viewBox="0 0 64 64" fill="currentColor">
+            <path d="M32 12c-4 0-8 2-10 6-3-2-7-2-10 0-2 2-2 5 0 8l8 6c-1 3 0 6 3 8s7 2 10 0c3 2 7 2 10 0s4-5 3-8l8-6c2-3 2-6 0-8-3-2-7-2-10 0-2-4-6-6-12-6z"/>
+          </svg>
+          <span class="pill text-paper/70 border-paper/20">Eurogame</span>
+        </div>
+        <h3 class="display text-3xl text-paper mt-4">Wingspan</h3>
+        <p class="text-paper/60 text-sm mt-2 font-mono">1-5 jugadores · 60-90 min</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">Aves, hábitats y combos hermosos. El favorito de los que disfrutan construir motores económicos sin pelear con nadie.</p>
+      </article>
+
+      <!-- Ark Nova -->
+      <article class="tilt-card bg-inkSoft border border-inkLine p-7 group relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-32 h-32 bg-cyan/10 rounded-full blur-2xl group-hover:bg-cyan/20 transition-colors"></div>
+        <div class="flex items-start justify-between mb-4 relative">
+          <svg class="w-14 h-14 text-cyan" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
+            <rect x="8" y="16" width="48" height="36" rx="4"/>
+            <path d="M8 28h48M20 16v36M44 16v36"/>
+          </svg>
+          <span class="pill text-paper/70 border-paper/20">Pesado</span>
+        </div>
+        <h3 class="display text-3xl text-paper mt-4">Ark Nova</h3>
+        <p class="text-paper/60 text-sm mt-2 font-mono">1-4 jugadores · 2-3 horas</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">Construye un zoológico moderno con 250 cartas distintas. El juego que pide despejar la mesa y tomarse la noche entera.</p>
+      </article>
+
+      <!-- Amazonas -->
+      <article class="tilt-card bg-inkSoft border border-inkLine p-7 group relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-32 h-32 bg-magenta/10 rounded-full blur-2xl group-hover:bg-magenta/20 transition-colors"></div>
+        <div class="flex items-start justify-between mb-4 relative">
+          <svg class="w-14 h-14 text-magenta" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
+            <path d="M12 52c8-8 16-8 20 0M32 52c8-8 16-8 20 0M22 32c4-6 12-6 16 0M32 12v40"/>
+          </svg>
+          <span class="pill text-paper/70 border-paper/20">Familiar</span>
+        </div>
+        <h3 class="display text-3xl text-paper mt-4">Amazonas</h3>
+        <p class="text-paper/60 text-sm mt-2 font-mono">3-4 jugadores · 60 min</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">Expedición por la selva, gestión de recursos y rutas. Klaus-Jürgen Wrede en su mejor versión: simple por fuera, profundo por dentro.</p>
+      </article>
+
+      <!-- Brass: Birmingham -->
+      <article class="tilt-card bg-inkSoft border border-inkLine p-7 group relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-32 h-32 bg-gold/10 rounded-full blur-2xl group-hover:bg-gold/20 transition-colors"></div>
+        <div class="flex items-start justify-between mb-4 relative">
+          <svg class="w-14 h-14 text-gold" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
+            <rect x="10" y="32" width="14" height="22"/>
+            <rect x="26" y="20" width="14" height="34"/>
+            <rect x="42" y="10" width="12" height="44"/>
+            <path d="M6 54h54"/>
+          </svg>
+          <span class="pill text-paper/70 border-paper/20">BGG · Top</span>
+        </div>
+        <h3 class="display text-3xl text-paper mt-4">Brass: Birmingham</h3>
+        <p class="text-paper/60 text-sm mt-2 font-mono">2-4 jugadores · 2 horas</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">El #1 de BGG durante años. Construye redes industriales en la Inglaterra victoriana. Para los que quieren pensar cada jugada como ingenieros del siglo XIX.</p>
+      </article>
+
+      <!-- Concordia -->
+      <article class="tilt-card bg-inkSoft border border-inkLine p-7 group relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-32 h-32 bg-cyan/10 rounded-full blur-2xl group-hover:bg-cyan/20 transition-colors"></div>
+        <div class="flex items-start justify-between mb-4 relative">
+          <svg class="w-14 h-14 text-cyan" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
+            <path d="M10 50V20l22-12 22 12v30"/>
+            <path d="M10 50h44M22 50V32h20v18M28 32v-6M36 32v-6"/>
+          </svg>
+          <span class="pill text-paper/70 border-paper/20">Eurogame puro</span>
+        </div>
+        <h3 class="display text-3xl text-paper mt-4">Concordia</h3>
+        <p class="text-paper/60 text-sm mt-2 font-mono">2-5 jugadores · 90 min</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">Comerciantes en el imperio romano. Mazo de cartas que es a la vez tu mano y tu motor. Elegante, sin dados, sin azar — solo decisiones.</p>
+      </article>
+
+    </div>
+
+    <p class="mt-12 text-center text-dim text-sm">
+      ¿Tienes un juego favorito que no está acá? Tráelo el jueves — alguien lo va a querer probar.
+    </p>
+
+  </div>
+</section>
+
+<!-- ========== EVENTOS ESPECIALES ========== -->
+<section id="eventos" class="py-24 lg:py-32 bg-inkSoft border-y border-inkLine relative overflow-hidden">
+
+  <div class="absolute -left-10 bottom-10 display text-[20rem] text-paper/[0.025] leading-none select-none pointer-events-none">05</div>
+  <div class="absolute top-20 right-[6%] w-12 h-12 bg-magenta/30 rotate-12 mini-bounce" style="--r: 12deg;"></div>
+  <div class="absolute bottom-32 right-[12%] w-8 h-8 bg-cyan/30 -rotate-12 wiggle" style="--r: -12deg;"></div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 relative">
+
+    <div class="flex items-end justify-between mb-16 flex-wrap gap-6">
+      <div>
+        <div class="section-num mb-4">/ 05 — EVENTOS</div>
+        <h2 class="display text-5xl md:text-7xl text-paper">Eventos<br/>especiales<span class="text-magenta">.</span></h2>
+      </div>
+      <p class="max-w-md text-paper/70 text-lg">
+        Algunas noches del año salen del libreto: aniversarios, jornadas solidarias, torneos. Lo anunciamos por Instagram cuando se viene uno.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Aniversario -->
+      <article class="tilt-card bg-ink border border-inkLine p-7 group hover:border-gold/50 transition-colors relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-32 h-32 bg-gold/10 rounded-full blur-2xl group-hover:bg-gold/20 transition-colors"></div>
+        <div class="flex items-start justify-between relative">
+          <svg class="w-12 h-12 text-gold" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
+            <path d="M12 28h40v24H12zM20 28V18a4 4 0 014-4h4a4 4 0 014 4v10M32 28V18a4 4 0 014-4h4a4 4 0 014 4v10"/>
+            <path d="M22 14c0-3 4-3 4 0M30 14c0-3 4-3 4 0M38 14c0-3 4-3 4 0"/>
+          </svg>
+          <span class="pill text-gold border-gold/40">Anual</span>
+        </div>
+        <h3 class="display text-2xl text-paper mt-6">Aniversario del club</h3>
+        <p class="text-paper/70 mt-3 leading-relaxed text-sm">Bingo con entradas, premios donados por editoriales aliadas y la noche más larga del año.</p>
+      </article>
+
+      <!-- Lliu Lliu (retiro) -->
+      <article class="tilt-card bg-ink border border-inkLine p-7 group hover:border-cyan/50 transition-colors relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-32 h-32 bg-cyan/10 rounded-full blur-2xl group-hover:bg-cyan/20 transition-colors"></div>
+        <div class="flex items-start justify-between relative">
+          <svg class="w-12 h-12 text-cyan" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
+            <path d="M32 8L8 28v28h48V28L32 8z"/>
+            <path d="M24 56V40h16v16M16 32l16-12 16 12"/>
+          </svg>
+          <span class="pill text-cyan border-cyan/40">Retiro</span>
+        </div>
+        <h3 class="display text-2xl text-paper mt-6">Lliu Lliu</h3>
+        <p class="text-paper/70 mt-3 leading-relaxed text-sm">Escapada al campo a jugar sin parar. Comida compartida, juegos largos que no caben en una noche y mucha sobremesa.</p>
+      </article>
+
+      <!-- Teletón -->
+      <article class="tilt-card bg-ink border border-inkLine p-7 group hover:border-magenta/50 transition-colors relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-32 h-32 bg-magenta/10 rounded-full blur-2xl group-hover:bg-magenta/20 transition-colors"></div>
+        <div class="flex items-start justify-between relative">
+          <svg class="w-12 h-12 text-magenta" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
+            <path d="M32 56s-20-12-20-28a12 12 0 0124-4 12 12 0 0124 4c0 16-20 28-20 28h-8z"/>
+          </svg>
+          <span class="pill text-magenta border-magenta/40">Causa</span>
+        </div>
+        <h3 class="display text-2xl text-paper mt-6">Jornada Teletón</h3>
+        <p class="text-paper/70 mt-3 leading-relaxed text-sm">Cada año aportamos al evento solidario con una jornada especial de juegos en Curva 54 abierta a todos.</p>
+      </article>
+
+      <!-- Jornadas temáticas -->
+      <article class="tilt-card bg-ink border border-inkLine p-7 group hover:border-gold/50 transition-colors relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-32 h-32 bg-gold/10 rounded-full blur-2xl group-hover:bg-gold/20 transition-colors"></div>
+        <div class="flex items-start justify-between relative">
+          <svg class="w-12 h-12 text-gold" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
+            <rect x="10" y="14" width="44" height="36" rx="3"/>
+            <path d="M10 24h44M18 14V10M46 14V10M22 34h6M22 42h6M36 34h6M36 42h6"/>
+          </svg>
+          <span class="pill text-gold border-gold/40">Por temporada</span>
+        </div>
+        <h3 class="display text-2xl text-paper mt-6">Jornadas temáticas</h3>
+        <p class="text-paper/70 mt-3 leading-relaxed text-sm">Noches dedicadas a un género o universo: cooperativos, party, fantasía, juegos rápidos. Cada una con su mesa principal y su vibra.</p>
+      </article>
+
+      <!-- Ferias -->
+      <article class="tilt-card bg-ink border border-inkLine p-7 group hover:border-cyan/50 transition-colors relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-32 h-32 bg-cyan/10 rounded-full blur-2xl group-hover:bg-cyan/20 transition-colors"></div>
+        <div class="flex items-start justify-between relative">
+          <svg class="w-12 h-12 text-cyan" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
+            <path d="M8 24h48l-4 28H12L8 24z"/>
+            <path d="M16 24V14a8 8 0 0116 0v10M32 24V14a8 8 0 0116 0v10"/>
+          </svg>
+          <span class="pill text-cyan border-cyan/40">Comunidad</span>
+        </div>
+        <h3 class="display text-2xl text-paper mt-6">Participación en ferias</h3>
+        <p class="text-paper/70 mt-3 leading-relaxed text-sm">Llevamos el club a ferias de juegos, eventos comunales y encuentros de cultura lúdica de la región.</p>
+      </article>
+
+      <!-- Torneos -->
+      <article class="tilt-card bg-ink border border-inkLine p-7 group hover:border-magenta/50 transition-colors relative overflow-hidden">
+        <div class="absolute -top-6 -right-6 w-32 h-32 bg-magenta/10 rounded-full blur-2xl group-hover:bg-magenta/20 transition-colors"></div>
+        <div class="flex items-start justify-between relative">
+          <svg class="w-12 h-12 text-magenta" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3">
+            <path d="M16 12h32v16a16 16 0 01-32 0z"/>
+            <path d="M16 18h-6c0 8 4 12 8 12M48 18h6c0 8-4 12-8 12"/>
+            <path d="M28 44h8v8h8v4H20v-4h8z"/>
+          </svg>
+          <span class="pill text-magenta border-magenta/40">Puntual</span>
+        </div>
+        <h3 class="display text-2xl text-paper mt-6">Torneos</h3>
+        <p class="text-paper/70 mt-3 leading-relaxed text-sm">Noches dedicadas a un solo juego — desde Catan hasta clásicos modernos. Inscripción abierta cuando salen.</p>
+      </article>
+
+    </div>
+
+    <!-- CTA  -->
+    <div class="mt-12 p-8 bg-gradient-to-br from-magenta/10 to-transparent border border-magenta/30 flex flex-wrap items-center justify-between gap-6">
+      <div>
+        <div class="font-mono text-[11px] tracking-[0.25em] uppercase text-magenta mb-2">Mantente al día</div>
+        <div class="display text-2xl md:text-3xl text-paper">Anunciamos los eventos por Instagram y WhatsApp</div>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="btn-ig px-5 py-3 font-bold text-sm">Instagram</a>
+        <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="btn-wa px-5 py-3 font-bold text-sm">WhatsApp</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== FAQ ========== -->
+<section id="faq" class="py-24 lg:py-32 bg-inkSoft border-y border-inkLine">
+  <div class="max-w-5xl mx-auto px-6 lg:px-10">
+
+    <div class="section-num mb-4">/ 06 — DUDAS</div>
+    <h2 class="display text-5xl md:text-7xl text-paper mb-16">Preguntas<br/>honestas<span class="text-gold">.</span></h2>
+
+    <div class="space-y-3">
+      <details class="group bg-ink border border-inkLine open:border-gold/50 transition-colors">
+        <summary class="cursor-pointer p-6 flex items-center justify-between gap-4 list-none">
+          <span class="display text-xl md:text-2xl text-paper">¿Tengo que llevar un juego?</span>
+          <span class="text-gold display text-3xl group-open:rotate-45 transition-transform">+</span>
+        </summary>
+        <div class="px-6 pb-6 text-paper/70 leading-relaxed">
+          Para nada. Hay socios que llevan los suyos y los enseñan, y siempre hay juegos del club disponibles en el lugar. Si quieres traer el tuyo, mejor — la gente ama probar cosas nuevas.
+        </div>
+      </details>
+
+      <details class="group bg-ink border border-inkLine open:border-gold/50 transition-colors">
+        <summary class="cursor-pointer p-6 flex items-center justify-between gap-4 list-none">
+          <span class="display text-xl md:text-2xl text-paper">¿Y si no sé jugar nada?</span>
+          <span class="text-gold display text-3xl group-open:rotate-45 transition-transform">+</span>
+        </summary>
+        <div class="px-6 pb-6 text-paper/70 leading-relaxed">
+          Mejor todavía. La mitad de la gracia es enseñar juegos nuevos. Llegas, dices "no he jugado nada", y a los 15 minutos estás en una partida con alguien explicándote las reglas.
+        </div>
+      </details>
+
+      <details class="group bg-ink border border-inkLine open:border-gold/50 transition-colors">
+        <summary class="cursor-pointer p-6 flex items-center justify-between gap-4 list-none">
+          <span class="display text-xl md:text-2xl text-paper">¿Es solo para expertos en juegos eurogame raros?</span>
+          <span class="text-gold display text-3xl group-open:rotate-45 transition-transform">+</span>
+        </summary>
+        <div class="px-6 pb-6 text-paper/70 leading-relaxed">
+          No. Hay de todo: party games rápidos, juegos cooperativos, eurogames de estrategia, dungeon crawlers, juegos de cartas. La regla es que la mesa decida qué juega esa noche.
+        </div>
+      </details>
+
+      <details class="group bg-ink border border-inkLine open:border-gold/50 transition-colors">
+        <summary class="cursor-pointer p-6 flex items-center justify-between gap-4 list-none">
+          <span class="display text-xl md:text-2xl text-paper">¿Hay que pagar para ir un jueves?</span>
+          <span class="text-gold display text-3xl group-open:rotate-45 transition-transform">+</span>
+        </summary>
+        <div class="px-6 pb-6 text-paper/70 leading-relaxed">
+          No. Los jueves en Curva 54 son siempre gratis, vayas una vez o todas las semanas. La cuota ($2.500/mes) es solo para quienes deciden hacerse socios y aporta a la ludoteca, eventos especiales y postulaciones a fondos.
+        </div>
+      </details>
+
+      <details class="group bg-ink border border-inkLine open:border-gold/50 transition-colors">
+        <summary class="cursor-pointer p-6 flex items-center justify-between gap-4 list-none">
+          <span class="display text-xl md:text-2xl text-paper">¿Hacen eventos especiales?</span>
+          <span class="text-gold display text-3xl group-open:rotate-45 transition-transform">+</span>
+        </summary>
+        <div class="px-6 pb-6 text-paper/70 leading-relaxed">
+          Sí. Bingo de aniversario, jornadas para la Teletón, torneos puntuales y más. Todo lo anunciamos por Instagram y por el grupo interno de WhatsApp.
+        </div>
+      </details>
+
+      <details class="group bg-ink border border-inkLine open:border-gold/50 transition-colors">
+        <summary class="cursor-pointer p-6 flex items-center justify-between gap-4 list-none">
+          <span class="display text-xl md:text-2xl text-paper">¿Puedo ir solo/a?</span>
+          <span class="text-gold display text-3xl group-open:rotate-45 transition-transform">+</span>
+        </summary>
+        <div class="px-6 pb-6 text-paper/70 leading-relaxed">
+          La mayoría llega solo. Es la forma más fácil de conocer gente — los juegos rompen el hielo automáticamente.
+        </div>
+      </details>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== CONTACTO ========== -->
+<section id="contacto" class="py-24 lg:py-32 relative overflow-hidden">
+
+  <!-- Floating shapes contacto -->
+  <div class="absolute top-20 left-[5%] w-20 h-20 bg-magenta rotate-12 float opacity-40" style="--r: 12deg;"></div>
+  <div class="absolute bottom-20 right-[8%] w-16 h-16 bg-cyan -rotate-12 float-slow opacity-40" style="--r: -12deg;"></div>
+
+  <div class="max-w-5xl mx-auto px-6 lg:px-10 text-center relative">
+
+    <div class="section-num mb-4">/ 07 — CONTACTO</div>
+    <h2 class="display text-6xl md:text-8xl lg:text-9xl text-paper mb-8">
+      Nos<br/><span class="text-gold">vemos</span><br/>el jueves<span class="text-magenta">.</span>
+    </h2>
+
+    <p class="text-xl text-paper/70 max-w-xl mx-auto mb-12">
+      No hace falta avisar. Llegas, te sientas, alguien te dice "¿quieres jugar a esto?".
+    </p>
+
+    <div class="flex flex-wrap justify-center gap-4 mb-16">
+      <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="btn-wa px-7 py-4 font-bold tracking-wide inline-flex items-center gap-2">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
+        Únete al grupo de WhatsApp
+      </a>
+      <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="btn-ig px-7 py-4 font-bold tracking-wide inline-flex items-center gap-2">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4a4 4 0 11-7.9 1.2 4 4 0 017.9-1.2zM17.5 6.5h.01"/></svg>
+        Síguenos en Instagram
+      </a>
+    </div>
+
+    <div class="border-t border-inkLine pt-12 grid md:grid-cols-3 gap-8 text-left">
+      <div>
+        <div class="font-mono text-[11px] tracking-[0.25em] uppercase text-gold mb-3">Dónde</div>
+        <div class="text-paper/80 leading-relaxed">
+          Curva 54 — Jueves<br/>
+          Gato Arcano — Lunes (socios)<br/>
+          Viña del Mar, Chile
+        </div>
+      </div>
+      <div>
+        <div class="font-mono text-[11px] tracking-[0.25em] uppercase text-gold mb-3">Cuándo</div>
+        <div class="text-paper/80 leading-relaxed">
+          Jueves desde 19:30 (abierto)<br/>
+          Lunes desde 20:00 (socios)<br/>
+          Hasta tarde
+        </div>
+      </div>
+      <div>
+        <div class="font-mono text-[11px] tracking-[0.25em] uppercase text-gold mb-3">Conecta</div>
+        <div class="text-paper/80 leading-relaxed space-y-1">
+          <div><a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="link-anim">@clubjuegosdemesaquintaregion</a></div>
+          <div><a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="link-anim">Grupo de WhatsApp</a></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="bg-ink border-t border-inkLine py-12">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="flex flex-wrap justify-between items-center gap-6">
+      <div class="flex items-center gap-4">
+        <svg class="w-10 h-10 wiggle" viewBox="0 0 64 64" fill="none" style="--r: 0deg;" aria-label="Dado">
+          <rect x="6" y="6" width="52" height="52" rx="10" fill="#F5B700" stroke="#0E0E10" stroke-width="3"/>
+          <circle cx="20" cy="20" r="4" fill="#0E0E10"/>
+          <circle cx="44" cy="20" r="4" fill="#0E0E10"/>
+          <circle cx="32" cy="32" r="4" fill="#0E0E10"/>
+          <circle cx="20" cy="44" r="4" fill="#0E0E10"/>
+          <circle cx="44" cy="44" r="4" fill="#0E0E10"/>
+        </svg>
+        <div>
+          <div class="display text-sm tracking-wider text-paper">Club Juegos de Mesa</div>
+          <div class="font-mono text-[10px] text-dim tracking-[0.2em] uppercase">Quinta Región · Viña del Mar</div>
+        </div>
+      </div>
+      <div class="font-mono text-[11px] tracking-widest text-dim uppercase">
+        © <span id="year"></span> · Hecho con dados, meeples y un poco de café
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Año dinámico
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Próximo jueves abierto (los lunes son solo para socios)
+  function proximoJueves() {
+    const hoy = new Date();
+    const dia = hoy.getDay();
+    const hora = hoy.getHours();
+    const min = hoy.getMinutes();
+    const meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+
+    let diff = (4 - dia + 7) % 7;
+    if (diff === 0 && (hora + min/60) >= 19.5) diff = 7;
+
+    const fecha = new Date(hoy);
+    fecha.setDate(hoy.getDate() + diff);
+    const fechaStr = `${fecha.getDate()} ${meses[fecha.getMonth()]}`;
+    const cuando = diff === 0 ? 'Hoy' : diff === 1 ? 'Mañana' : 'Jueves';
+
+    document.getElementById('proximo').innerHTML =
+      `${cuando} <span class="text-gold">${fechaStr}</span> · 19:30 en Curva 54`;
+  }
+  proximoJueves();
+
+  // Contadores animados (suben de 0 al target cuando el hero aparece)
+  function animateCounters() {
+    document.querySelectorAll('.counter').forEach(el => {
+      const target = parseInt(el.dataset.target, 10);
+      const raw = el.dataset.raw === '1';
+      const duration = 1600;
+      const start = performance.now();
+      function step(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = Math.round(eased * target);
+        el.textContent = raw ? String(value) : value.toLocaleString('es-CL');
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+  setTimeout(animateCounters, 1100);
+</script>
+
+</body>
+</html>

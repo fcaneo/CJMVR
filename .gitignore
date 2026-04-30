@@ -1,0 +1,12 @@
+# Documento de planificación interna (no parte de la web)
+club_juegos_mesa_v_region_proyecto_web.md
+
+# Archivos de sistema
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
