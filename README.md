@@ -17,6 +17,7 @@ Sitio web del **Club Juegos de Mesa Quinta Región**, Viña del Mar.
 | URL | Descripción |
 |-----|-------------|
 | [`/`](https://fcaneo.github.io/CJMVR/) | Sitio principal: hero, encuentros, ludoteca, eventos, FAQ, alianzas |
+| [`/mesa.html`](https://fcaneo.github.io/CJMVR/mesa.html) | **Mesa de juego** — landing de las 4 herramientas |
 | [`/dado.html`](https://fcaneo.github.io/CJMVR/dado.html) | Recomendador al azar del top 50 BoardGameGeek |
 | [`/sorteo.html`](https://fcaneo.github.io/CJMVR/sorteo.html) | Sorteo de orden de turno (hasta 12 jugadores) |
 | [`/marcador.html`](https://fcaneo.github.io/CJMVR/marcador.html) | Marcador de partidas con persistencia y podio |
@@ -27,7 +28,8 @@ Sitio web del **Club Juegos de Mesa Quinta Región**, Viña del Mar.
 
 ```
 CJMVR/
-├── index.html              # Sitio principal (~1500 líneas, todo en uno)
+├── index.html              # Sitio principal
+├── mesa.html               # Landing de herramientas (Mesa de juego)
 ├── dado.html               # Herramienta: recomendador BGG
 ├── sorteo.html             # Herramienta: sorteo de orden
 ├── marcador.html           # Herramienta: marcador con persistencia

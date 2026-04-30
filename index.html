@@ -473,6 +473,7 @@
       <a href="#donde" class="link-anim text-paper/80 hover:text-paper">Dónde</a>
       <a href="#juegos" class="link-anim text-paper/80 hover:text-paper">Juegos</a>
       <a href="#eventos" class="link-anim text-paper/80 hover:text-paper">Eventos</a>
+      <a href="mesa.html" class="link-anim text-gold hover:text-paper">Mesa de juego</a>
       <a href="#asociarse" class="link-anim text-paper/80 hover:text-paper">Asociarse</a>
       <a href="#faq" class="link-anim text-paper/80 hover:text-paper">FAQ</a>
       <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="btn-ig w-10 h-10 flex items-center justify-center" aria-label="Síguenos en Instagram" title="Instagram">
@@ -500,6 +501,7 @@
       <a href="#donde" class="nav-mobile text-paper/80 py-1">Dónde y cuándo</a>
       <a href="#juegos" class="nav-mobile text-paper/80 py-1">Lo que jugamos</a>
       <a href="#eventos" class="nav-mobile text-paper/80 py-1">Eventos especiales</a>
+      <a href="mesa.html" class="nav-mobile text-gold py-1">🎲 Mesa de juego</a>
       <a href="#asociarse" class="nav-mobile text-paper/80 py-1">Cómo asociarse</a>
       <a href="#faq" class="nav-mobile text-paper/80 py-1">Preguntas frecuentes</a>
 
@@ -1466,20 +1468,22 @@
   </div>
 </footer>
 
-<!-- ========== FAB COMPARTIR (aparece tras scroll, encima del WhatsApp) ========== -->
-<button id="share-fab" type="button"
-   class="fixed bottom-24 right-6 z-[55] w-12 h-12 md:w-14 md:h-14 rounded-full bg-gold text-ink flex items-center justify-center shadow-lg shadow-black/40 opacity-0 pointer-events-none translate-y-4 transition-all duration-300 hover:scale-110 focus-visible:scale-110"
-   aria-label="Compartir esta página">
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <circle cx="18" cy="5" r="3"/>
-    <circle cx="6" cy="12" r="3"/>
-    <circle cx="18" cy="19" r="3"/>
-    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+<!-- ========== FAB MESA DE JUEGO (aparece tras scroll, encima del WhatsApp) ========== -->
+<a id="mesa-fab" href="mesa.html"
+   class="group fixed bottom-24 right-6 z-[55] w-12 h-12 md:w-14 md:h-14 rounded-full bg-gold text-ink flex items-center justify-center shadow-lg shadow-black/40 opacity-0 pointer-events-none translate-y-4 transition-all duration-300 hover:scale-110 focus-visible:scale-110"
+   aria-label="Ir a Mesa de juego (herramientas)">
+  <!-- Icono dado mini -->
+  <svg width="24" height="24" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+    <rect x="6" y="6" width="52" height="52" rx="10" fill="#0E0E10"/>
+    <circle cx="20" cy="20" r="4" fill="#F5B700"/>
+    <circle cx="44" cy="20" r="4" fill="#F5B700"/>
+    <circle cx="32" cy="32" r="4" fill="#F5B700"/>
+    <circle cx="20" cy="44" r="4" fill="#F5B700"/>
+    <circle cx="44" cy="44" r="4" fill="#F5B700"/>
   </svg>
-  <!-- Tooltip texto cuando se copia -->
-  <span id="share-toast" class="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-ink text-paper text-xs font-mono uppercase tracking-wider px-3 py-2 whitespace-nowrap pointer-events-none opacity-0 transition-opacity">¡Link copiado!</span>
-</button>
+  <!-- Tooltip al hacer hover en desktop -->
+  <span class="hidden md:block absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-ink text-paper text-xs font-mono uppercase tracking-wider px-3 py-2 whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">Mesa de juego</span>
+</a>
 
 <!-- ========== FAB WHATSAPP (aparece tras scroll) ========== -->
 <a id="wa-fab" href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener"
@@ -1788,17 +1792,16 @@
     } catch (e) { console.warn('[easter-egg]', e); }
   })();
 
-  // 6. FABs (WhatsApp + Compartir): aparecen tras scroll
+  // 6. FABs (Mesa de juego + WhatsApp): aparecen tras scroll
   (function() {
     try {
       const waFab = document.getElementById('wa-fab');
-      const shareFab = document.getElementById('share-fab');
-      const shareToast = document.getElementById('share-toast');
-      if (!waFab && !shareFab) return;
+      const mesaFab = document.getElementById('mesa-fab');
+      if (!waFab && !mesaFab) return;
 
       const onScroll = () => {
         const visible = window.scrollY > 600;
-        [waFab, shareFab].forEach(fab => {
+        [waFab, mesaFab].forEach(fab => {
           if (!fab) return;
           if (visible) {
             fab.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
@@ -1809,28 +1812,6 @@
       };
       window.addEventListener('scroll', onScroll, { passive: true });
       onScroll();
-
-      // Compartir
-      if (shareFab) {
-        shareFab.addEventListener('click', async () => {
-          const data = {
-            title: 'Club Juegos de Mesa Quinta Región',
-            text: 'Club de juegos de mesa en Viña del Mar — jueves en Curva 54.',
-            url: 'https://fcaneo.github.io/CJMVR/'
-          };
-          try {
-            if (navigator.share) {
-              await navigator.share(data);
-            } else if (navigator.clipboard) {
-              await navigator.clipboard.writeText(data.url);
-              if (shareToast) {
-                shareToast.style.opacity = '1';
-                setTimeout(() => { shareToast.style.opacity = '0'; }, 2000);
-              }
-            }
-          } catch (e) { /* usuario canceló */ }
-        });
-      }
     } catch (e) { console.warn('[fabs]', e); }
   })();
 </script>
