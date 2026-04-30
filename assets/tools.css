@@ -346,7 +346,8 @@ input[type="tel"] {
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   transition: border-color 0.2s ease;
-  width: 100%;
+  /* width: 100% removido — empujaba inputs específicos como .round-player-input fuera de su layout flex.
+     Si un input necesita 100%, debe declararlo en su clase. */
   border-radius: 0;
   -webkit-appearance: none;
   appearance: none;
