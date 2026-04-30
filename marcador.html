@@ -817,6 +817,10 @@
     <div id="podium" class="podium" hidden>
       <div id="podium-title" class="podium-title">★ Resultado final</div>
       <div id="podium-spots" class="podium-spots"></div>
+      <button id="share-podium" class="btn btn-primary" type="button" style="margin-top: 1.5rem;">
+        Compartir el podio
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
     </div>
   </div>
 
@@ -1482,6 +1486,32 @@
       }
     } catch (e) { /* cancelado */ }
   });
+
+  // Compartir el podio con texto formateado
+  const sharePodiumBtn = document.getElementById('share-podium');
+  if (sharePodiumBtn) {
+    sharePodiumBtn.addEventListener('click', async () => {
+      if (state.rounds.length === 0) return;
+      const totals = state.players.map((name, pIdx) => ({
+        name,
+        total: state.rounds.reduce((s, r) => s + (Number(r[pIdx]) || 0), 0)
+      }));
+      totals.sort((a, b) => state.mode === 'higher' ? b.total - a.total : a.total - b.total);
+      const medals = ['🥇', '🥈', '🥉'];
+      const lines = totals.slice(0, 3).map((p, i) => `${medals[i]} ${p.name} · ${p.total} pts`);
+      const text = `🏆 Podio CJMVR\n\n${lines.join('\n')}\n\n${state.rounds.length} rondas · Marcador del Club Juegos de Mesa Quinta Región\nhttps://fcaneo.github.io/CJMVR/marcador.html`;
+      try {
+        if (navigator.share) {
+          await navigator.share({ title: 'Podio · Marcador CJMVR', text });
+        } else if (navigator.clipboard) {
+          await navigator.clipboard.writeText(text);
+          const orig = sharePodiumBtn.innerHTML;
+          sharePodiumBtn.innerHTML = '¡Copiado al portapapeles!';
+          setTimeout(() => { sharePodiumBtn.innerHTML = orig; }, 2000);
+        }
+      } catch (e) { /* cancelado */ }
+    });
+  }
 
   // === Init ===
   load();

@@ -254,6 +254,9 @@
 </head>
 <body class="spotlight-zone">
 
+<!-- Scroll progress bar -->
+<div id="scroll-progress" style="position:fixed;top:0;left:0;height:3px;background:var(--gold);z-index:200;width:0%;box-shadow:0 0 8px rgba(245,183,0,0.6);transition:width 0.1s linear;"></div>
+
 <div class="grid-bg"></div>
 
 <header class="tool-header">
@@ -458,7 +461,6 @@
       if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
       const zone = document.body;
       let raf = null;
-      // Activar tras primer movimiento (no aparece de golpe)
       let activated = false;
       document.addEventListener('mousemove', (e) => {
         if (!activated) {
@@ -477,6 +479,22 @@
         activated = false;
       });
     } catch (e) { console.warn('[spotlight]', e); }
+  })();
+
+  // Scroll progress bar
+  (function() {
+    try {
+      const bar = document.getElementById('scroll-progress');
+      if (!bar) return;
+      const update = () => {
+        const h = document.documentElement;
+        const max = h.scrollHeight - h.clientHeight;
+        const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+        bar.style.width = pct + '%';
+      };
+      window.addEventListener('scroll', update, { passive: true });
+      update();
+    } catch (e) {}
   })();
 </script>
 

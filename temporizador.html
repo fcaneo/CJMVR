@@ -241,6 +241,60 @@
     margin-left: 1rem;
   }
 
+  /* Modo presentación: oculta todo menos turno actual + botón gigante */
+  body.focus-mode .tool-header,
+  body.focus-mode .tool-footer,
+  body.focus-mode #players-list,
+  body.focus-mode .game-actions,
+  body.focus-mode .grid-bg {
+    display: none !important;
+  }
+  body.focus-mode {
+    background: var(--ink);
+  }
+  body.focus-mode .tool-main {
+    max-width: 100%;
+    margin: 0;
+    padding: 1rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  body.focus-mode .current-player {
+    margin-bottom: 2rem;
+    padding: 2rem;
+  }
+  body.focus-mode .current-name {
+    font-size: clamp(2.5rem, 10vw, 5rem);
+  }
+  body.focus-mode .current-time {
+    font-size: clamp(5rem, 20vw, 12rem);
+  }
+  body.focus-mode .pass-btn {
+    padding: 2.5rem 1.5rem;
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+    margin-bottom: 0;
+  }
+  /* Botón salir del modo focus, fixed arriba derecha */
+  body.focus-mode #focus-exit {
+    display: flex;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    width: 44px;
+    height: 44px;
+    background: var(--ink-soft);
+    border: 1px solid var(--ink-line);
+    color: var(--paper);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100;
+    font-size: 24px;
+  }
+  body:not(.focus-mode) #focus-exit { display: none; }
+
   /* Acciones secundarias */
   .game-actions {
     display: flex;
@@ -373,6 +427,10 @@
     <div id="players-list" class="players-list"></div>
 
     <div class="game-actions">
+      <button id="focus-btn" class="btn btn-ghost btn-small" type="button" title="Modo presentación">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 3H5a2 2 0 00-2 2v3M21 8V5a2 2 0 00-2-2h-3M3 16v3a2 2 0 002 2h3M16 21h3a2 2 0 002-2v-3"/></svg>
+        Presentación
+      </button>
       <button id="pause-btn" class="btn btn-ghost btn-small" type="button">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
         Pausar
@@ -382,6 +440,9 @@
     </div>
   </div>
 </main>
+
+<!-- Botón salir del modo presentación -->
+<button id="focus-exit" type="button" aria-label="Salir del modo presentación">×</button>
 
 <!-- Confirm modal -->
 <div id="confirm-overlay" class="confirm-overlay" role="dialog" aria-modal="true">
@@ -763,6 +824,33 @@
   });
 
   startBtn.addEventListener('click', startGame);
+
+  // Modo presentación: solo turno actual + botón gigante
+  const focusBtn = document.getElementById('focus-btn');
+  const focusExit = document.getElementById('focus-exit');
+  if (focusBtn) {
+    focusBtn.addEventListener('click', () => {
+      document.body.classList.add('focus-mode');
+      // Pedir fullscreen real si es posible (mobile)
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+    });
+  }
+  if (focusExit) {
+    focusExit.addEventListener('click', () => {
+      document.body.classList.remove('focus-mode');
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      }
+    });
+  }
+  // ESC sale del modo focus
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.body.classList.contains('focus-mode')) {
+      document.body.classList.remove('focus-mode');
+    }
+  });
 
   // === Init ===
   load();
