@@ -336,6 +336,12 @@
     color: var(--gold);
     border-top: 2px solid var(--gold);
     padding: 0.85rem 0.75rem;
+    font-variant-numeric: tabular-nums;
+  }
+  /* Inputs de score con tabular nums para que no bailen */
+  .score-input, .round-player-input,
+  .totals-mobile-value, .stat-num {
+    font-variant-numeric: tabular-nums;
   }
   .total-row td:first-child {
     color: var(--dim);
