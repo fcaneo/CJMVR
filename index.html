@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#0E0E10" />
 <title>Club Juegos de Mesa Quinta Región — Viña del Mar</title>
 <meta name="description" content="Club de juegos de mesa en Viña del Mar. Encuentro abierto los jueves en Curva 54 desde las 19:30. Trae tu juego o usa los del club." />
 <meta name="keywords" content="juegos de mesa, Viña del Mar, Quinta Región, club, board games, Valparaíso" />
@@ -11,7 +12,14 @@
 <meta property="og:title" content="Club Juegos de Mesa Quinta Región" />
 <meta property="og:description" content="Club de juegos de mesa en Viña del Mar. Jueves abiertos a todos en Curva 54." />
 <meta property="og:type" content="website" />
-<meta property="og:image" content="assets/logo/cjmvr-logo-blanco.png" />
+<meta property="og:image" content="https://fcaneo.github.io/CJMVR/assets/images/curva-54.jpg" />
+<meta property="og:image:alt" content="Socios del Club Juegos de Mesa Quinta Región jugando en Curva 54, Viña del Mar" />
+<meta property="og:url" content="https://fcaneo.github.io/CJMVR/" />
+<meta property="og:locale" content="es_CL" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Club Juegos de Mesa Quinta Región" />
+<meta name="twitter:description" content="Club de juegos de mesa en Viña del Mar. Jueves 19:30 en Curva 54, gratis." />
+<meta name="twitter:image" content="https://fcaneo.github.io/CJMVR/assets/images/curva-54.jpg" />
 
 <!-- Schema.org -->
 <script type="application/ld+json">
@@ -41,7 +49,9 @@
 }
 </script>
 
-<link rel="icon" type="image/png" href="assets/logo/cjmvr-logo-blanco.png" />
+<!-- Favicon: dado dorado SVG inline (cero peso, nítido en cualquier tamaño) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='6' width='52' height='52' rx='10' fill='%23F5B700' stroke='%230E0E10' stroke-width='4'/%3E%3Ccircle cx='20' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%230E0E10'/%3E%3Ccircle cx='20' cy='44' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='44' r='5' fill='%230E0E10'/%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="assets/logo/cjmvr-logo-blanco.png" />
 
 <!-- Fuentes: Anton (display chunky que dialoga con el logo) + DM Sans (body limpio) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -80,6 +90,20 @@
     color: #fff;
     font-family: 'DM Sans', sans-serif;
     overflow-x: hidden;
+  }
+
+  /* Compensar header fijo al saltar a anclas */
+  section[id] { scroll-margin-top: 90px; }
+
+  /* Estado de foco visible (accesibilidad teclado) */
+  :focus-visible {
+    outline: 2px solid #F5B700;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid #F5B700;
+    outline-offset: 3px;
   }
 
   /* Grano sutil para textura */
@@ -348,19 +372,17 @@
         <div class="font-mono text-[10px] text-dim tracking-[0.2em] uppercase">Quinta Región · Viña</div>
       </div>
     </a>
-    <nav class="hidden md:flex items-center gap-8 text-sm">
+    <nav class="hidden md:flex items-center gap-7 text-sm">
       <a href="#donde" class="link-anim text-paper/80 hover:text-paper">Dónde</a>
       <a href="#juegos" class="link-anim text-paper/80 hover:text-paper">Juegos</a>
       <a href="#eventos" class="link-anim text-paper/80 hover:text-paper">Eventos</a>
-      <a href="#feed" class="link-anim text-paper/80 hover:text-paper">Instagram</a>
+      <a href="#asociarse" class="link-anim text-paper/80 hover:text-paper">Sumarse</a>
       <a href="#faq" class="link-anim text-paper/80 hover:text-paper">FAQ</a>
-      <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="btn-ig px-4 py-2.5 font-bold tracking-wide text-sm inline-flex items-center gap-1.5" aria-label="Instagram">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4a4 4 0 11-7.9 1.2 4 4 0 017.9-1.2zM17.5 6.5h.01"/></svg>
-        IG
+      <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="btn-ig w-10 h-10 flex items-center justify-center" aria-label="Síguenos en Instagram" title="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.4a4 4 0 11-7.9 1.2 4 4 0 017.9-1.2zM17.5 6.5h.01"/></svg>
       </a>
-      <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="btn-wa px-4 py-2.5 font-bold tracking-wide text-sm inline-flex items-center gap-1.5" aria-label="WhatsApp">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
-        WSP
+      <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="btn-wa w-10 h-10 flex items-center justify-center" aria-label="Únete al grupo de WhatsApp" title="WhatsApp">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
       </a>
     </nav>
     <button class="md:hidden text-paper" aria-label="Menu" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
@@ -369,11 +391,11 @@
   </div>
   <div id="mobile-menu" class="hidden md:hidden border-t border-inkLine bg-ink">
     <nav class="flex flex-col p-6 gap-4 text-sm">
-      <a href="#donde" class="text-paper/80">Dónde</a>
-      <a href="#juegos" class="text-paper/80">Juegos</a>
-      <a href="#eventos" class="text-paper/80">Eventos</a>
-      <a href="#feed" class="text-paper/80">Instagram</a>
-      <a href="#faq" class="text-paper/80">FAQ</a>
+      <a href="#donde" class="nav-mobile text-paper/80 py-1">Dónde</a>
+      <a href="#juegos" class="nav-mobile text-paper/80 py-1">Juegos</a>
+      <a href="#eventos" class="nav-mobile text-paper/80 py-1">Eventos</a>
+      <a href="#asociarse" class="nav-mobile text-paper/80 py-1">Sumarse</a>
+      <a href="#faq" class="nav-mobile text-paper/80 py-1">FAQ</a>
       <div class="grid grid-cols-2 gap-3 mt-2">
         <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="btn-ig px-4 py-3 font-bold tracking-wide text-center text-sm">Instagram</a>
         <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="btn-wa px-4 py-3 font-bold tracking-wide text-center text-sm">WhatsApp</a>
@@ -437,8 +459,8 @@
         </div>
 
         <div class="rise mt-10 flex flex-wrap items-center gap-3" style="animation-delay: 0.85s;">
-          <a href="#donde" class="btn-primary px-7 py-4 font-bold tracking-wide inline-flex items-center gap-2">
-            Vente un jueves
+          <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="btn-primary px-7 py-4 font-bold tracking-wide inline-flex items-center gap-2">
+            Ven un jueves
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </a>
           <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="btn-wa px-6 py-4 font-bold tracking-wide inline-flex items-center gap-2">
@@ -457,7 +479,7 @@
         <div class="relative w-full max-w-[340px] lg:max-w-[460px]">
           <!-- Halo dorado detrás -->
           <div class="absolute inset-0 bg-gold/10 blur-3xl scale-90 rounded-full pointer-events-none"></div>
-          <img src="assets/logo/cjmvr-logo-blanco.png" alt="Club Juegos de Mesa Quinta Región — logo" class="relative w-full h-auto float-slow" style="--r: 0deg;" />
+          <img src="assets/logo/cjmvr-logo-blanco.png" alt="Club Juegos de Mesa Quinta Región" class="relative w-full h-auto float-slow" style="--r: 0deg;" />
         </div>
       </div>
 
@@ -474,7 +496,14 @@
         <div class="font-mono text-[11px] tracking-widest text-dim mt-2 uppercase">Ir los jueves</div>
       </div>
       <div>
-        <div class="display text-4xl md:text-5xl text-gold leading-tight">EVENTOS</div>
+        <div class="flex items-center gap-2">
+          <svg class="w-7 h-7 text-gold pulse-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="16" rx="2"/>
+            <path d="M3 10h18M8 3v4M16 3v4"/>
+            <circle cx="12" cy="15" r="1.5" fill="currentColor"/>
+          </svg>
+          <div class="display text-3xl md:text-4xl text-gold leading-tight">EVENTOS</div>
+        </div>
         <div class="font-mono text-[11px] tracking-widest text-dim mt-2 uppercase">Especiales todo el año</div>
       </div>
       <div>
@@ -680,7 +709,10 @@
         <div class="font-mono text-[11px] tracking-[0.25em] uppercase text-gold mb-2">Próximo encuentro abierto</div>
         <div id="proximo" class="display text-3xl md:text-4xl text-paper">Calculando<span class="blink text-gold">_</span></div>
       </div>
-      <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="btn-primary px-6 py-3 font-bold tracking-wide">Avisa que vas →</a>
+      <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="btn-wa px-6 py-3 font-bold tracking-wide inline-flex items-center gap-2">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.654 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
+        Avisa por WhatsApp
+      </a>
     </div>
 
   </div>
@@ -1168,6 +1200,13 @@
     });
   }
   setTimeout(animateCounters, 1100);
+
+  // Cerrar mobile menu al elegir un link
+  document.querySelectorAll('#mobile-menu .nav-mobile, #mobile-menu .btn-ig, #mobile-menu .btn-wa').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.add('hidden');
+    });
+  });
 </script>
 
 </body>
