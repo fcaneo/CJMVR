@@ -58,20 +58,22 @@
 
   /* Grilla de la palabra */
   .grid {
-    display: grid;
-    grid-template-rows: repeat(6, 1fr);
+    display: flex;
+    flex-direction: column;
     gap: 6px;
     margin: 0 auto 1.5rem;
+    width: 100%;
     max-width: 320px;
-    aspect-ratio: 5/6;
   }
   .row {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 6px;
+    /* Cada fila ocupa el ancho completo y mantiene cuadritos cuadrados */
   }
   .cell {
-    aspect-ratio: 1;
+    aspect-ratio: 1 / 1;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
