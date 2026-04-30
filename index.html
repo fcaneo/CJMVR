@@ -51,10 +51,6 @@
     "@type": "AdministrativeArea",
     "name": "Región de Valparaíso, Chile"
   },
-  "audience": {
-    "@type": "PeopleAudience",
-    "suggestedMinAge": 18
-  },
   "memberOf": {
     "@type": "Organization",
     "name": "Comunidad de juegos de mesa de Chile"
@@ -63,7 +59,12 @@
     {
       "@type": "Event",
       "name": "Encuentro Abierto Jueves",
-      "description": "Encuentro semanal abierto al público en Curva 54. Trae tu juego o usa los del club. Mayores de 18 años.",
+      "description": "Encuentro semanal abierto al público en Curva 54. Trae tu juego o usa los del club. Mayores de 18 años (el local es un bar).",
+      "typicalAgeRange": "18-",
+      "audience": {
+        "@type": "PeopleAudience",
+        "suggestedMinAge": 18
+      },
       "eventStatus": "https://schema.org/EventScheduled",
       "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
       "location": {
@@ -115,10 +116,13 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='6' width='52' height='52' rx='10' fill='%23F5B700' stroke='%230E0E10' stroke-width='4'/%3E%3Ccircle cx='20' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%230E0E10'/%3E%3Ccircle cx='20' cy='44' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='44' r='5' fill='%230E0E10'/%3E%3C/svg%3E" />
 <link rel="apple-touch-icon" href="assets/logo/cjmvr-logo-blanco.png" />
 
-<!-- Fuentes: Anton (display chunky que dialoga con el logo) + DM Sans (body limpio) -->
+<!-- Fuentes: Anton (display) + DM Sans (body) + Space Mono. Optimizado: preload + subset latin + display=swap -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<!-- Preload Anton (la fuente del título principal — protagónica, evita FOUT visible en hero) -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&display=swap">
+<!-- Carga normal del resto -->
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap&subset=latin,latin-ext" rel="stylesheet">
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -437,7 +441,7 @@
   2. Edita el texto del evento, fecha y link
   Cuando el evento pase, vuelve a poner "hidden"
 -->
-<div id="event-banner" hidden class="bg-magenta text-paper text-center py-3 px-4 relative z-[60] border-b-2 border-ink">
+<div id="event-banner" hidden class="bg-magenta text-paper text-center py-3 px-4 relative z-40 border-b-2 border-ink">
   <div class="max-w-6xl mx-auto flex items-center justify-center gap-3 flex-wrap">
     <span class="display text-base md:text-lg">🎲 Aniversario CJMVR 2026 · 15 mayo · Cupos limitados</span>
     <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="font-mono text-xs uppercase tracking-wider underline underline-offset-4 hover:no-underline">
@@ -481,13 +485,26 @@
     </button>
   </div>
   <div id="mobile-menu" class="hidden md:hidden border-t border-inkLine bg-ink">
-    <nav class="flex flex-col p-6 gap-4 text-sm">
-      <a href="#donde" class="nav-mobile text-paper/80 py-1">Dónde</a>
-      <a href="#juegos" class="nav-mobile text-paper/80 py-1">Juegos</a>
-      <a href="#eventos" class="nav-mobile text-paper/80 py-1">Eventos</a>
-      <a href="#asociarse" class="nav-mobile text-paper/80 py-1">Asociarse</a>
-      <a href="#faq" class="nav-mobile text-paper/80 py-1">FAQ</a>
-      <div class="grid grid-cols-2 gap-3 mt-2">
+    <nav class="flex flex-col p-6 gap-3 text-sm">
+      <!-- CTA principal arriba para acción rápida -->
+      <a href="#donde" class="nav-mobile btn-primary px-4 py-3 font-bold tracking-wide text-center inline-flex items-center justify-center gap-2">
+        Ven un jueves
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+
+      <!-- Separador visual -->
+      <div class="font-mono text-[10px] tracking-[0.25em] uppercase text-dim mt-3 mb-1">Explora</div>
+
+      <a href="#donde" class="nav-mobile text-paper/80 py-1">Dónde y cuándo</a>
+      <a href="#juegos" class="nav-mobile text-paper/80 py-1">Lo que jugamos</a>
+      <a href="#eventos" class="nav-mobile text-paper/80 py-1">Eventos especiales</a>
+      <a href="#asociarse" class="nav-mobile text-paper/80 py-1">Cómo asociarse</a>
+      <a href="#faq" class="nav-mobile text-paper/80 py-1">Preguntas frecuentes</a>
+
+      <!-- Separador -->
+      <div class="font-mono text-[10px] tracking-[0.25em] uppercase text-dim mt-3 mb-1">Conecta</div>
+
+      <div class="grid grid-cols-2 gap-3">
         <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="btn-ig px-4 py-3 font-bold tracking-wide text-center text-sm">Instagram</a>
         <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="btn-wa px-4 py-3 font-bold tracking-wide text-center text-sm">WhatsApp</a>
       </div>
@@ -570,24 +587,24 @@
         <div class="relative w-full max-w-[340px] lg:max-w-[460px]">
           <!-- Halo dorado detrás -->
           <div class="absolute inset-0 bg-gold/10 blur-3xl scale-90 rounded-full pointer-events-none"></div>
-          <img src="assets/logo/cjmvr-logo-blanco.png" alt="Club Juegos de Mesa Quinta Región" width="880" height="886" fetchpriority="high" decoding="async" class="relative w-full h-auto float-slow" style="--r: 0deg;" />
+          <img src="assets/logo/cjmvr-logo-blanco.png" alt="Club Juegos de Mesa Quinta Región" width="880" height="886" sizes="(max-width: 1024px) 340px, 460px" fetchpriority="high" decoding="async" class="relative w-full h-auto float-slow" style="--r: 0deg;" />
         </div>
       </div>
 
     </div>
 
-    <!-- Stats -->
+    <!-- Stats (clickeables: cada uno lleva a su sección relevante) -->
     <div class="rise mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-inkLine pt-10" style="animation-delay: 1s;">
-      <div>
-        <div class="display text-5xl text-gold"><span class="counter" data-target="50">0</span><span class="text-paper">+</span></div>
-        <div class="font-mono text-[11px] tracking-widest text-dim mt-2 uppercase">Socios activos</div>
-      </div>
-      <div>
-        <div class="display text-5xl text-gold">GRATIS</div>
-        <div class="font-mono text-[11px] tracking-widest text-dim mt-2 uppercase">Ir los jueves</div>
-      </div>
-      <div>
-        <div class="flex items-center gap-2">
+      <a href="#asociarse" class="group" aria-label="Ver cómo asociarse">
+        <div class="display text-5xl text-gold transition-transform group-hover:-translate-y-0.5"><span class="counter" data-target="50">0</span><span class="text-paper">+</span></div>
+        <div class="font-mono text-[11px] tracking-widest text-dim mt-2 uppercase group-hover:text-paper transition-colors">Socios activos →</div>
+      </a>
+      <a href="#donde" class="group" aria-label="Ver dónde y cuándo">
+        <div class="display text-5xl text-gold transition-transform group-hover:-translate-y-0.5">GRATIS</div>
+        <div class="font-mono text-[11px] tracking-widest text-dim mt-2 uppercase group-hover:text-paper transition-colors">Ir los jueves →</div>
+      </a>
+      <a href="#eventos" class="group" aria-label="Ver eventos especiales">
+        <div class="flex items-center gap-2 transition-transform group-hover:-translate-y-0.5">
           <svg class="w-7 h-7 text-gold pulse-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
             <rect x="3" y="5" width="18" height="16" rx="2"/>
             <path d="M3 10h18M8 3v4M16 3v4"/>
@@ -595,8 +612,8 @@
           </svg>
           <div class="display text-3xl md:text-4xl text-gold leading-tight">EVENTOS</div>
         </div>
-        <div class="font-mono text-[11px] tracking-widest text-dim mt-2 uppercase">Especiales todo el año</div>
-      </div>
+        <div class="font-mono text-[11px] tracking-widest text-dim mt-2 uppercase group-hover:text-paper transition-colors">Especiales todo el año →</div>
+      </a>
       <div>
         <div class="display text-5xl text-gold"><span class="counter" data-target="2022" data-raw="1">0</span></div>
         <div class="font-mono text-[11px] tracking-widest text-dim mt-2 uppercase">Jugando desde</div>
@@ -714,7 +731,7 @@
       <article class="tilt-card group relative bg-inkSoft border-2 border-gold/40 overflow-hidden flex flex-col">
         <!-- Foto -->
         <a href="https://www.instagram.com/barcurva54/" target="_blank" rel="noopener" class="block aspect-[16/10] relative overflow-hidden bg-ink">
-          <img src="assets/images/curva-54.jpg" alt="Socios del club jugando en Curva 54, Viña del Mar" width="1080" height="1440" loading="lazy" decoding="async" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
+          <img src="assets/images/curva-54.jpg" alt="Socios del club jugando en Curva 54, Viña del Mar" width="1080" height="1440" sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" decoding="async" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
           <div class="absolute inset-0 bg-gradient-to-t from-inkSoft via-inkSoft/40 to-transparent"></div>
           <div class="absolute top-4 left-4">
             <span class="pill text-ink bg-gold border-gold font-bold">★ Abierto a todos · Gratis</span>
@@ -755,7 +772,7 @@
       <!-- Lunes en Gato Arcano: SOLO SOCIOS + foto -->
       <article class="tilt-card group relative bg-inkSoft border-2 border-magenta/40 overflow-hidden flex flex-col">
         <a href="https://gatoarcano.cl/" target="_blank" rel="noopener" class="block aspect-[16/10] relative overflow-hidden bg-ink">
-          <img src="assets/images/gato-arcano.jpg" alt="Equipo de Gato Arcano frente a la fachada morada y amarilla" width="1152" height="1536" loading="lazy" decoding="async" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
+          <img src="assets/images/gato-arcano.jpg" alt="Equipo de Gato Arcano frente a la fachada morada y amarilla" width="1152" height="1536" sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" decoding="async" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
           <div class="absolute inset-0 bg-gradient-to-t from-inkSoft via-inkSoft/40 to-transparent"></div>
           <div class="absolute top-4 left-4">
             <span class="pill text-ink bg-magenta border-magenta font-bold">🔒 Solo socios</span>
@@ -799,6 +816,9 @@
       <div>
         <div id="proximo-label" class="font-mono text-[11px] tracking-[0.25em] uppercase text-gold mb-2">Próximo encuentro abierto</div>
         <div id="proximo" class="display text-3xl md:text-4xl text-paper">Calculando<span class="blink text-gold">_</span></div>
+        <p class="font-mono text-[10px] tracking-wider uppercase text-dim mt-3">
+          ⚠ Salvo aviso por <a href="https://www.instagram.com/clubjuegosdemesaquintaregion" target="_blank" rel="noopener" class="link-anim text-paper/70">Instagram</a> en feriados o eventos especiales
+        </p>
       </div>
       <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener" class="btn-wa px-6 py-3 font-bold tracking-wide inline-flex items-center gap-2">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.654 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
@@ -899,7 +919,7 @@
         </div>
         <h3 class="display text-3xl text-paper mt-4">Toma 6</h3>
         <p class="text-paper/60 text-sm mt-2 font-mono">2-10 jugadores · 45 min</p>
-        <p class="text-paper/80 mt-4 leading-relaxed">El clásico que rompe el hielo. Sencillo de explicar, imposible de ganar siempre. Ideal para mesas grandes y recién llegados.</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">¿No sabes qué jugar con 8 personas? Esto. Cinco minutos de reglas, cero tiempo muerto, gritos garantizados.</p>
       </article>
 
       <!-- Wingspan -->
@@ -913,7 +933,7 @@
         </div>
         <h3 class="display text-3xl text-paper mt-4">Wingspan</h3>
         <p class="text-paper/60 text-sm mt-2 font-mono">1-5 jugadores · 60-90 min</p>
-        <p class="text-paper/80 mt-4 leading-relaxed">Aves, hábitats y combos hermosos. El favorito de los que disfrutan construir motores económicos sin pelear con nadie.</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">Cartas de aves bellísimas y motores que combean solos. Si te gusta optimizar sin pelear con nadie, este es tu vicio nuevo.</p>
       </article>
 
       <!-- Ark Nova -->
@@ -928,7 +948,7 @@
         </div>
         <h3 class="display text-3xl text-paper mt-4">Ark Nova</h3>
         <p class="text-paper/60 text-sm mt-2 font-mono">1-4 jugadores · 2-3 horas</p>
-        <p class="text-paper/80 mt-4 leading-relaxed">Construye un zoológico moderno con 250 cartas distintas. El juego que pide despejar la mesa y tomarse la noche entera.</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">250 cartas. Tres horas. Un zoológico moderno por construir. Pide la mesa entera y la noche entera — y la dan, gustosos.</p>
       </article>
 
       <!-- Amazonas -->
@@ -942,7 +962,7 @@
         </div>
         <h3 class="display text-3xl text-paper mt-4">Amazonas</h3>
         <p class="text-paper/60 text-sm mt-2 font-mono">3-4 jugadores · 60 min</p>
-        <p class="text-paper/80 mt-4 leading-relaxed">Expedición por la selva, gestión de recursos y rutas. Klaus-Jürgen Wrede en su mejor versión: simple por fuera, profundo por dentro.</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">Klaus-Jürgen Wrede haciendo lo suyo: reglas que aprendes en 5 minutos, decisiones que duelen los 60.</p>
       </article>
 
       <!-- Brass: Birmingham -->
@@ -959,7 +979,7 @@
         </div>
         <h3 class="display text-3xl text-paper mt-4">Brass: Birmingham</h3>
         <p class="text-paper/60 text-sm mt-2 font-mono">2-4 jugadores · 2 horas</p>
-        <p class="text-paper/80 mt-4 leading-relaxed">El #1 de BGG durante años. Construye redes industriales en la Inglaterra victoriana. Para los que quieren pensar cada jugada como ingenieros del siglo XIX.</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">Año tras año, top 1 en BGG. No es para cualquiera: pide pensar 5 jugadas adelante. Vale cada minuto.</p>
       </article>
 
       <!-- Concordia -->
@@ -974,7 +994,7 @@
         </div>
         <h3 class="display text-3xl text-paper mt-4">Concordia</h3>
         <p class="text-paper/60 text-sm mt-2 font-mono">2-5 jugadores · 90 min</p>
-        <p class="text-paper/80 mt-4 leading-relaxed">Comerciantes en el imperio romano. Mazo de cartas que es a la vez tu mano y tu motor. Elegante, sin dados, sin azar — solo decisiones.</p>
+        <p class="text-paper/80 mt-4 leading-relaxed">Sin dados. Sin azar. Solo decisiones, y todas duras. Eurogame puro para los que disfrutan culpar solo a sí mismos cuando pierden.</p>
       </article>
 
     </div>
@@ -1179,7 +1199,7 @@
           <span class="text-gold display text-3xl group-open:rotate-45 transition-transform">+</span>
         </summary>
         <div class="px-6 pb-6 text-paper/70 leading-relaxed">
-          No. Los jueves en Curva 54 son siempre gratis, vayas una vez o todas las semanas. La cuota ($2.500/mes) es solo para quienes deciden hacerse socios y aporta a la ludoteca, eventos especiales y postulaciones a fondos.
+          No. Los jueves en Curva 54 son siempre gratis, vayas una vez o todas las semanas. La cuota ($2.500/mes) es solo para quienes deciden hacerse socios y aporta a la ludoteca, eventos especiales y postulaciones a fondos. <a href="#asociarse" class="link-anim text-gold">Ver cómo asociarse →</a>
         </div>
       </details>
 
@@ -1306,7 +1326,7 @@
 </section>
 
 <!-- ========== FOOTER ========== -->
-<footer class="bg-ink border-t border-inkLine py-12">
+<footer class="bg-ink border-t border-inkLine py-12 pb-28 md:pb-12">
   <div class="max-w-7xl mx-auto px-6 lg:px-10">
     <div class="flex flex-wrap justify-between items-center gap-6">
       <div class="flex items-center gap-4">
@@ -1323,8 +1343,11 @@
           <div class="font-mono text-[10px] text-dim tracking-[0.2em] uppercase">Quinta Región · Viña del Mar</div>
         </div>
       </div>
-      <div class="font-mono text-[11px] tracking-widest text-dim uppercase">
-        © <span id="year"></span> · Hecho con dados, meeples y un poco de café
+      <div class="font-mono text-[11px] tracking-widest text-dim uppercase text-right">
+        <div>© <span id="year"></span> · Hecho con dados, meeples y un poco de café</div>
+        <div class="mt-1">
+          <a href="https://github.com/fcaneo/CJMVR" target="_blank" rel="noopener" class="link-anim hover:text-paper">Código en GitHub ↗</a>
+        </div>
       </div>
     </div>
   </div>
@@ -1333,12 +1356,13 @@
 <!-- ========== FAB WHATSAPP (aparece tras scroll) ========== -->
 <a id="wa-fab" href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh" target="_blank" rel="noopener"
    class="fixed bottom-6 right-6 z-[55] w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#25D366] text-ink flex items-center justify-center shadow-lg shadow-black/40 opacity-0 pointer-events-none translate-y-4 transition-all duration-300 hover:scale-110 focus-visible:scale-110"
+   style="position: fixed;"
    aria-label="Únete al grupo de WhatsApp del club">
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+  <!-- Pulso decorativo (debe ir antes del icono para que quede atrás) -->
+  <span class="absolute inset-0 rounded-full bg-[#25D366] opacity-40 animate-ping pointer-events-none" aria-hidden="true"></span>
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="relative z-10">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/>
   </svg>
-  <!-- Pulso decorativo -->
-  <span class="absolute inset-0 rounded-full bg-[#25D366] opacity-50 animate-ping pointer-events-none" aria-hidden="true"></span>
 </a>
 
 <!-- ========== EASTER EGG: MODAL DE TIRADA ========== -->
@@ -1399,166 +1423,213 @@
 </style>
 
 <script>
-  // Año dinámico
-  document.getElementById('year').textContent = new Date().getFullYear();
+  // Cada bloque aislado — si uno falla, los demás siguen funcionando
 
-  // Próximo jueves abierto (los lunes son solo para socios).
-  // Detecta también el estado "EN VIVO" cuando es jueves entre 19:30 y 23:59
-  function proximoJueves() {
-    const hoy = new Date();
-    const dia = hoy.getDay();
-    const hora = hoy.getHours();
-    const min = hoy.getMinutes();
-    const horaDecimal = hora + min / 60;
-    const meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
-
-    const proximoEl = document.getElementById('proximo');
-    const labelEl = document.getElementById('proximo-label');
-    const enVivo = (dia === 4 && horaDecimal >= 19.5);
-
-    if (enVivo) {
-      if (labelEl) {
-        labelEl.innerHTML = '<span class="inline-block w-2.5 h-2.5 bg-green-400 rounded-full mr-2 align-middle pulse-slow"></span>ESTAMOS JUGANDO AHORA';
-        labelEl.classList.remove('text-gold');
-        labelEl.classList.add('text-green-400');
-      }
-      proximoEl.innerHTML = `<span class="text-paper">Hoy</span> en <span class="text-gold">Curva 54</span> · ven cuando quieras`;
-      return;
-    }
-
-    let diff = (4 - dia + 7) % 7;
-    if (diff === 0 && horaDecimal >= 19.5) diff = 7;
-
-    const fecha = new Date(hoy);
-    fecha.setDate(hoy.getDate() + diff);
-    const fechaStr = `${fecha.getDate()} ${meses[fecha.getMonth()]}`;
-    const cuando = diff === 0 ? 'Hoy' : diff === 1 ? 'Mañana' : 'Jueves';
-
-    proximoEl.innerHTML = `${cuando} <span class="text-gold">${fechaStr}</span> · 19:30 en Curva 54`;
-  }
-  proximoJueves();
-  // Re-evaluar cada 5 minutos por si cruza la hora del evento
-  setInterval(proximoJueves, 5 * 60 * 1000);
-
-  // Contadores animados (suben de 0 al target cuando el hero aparece)
-  function animateCounters() {
-    document.querySelectorAll('.counter').forEach(el => {
-      const target = parseInt(el.dataset.target, 10);
-      const raw = el.dataset.raw === '1';
-      const duration = 1600;
-      const start = performance.now();
-      function step(now) {
-        const progress = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        const value = Math.round(eased * target);
-        el.textContent = raw ? String(value) : value.toLocaleString('es-CL');
-        if (progress < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    });
-  }
-  setTimeout(animateCounters, 1100);
-
-  // Cerrar mobile menu al elegir un link
-  document.querySelectorAll('#mobile-menu .nav-mobile, #mobile-menu .btn-ig, #mobile-menu .btn-wa').forEach(link => {
-    link.addEventListener('click', () => {
-      document.getElementById('mobile-menu').classList.add('hidden');
-    });
-  });
-
-  // Easter egg: 5 clicks al dado del nav abre el "rolling" de juegos
+  // 1. Año dinámico
   (function() {
-    const juegos = [
-      { name: 'Toma 6', meta: '2-10 jug · 45 min · Cartas', blurb: 'Sencillo de explicar, imposible de ganar siempre. Perfecto para mesas grandes.' },
-      { name: 'Wingspan', meta: '1-5 jug · 60-90 min · Eurogame', blurb: 'Aves, hábitats y combos hermosos. Construir motores económicos sin pelear.' },
-      { name: 'Ark Nova', meta: '1-4 jug · 2-3 horas · Pesado', blurb: 'Construye un zoológico moderno. Pide despejar la mesa y tomarse la noche entera.' },
-      { name: 'Amazonas', meta: '3-4 jug · 60 min · Familiar', blurb: 'Expedición por la selva. Simple por fuera, profundo por dentro.' },
-      { name: 'Brass: Birmingham', meta: '2-4 jug · 2 horas · BGG Top', blurb: 'Redes industriales en la Inglaterra victoriana. Cada jugada es ingeniería.' },
-      { name: 'Concordia', meta: '2-5 jug · 90 min · Eurogame puro', blurb: 'Comerciantes en el imperio romano. Sin dados, sin azar — solo decisiones.' }
-    ];
-
-    const navDice = document.querySelector('.nav-dice');
-    const modal = document.getElementById('dice-modal');
-    const resultEl = document.getElementById('dice-result');
-    const metaEl = document.getElementById('dice-meta');
-    const blurbEl = document.getElementById('dice-blurb');
-    const spinner = document.getElementById('dice-spinner');
-    const closeBtn = document.getElementById('dice-modal-close');
-    const rerollBtn = document.getElementById('dice-reroll');
-
-    if (!navDice || !modal) return;
-
-    let clickCount = 0;
-    let clickTimer = null;
-
-    function tirarDado() {
-      // Anima el dado
-      spinner.classList.remove('dice-tumble');
-      void spinner.offsetWidth; // forzar reflow
-      spinner.classList.add('dice-tumble');
-
-      // Resultado al final de la animación
-      resultEl.textContent = '...';
-      metaEl.textContent = '...';
-      blurbEl.textContent = '...';
-
-      setTimeout(() => {
-        const elegido = juegos[Math.floor(Math.random() * juegos.length)];
-        resultEl.textContent = elegido.name;
-        metaEl.textContent = elegido.meta;
-        blurbEl.textContent = elegido.blurb;
-      }, 900);
-    }
-
-    function abrirModal() {
-      modal.classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-      tirarDado();
-    }
-
-    function cerrarModal() {
-      modal.classList.add('hidden');
-      document.body.style.overflow = '';
-    }
-
-    navDice.addEventListener('click', (e) => {
-      clickCount++;
-      clearTimeout(clickTimer);
-      clickTimer = setTimeout(() => { clickCount = 0; }, 1500);
-
-      if (clickCount >= 5) {
-        e.preventDefault();
-        clickCount = 0;
-        abrirModal();
-      }
-      // Clicks 1-4: comportamiento normal (link al #top)
-    });
-
-    closeBtn.addEventListener('click', cerrarModal);
-    rerollBtn.addEventListener('click', tirarDado);
-
-    // Cerrar con backdrop o ESC
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) cerrarModal();
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !modal.classList.contains('hidden')) cerrarModal();
-    });
+    try {
+      const el = document.getElementById('year');
+      if (el) el.textContent = new Date().getFullYear();
+    } catch (e) { console.warn('[year]', e); }
   })();
 
-  // FAB de WhatsApp: aparece tras hacer scroll
+  // 2. Próximo jueves abierto + estado EN VIVO
   (function() {
-    const fab = document.getElementById('wa-fab');
-    if (!fab) return;
-    const onScroll = () => {
-      if (window.scrollY > 600) {
-        fab.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
-      } else {
-        fab.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+    try {
+      const proximoEl = document.getElementById('proximo');
+      const labelEl = document.getElementById('proximo-label');
+      if (!proximoEl) return;
+
+      const meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+      const dias = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+
+      function actualizar() {
+        const hoy = new Date();
+        const dia = hoy.getDay();
+        const horaDecimal = hoy.getHours() + hoy.getMinutes() / 60;
+        const enVivo = (dia === 4 && horaDecimal >= 19.5);
+
+        if (enVivo) {
+          if (labelEl) {
+            labelEl.innerHTML = '<span class="inline-block w-2.5 h-2.5 bg-[#25D366] rounded-full mr-2 align-middle pulse-slow"></span>ESTAMOS JUGANDO AHORA';
+            labelEl.classList.remove('text-gold');
+            labelEl.style.color = '#25D366';
+          }
+          proximoEl.innerHTML = '<span class="text-paper">Hoy</span> en <span class="text-gold">Curva 54</span> · ven cuando quieras';
+          return;
+        }
+
+        let diff = (4 - dia + 7) % 7;
+        if (diff === 0 && horaDecimal >= 19.5) diff = 7;
+
+        const fecha = new Date(hoy);
+        fecha.setDate(hoy.getDate() + diff);
+        const fechaStr = `${fecha.getDate()} ${meses[fecha.getMonth()]}`;
+        let cuando;
+        if (diff === 0) cuando = 'Hoy, jueves';
+        else if (diff === 1) cuando = 'Mañana, jueves';
+        else cuando = 'Jueves';
+
+        proximoEl.innerHTML = `${cuando} <span class="text-gold">${fechaStr}</span> · 19:30 en Curva 54`;
       }
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+
+      actualizar();
+      setInterval(actualizar, 5 * 60 * 1000); // re-evaluar cada 5 min
+    } catch (e) { console.warn('[proximoJueves]', e); }
+  })();
+
+  // 3. Contadores animados
+  (function() {
+    try {
+      function animate() {
+        document.querySelectorAll('.counter').forEach(el => {
+          const target = parseInt(el.dataset.target, 10);
+          const raw = el.dataset.raw === '1';
+          const duration = 1600;
+          const start = performance.now();
+          function step(now) {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const value = Math.round(eased * target);
+            el.textContent = raw ? String(value) : value.toLocaleString('es-CL');
+            if (progress < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        });
+      }
+      setTimeout(animate, 1100);
+    } catch (e) { console.warn('[counters]', e); }
+  })();
+
+  // 4. Mobile menu auto-close
+  (function() {
+    try {
+      const menu = document.getElementById('mobile-menu');
+      if (!menu) return;
+      menu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => menu.classList.add('hidden'));
+      });
+    } catch (e) { console.warn('[mobile-menu]', e); }
+  })();
+
+  // 5. Easter egg: 5 clicks al dado del nav abre modal con juego al azar
+  (function() {
+    try {
+      const juegos = [
+        { name: 'Toma 6', meta: '2-10 jug · 45 min · Cartas', blurb: 'Sencillo de explicar, imposible de ganar siempre. Perfecto para mesas grandes.' },
+        { name: 'Wingspan', meta: '1-5 jug · 60-90 min · Eurogame', blurb: 'Aves, hábitats y combos hermosos. Construir motores económicos sin pelear.' },
+        { name: 'Ark Nova', meta: '1-4 jug · 2-3 horas · Pesado', blurb: 'Construye un zoológico moderno. Pide despejar la mesa y tomarse la noche entera.' },
+        { name: 'Amazonas', meta: '3-4 jug · 60 min · Familiar', blurb: 'Expedición por la selva. Simple por fuera, profundo por dentro.' },
+        { name: 'Brass: Birmingham', meta: '2-4 jug · 2 horas · BGG Top', blurb: 'Redes industriales en la Inglaterra victoriana. Cada jugada es ingeniería.' },
+        { name: 'Concordia', meta: '2-5 jug · 90 min · Eurogame puro', blurb: 'Comerciantes en el imperio romano. Sin dados, sin azar — solo decisiones.' }
+      ];
+
+      const navDice = document.querySelector('.nav-dice');
+      const modal = document.getElementById('dice-modal');
+      const resultEl = document.getElementById('dice-result');
+      const metaEl = document.getElementById('dice-meta');
+      const blurbEl = document.getElementById('dice-blurb');
+      const spinner = document.getElementById('dice-spinner');
+      const closeBtn = document.getElementById('dice-modal-close');
+      const rerollBtn = document.getElementById('dice-reroll');
+
+      if (!navDice || !modal) return;
+
+      let clickCount = 0;
+      let clickTimer = null;
+      let lastFocused = null; // para devolver el foco al cerrar
+
+      function tirarDado() {
+        spinner.classList.remove('dice-tumble');
+        void spinner.offsetWidth;
+        spinner.classList.add('dice-tumble');
+        resultEl.textContent = '...';
+        metaEl.textContent = '...';
+        blurbEl.textContent = '...';
+        setTimeout(() => {
+          const elegido = juegos[Math.floor(Math.random() * juegos.length)];
+          resultEl.textContent = elegido.name;
+          metaEl.textContent = elegido.meta;
+          blurbEl.textContent = elegido.blurb;
+        }, 900);
+      }
+
+      // Focus trap: mantiene Tab dentro del modal
+      function getFocusable() {
+        return modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      }
+
+      function trapFocus(e) {
+        if (e.key !== 'Tab') return;
+        const focusable = getFocusable();
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+
+      function abrirModal() {
+        lastFocused = document.activeElement;
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        tirarDado();
+        // Focus al cierre (primer botón accesible)
+        setTimeout(() => closeBtn.focus(), 100);
+      }
+
+      function cerrarModal() {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+        if (lastFocused) lastFocused.focus();
+      }
+
+      navDice.addEventListener('click', (e) => {
+        clickCount++;
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(() => { clickCount = 0; }, 1500);
+        if (clickCount >= 5) {
+          e.preventDefault();
+          clickCount = 0;
+          abrirModal();
+        }
+      });
+
+      closeBtn.addEventListener('click', cerrarModal);
+      rerollBtn.addEventListener('click', tirarDado);
+
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) cerrarModal();
+      });
+
+      modal.addEventListener('keydown', trapFocus);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) cerrarModal();
+      });
+    } catch (e) { console.warn('[easter-egg]', e); }
+  })();
+
+  // 6. FAB WhatsApp: aparece tras scroll
+  (function() {
+    try {
+      const fab = document.getElementById('wa-fab');
+      if (!fab) return;
+      const onScroll = () => {
+        if (window.scrollY > 600) {
+          fab.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+        } else {
+          fab.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+        }
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    } catch (e) { console.warn('[wa-fab]', e); }
   })();
 </script>
 
