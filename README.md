@@ -20,6 +20,7 @@ Sitio web del **Club Juegos de Mesa Quinta Región**, Viña del Mar.
 | [`/dado.html`](https://fcaneo.github.io/CJMVR/dado.html) | Recomendador al azar del top 50 BoardGameGeek |
 | [`/sorteo.html`](https://fcaneo.github.io/CJMVR/sorteo.html) | Sorteo de orden de turno (hasta 12 jugadores) |
 | [`/marcador.html`](https://fcaneo.github.io/CJMVR/marcador.html) | Marcador de partidas con persistencia y podio |
+| [`/wordle.html`](https://fcaneo.github.io/CJMVR/wordle.html) | Wordle del día en español, 5 letras, 6 intentos |
 | [`/404.html`](https://fcaneo.github.io/CJMVR/404.html) | Página de error con personalidad |
 
 ## Estructura del repositorio
@@ -30,6 +31,7 @@ CJMVR/
 ├── dado.html               # Herramienta: recomendador BGG
 ├── sorteo.html             # Herramienta: sorteo de orden
 ├── marcador.html           # Herramienta: marcador con persistencia
+├── wordle.html             # Juego: Wordle del día en español
 ├── 404.html                # Página de error
 ├── robots.txt              # Permite indexación, apunta al sitemap
 ├── sitemap.xml             # Sitemap XML para buscadores

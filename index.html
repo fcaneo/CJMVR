@@ -907,11 +907,11 @@
       </p>
     </div>
 
-    <!-- Trío de herramientas lúdicas: dado + sorteo + marcador -->
+    <!-- Cuarteto de herramientas lúdicas: dado + sorteo + marcador + wordle -->
     <div class="mb-4">
       <div class="font-mono text-[10px] tracking-[0.25em] uppercase text-dim mb-3">★ Herramientas para la mesa</div>
     </div>
-    <div class="mb-12 grid md:grid-cols-3 gap-4">
+    <div class="mb-12 grid sm:grid-cols-2 gap-4">
 
       <!-- Tirar dado -->
       <div class="relative group">
@@ -938,30 +938,27 @@
         <a href="dado.html" class="absolute top-2 right-2 text-[10px] font-mono uppercase tracking-wider text-paper/40 hover:text-cyan transition-colors" aria-label="Abrir dado en su propia página">↗</a>
       </div>
 
-      <!-- Sortear quien parte -->
-      <div class="relative group">
-        <button id="shuffle-launcher" class="w-full relative overflow-hidden bg-gradient-to-br from-magenta/10 via-transparent to-gold/10 border border-magenta/30 p-6 text-left transition-all hover:border-magenta/60 hover:-translate-y-0.5 focus-visible:border-magenta/60" aria-label="Sortear el orden de turno entre jugadores">
-          <div class="flex items-center gap-4">
-            <div class="relative w-14 h-14 flex-shrink-0 flex items-center justify-center">
-              <!-- Icono shuffle universal: dos flechas que se cruzan -->
-              <svg viewBox="0 0 24 24" fill="none" stroke="#E91E63" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 transition-transform group-hover:rotate-180 duration-500" aria-hidden="true">
-                <polyline points="16 3 21 3 21 8"/>
-                <line x1="4" y1="20" x2="21" y2="3"/>
-                <polyline points="21 16 21 21 16 21"/>
-                <line x1="15" y1="15" x2="21" y2="21"/>
-                <line x1="4" y1="4" x2="9" y2="9"/>
-              </svg>
-              <span class="absolute inset-0 rounded-lg bg-magenta/30 -z-10 blur-xl group-hover:bg-magenta/50 transition-colors" aria-hidden="true"></span>
-            </div>
-            <div class="flex-1 min-w-0">
-              <div class="font-mono text-[10px] tracking-[0.25em] uppercase text-magenta mb-1">¿Quién parte?</div>
-              <h3 class="display text-xl text-paper leading-tight">Sortea el orden</h3>
-              <p class="text-paper/60 text-xs mt-1">Hasta 12, sin discutir</p>
-            </div>
+      <!-- Sortear quien parte (link directo a sorteo.html) -->
+      <a href="sorteo.html" class="group relative overflow-hidden bg-gradient-to-br from-magenta/10 via-transparent to-gold/10 border border-magenta/30 p-6 text-left transition-all hover:border-magenta/60 hover:-translate-y-0.5 focus-visible:border-magenta/60 block" aria-label="Abrir sorteo de orden de turno">
+        <div class="flex items-center gap-4">
+          <div class="relative w-14 h-14 flex-shrink-0 flex items-center justify-center">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#E91E63" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 transition-transform group-hover:rotate-180 duration-500" aria-hidden="true">
+              <polyline points="16 3 21 3 21 8"/>
+              <line x1="4" y1="20" x2="21" y2="3"/>
+              <polyline points="21 16 21 21 16 21"/>
+              <line x1="15" y1="15" x2="21" y2="21"/>
+              <line x1="4" y1="4" x2="9" y2="9"/>
+            </svg>
+            <span class="absolute inset-0 rounded-lg bg-magenta/30 -z-10 blur-xl group-hover:bg-magenta/50 transition-colors" aria-hidden="true"></span>
           </div>
-        </button>
-        <a href="sorteo.html" class="absolute top-2 right-2 text-[10px] font-mono uppercase tracking-wider text-paper/40 hover:text-magenta transition-colors" aria-label="Abrir sorteo en su propia página">↗</a>
-      </div>
+          <div class="flex-1 min-w-0">
+            <div class="font-mono text-[10px] tracking-[0.25em] uppercase text-magenta mb-1">¿Quién parte?</div>
+            <h3 class="display text-xl text-paper leading-tight">Sortea el orden</h3>
+            <p class="text-paper/60 text-xs mt-1">Hasta 12, sin discutir</p>
+          </div>
+          <svg class="w-5 h-5 text-magenta flex-shrink-0 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </div>
+      </a>
 
       <!-- Marcador (link directo - no tiene modal) -->
       <a href="marcador.html" class="group relative overflow-hidden bg-gradient-to-br from-gold/10 via-transparent to-cyan/10 border border-gold/30 p-6 text-left transition-all hover:border-gold/60 hover:-translate-y-0.5 focus-visible:border-gold/60 block" aria-label="Abrir marcador para anotar puntos por rondas">
@@ -984,6 +981,32 @@
             <p class="text-paper/60 text-xs mt-1">Puntos por rondas, hasta 12</p>
           </div>
           <svg class="w-5 h-5 text-gold flex-shrink-0 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <!-- Wordle (link directo) -->
+      <a href="wordle.html" class="group relative overflow-hidden bg-gradient-to-br from-cyan/10 via-transparent to-gold/10 border border-cyan/30 p-6 text-left transition-all hover:border-cyan/60 hover:-translate-y-0.5 focus-visible:border-cyan/60 block" aria-label="Jugar Wordle del día">
+        <div class="flex items-center gap-4">
+          <div class="relative w-14 h-14 flex-shrink-0 flex items-center justify-center">
+            <!-- 5 cuadritos tipo wordle -->
+            <svg viewBox="0 0 64 64" fill="none" class="w-full h-full transition-transform group-hover:scale-110" aria-hidden="true">
+              <rect x="4"  y="20" width="11" height="11" rx="1.5" fill="#3FA9D6" stroke="#0E0E10" stroke-width="2"/>
+              <rect x="17" y="20" width="11" height="11" rx="1.5" fill="none" stroke="#3FA9D6" stroke-width="2"/>
+              <rect x="30" y="20" width="11" height="11" rx="1.5" fill="#F5B700" stroke="#0E0E10" stroke-width="2"/>
+              <rect x="43" y="20" width="11" height="11" rx="1.5" fill="none" stroke="#3FA9D6" stroke-width="2"/>
+              <rect x="4"  y="33" width="11" height="11" rx="1.5" fill="none" stroke="#3FA9D6" stroke-width="2"/>
+              <rect x="17" y="33" width="11" height="11" rx="1.5" fill="#F5B700" stroke="#0E0E10" stroke-width="2"/>
+              <rect x="30" y="33" width="11" height="11" rx="1.5" fill="#F5B700" stroke="#0E0E10" stroke-width="2"/>
+              <rect x="43" y="33" width="11" height="11" rx="1.5" fill="#F5B700" stroke="#0E0E10" stroke-width="2"/>
+            </svg>
+            <span class="absolute inset-0 rounded-lg bg-cyan/30 -z-10 blur-xl group-hover:bg-cyan/50 transition-colors" aria-hidden="true"></span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="font-mono text-[10px] tracking-[0.25em] uppercase text-cyan mb-1">★ Palabra del día</div>
+            <h3 class="display text-xl text-paper leading-tight">Wordle</h3>
+            <p class="text-paper/60 text-xs mt-1">5 letras, 6 intentos, en español</p>
+          </div>
+          <svg class="w-5 h-5 text-cyan flex-shrink-0 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </div>
       </a>
 
@@ -1504,121 +1527,6 @@
   </div>
 </div>
 
-<!-- ========== MODAL: SORTEO DE QUIÉN PARTE ========== -->
-<div id="shuffle-modal" class="fixed inset-0 bg-ink/90 backdrop-blur-md z-[100] hidden items-center justify-center p-6 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="shuffle-modal-title">
-  <div class="relative bg-inkSoft border-2 border-magenta max-w-lg w-full p-8 md:p-10 my-8">
-    <button id="shuffle-modal-close" class="absolute top-3 right-3 w-10 h-10 flex items-center justify-center text-paper/60 hover:text-magenta transition-colors text-2xl" aria-label="Cerrar">×</button>
-
-    <div class="font-mono text-[11px] tracking-[0.3em] uppercase text-magenta mb-4">★ Sorteo de turno</div>
-
-    <!-- Vista 1: ingresar nombres -->
-    <div id="shuffle-input-view">
-      <h3 id="shuffle-modal-title" class="display text-2xl md:text-3xl text-paper mb-2">¿Quién parte?</h3>
-      <p class="text-paper/60 text-sm mb-6">Agrega los nombres de los jugadores. El dado decide el orden.</p>
-
-      <ul id="player-list" class="space-y-2 mb-4"></ul>
-
-      <button id="add-player" class="w-full py-3 mb-6 border border-dashed border-paper/30 text-paper/70 hover:border-magenta hover:text-magenta transition-colors font-mono text-xs tracking-widest uppercase inline-flex items-center justify-center gap-2">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-        Agregar jugador
-      </button>
-
-      <div class="flex justify-between items-center gap-3">
-        <span id="shuffle-error" class="text-magenta text-xs font-mono uppercase tracking-wider"></span>
-        <button id="shuffle-do" class="btn-primary px-6 py-3 font-bold tracking-wide inline-flex items-center gap-2 ml-auto">
-          Sortear
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 11-3-6.7L21 8M21 3v5h-5"/></svg>
-        </button>
-      </div>
-    </div>
-
-    <!-- Vista 2: resultado -->
-    <div id="shuffle-result-view" class="hidden text-center">
-      <div id="shuffle-winner-phrase" class="mb-2 font-mono text-xs text-paper/60 tracking-widest uppercase">Parte</div>
-      <div id="shuffle-winner" class="display text-5xl md:text-6xl text-gold mb-1 leading-none">—</div>
-      <div class="text-paper/50 font-mono text-xs tracking-widest uppercase mt-4 mb-3">Orden completo</div>
-      <ol id="shuffle-order" class="space-y-1 text-paper/80 mb-6 max-w-xs mx-auto"></ol>
-
-      <div class="flex flex-col sm:flex-row justify-center gap-3">
-        <button id="shuffle-again" class="btn-primary px-6 py-3 font-bold tracking-wide inline-flex items-center justify-center gap-2">
-          Sortear de nuevo
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 11-3-6.7L21 8M21 3v5h-5"/></svg>
-        </button>
-        <button id="shuffle-edit" class="btn-secondary px-6 py-3 font-bold tracking-wide">
-          Editar nombres
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<style>
-  #shuffle-modal:not(.hidden) { display: flex; animation: modalIn 0.3s ease-out; }
-  #shuffle-modal > div { animation: modalScale 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
-
-  /* Animación del nombre ganador */
-  @keyframes winnerReveal {
-    0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
-    60% { opacity: 1; transform: scale(1.15) rotate(2deg); }
-    100% { transform: scale(1) rotate(0deg); }
-  }
-  .winner-reveal { animation: winnerReveal 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); }
-
-  /* Lista de orden con stagger */
-  @keyframes orderItem {
-    from { opacity: 0; transform: translateX(-10px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  #shuffle-order li {
-    animation: orderItem 0.3s ease-out forwards;
-    opacity: 0;
-  }
-
-  /* Player input row */
-  .player-row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .player-row input {
-    flex: 1;
-    background: #16161A;
-    border: 1px solid #26262C;
-    color: #fff;
-    padding: 0.65rem 0.75rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    transition: border-color 0.2s ease;
-  }
-  .player-row input:focus {
-    outline: none;
-    border-color: #E91E63;
-  }
-  .player-row .player-num {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    color: #A0A0A8;
-    width: 24px;
-    text-align: right;
-  }
-  .player-row .remove-player {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #A0A0A8;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    transition: color 0.2s ease;
-  }
-  .player-row .remove-player:hover {
-    color: #E91E63;
-  }
-</style>
-
 <style>
   #dice-modal:not(.hidden) { display: flex; animation: modalIn 0.3s ease-out; }
   @keyframes modalIn {
@@ -1880,270 +1788,7 @@
     } catch (e) { console.warn('[easter-egg]', e); }
   })();
 
-  // 6. Sorteo "¿Quién parte?": modal con inputs dinámicos hasta 6 jugadores
-  (function() {
-    try {
-      const launcher = document.getElementById('shuffle-launcher');
-      const modal = document.getElementById('shuffle-modal');
-      const closeBtn = document.getElementById('shuffle-modal-close');
-      const inputView = document.getElementById('shuffle-input-view');
-      const resultView = document.getElementById('shuffle-result-view');
-      const playerList = document.getElementById('player-list');
-      const addBtn = document.getElementById('add-player');
-      const sortearBtn = document.getElementById('shuffle-do');
-      const errorEl = document.getElementById('shuffle-error');
-      const winnerEl = document.getElementById('shuffle-winner');
-      const orderEl = document.getElementById('shuffle-order');
-      const againBtn = document.getElementById('shuffle-again');
-      const editBtn = document.getElementById('shuffle-edit');
-
-      if (!launcher || !modal) return;
-
-      const MAX_JUGADORES = 12;
-      const FRASES_SORTEO = [
-        'El elegido es...',
-        'Los dioses del azar dijeron...',
-        'Sin tongo, sin trampa, parte...',
-        'La mesa habló (y no fue democrática)...',
-        'Bendecido por la suerte:',
-        'Hoy abre la noche...',
-        'Que conste, esto fue al azar...',
-        'Las cartas no mienten:',
-        '95% suerte, 5% destino. Parte:',
-        'Y el primer turno es para...',
-        'Con ustedes, su nuevo enemigo:',
-        'El universo conspiró para que parta...',
-        'Tras un cálculo riguroso:',
-        'No te pongas nervioso:',
-        'No fui yo, fue el random:',
-        'Acepta tu destino:',
-        'Tira la primera piedra:',
-        'Resultado oficial e inapelable:'
-      ];
-      const MIN_JUGADORES = 2;
-      let lastFocused = null;
-      let ultimosNombres = [];
-
-      function crearFila(num) {
-        const li = document.createElement('li');
-        li.className = 'player-row';
-        li.innerHTML = `
-          <span class="player-num">${num}.</span>
-          <input type="text" maxlength="20" placeholder="Nombre del jugador ${num}" aria-label="Jugador ${num}" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" />
-          <button type="button" class="remove-player" aria-label="Quitar jugador">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
-          </button>
-        `;
-        li.querySelector('.remove-player').addEventListener('click', () => {
-          if (playerList.children.length <= MIN_JUGADORES) {
-            mostrarError(`Mínimo ${MIN_JUGADORES} jugadores.`);
-            return;
-          }
-          li.remove();
-          renumerar();
-          actualizarBotonAgregar();
-        });
-        // Enter dispara sorteo
-        li.querySelector('input').addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-            sortear();
-          }
-        });
-        return li;
-      }
-
-      function renumerar() {
-        Array.from(playerList.children).forEach((li, i) => {
-          const num = i + 1;
-          li.querySelector('.player-num').textContent = `${num}.`;
-          const input = li.querySelector('input');
-          input.placeholder = `Nombre del jugador ${num}`;
-          input.setAttribute('aria-label', `Jugador ${num}`);
-        });
-      }
-
-      function actualizarBotonAgregar() {
-        if (playerList.children.length >= MAX_JUGADORES) {
-          addBtn.disabled = true;
-          addBtn.classList.add('opacity-40', 'cursor-not-allowed');
-        } else {
-          addBtn.disabled = false;
-          addBtn.classList.remove('opacity-40', 'cursor-not-allowed');
-        }
-      }
-
-      function inicializarLista(nombresPrevios = []) {
-        playerList.innerHTML = '';
-        const nombres = nombresPrevios.length >= MIN_JUGADORES ? nombresPrevios : ['', ''];
-        nombres.forEach((nombre, i) => {
-          const fila = crearFila(i + 1);
-          fila.querySelector('input').value = nombre || '';
-          playerList.appendChild(fila);
-        });
-        actualizarBotonAgregar();
-      }
-
-      function mostrarError(msg) {
-        errorEl.textContent = msg;
-        setTimeout(() => { errorEl.textContent = ''; }, 3000);
-      }
-
-      function obtenerNombres() {
-        return Array.from(playerList.querySelectorAll('input'))
-          .map(i => i.value.trim())
-          .filter(n => n.length > 0);
-      }
-
-      function sortear() {
-        const nombres = obtenerNombres();
-        if (nombres.length < MIN_JUGADORES) {
-          mostrarError(`Necesitas al menos ${MIN_JUGADORES} nombres.`);
-          return;
-        }
-        // Detecta duplicados
-        const set = new Set(nombres.map(n => n.toLowerCase()));
-        if (set.size !== nombres.length) {
-          mostrarError('Hay nombres repetidos.');
-          return;
-        }
-
-        ultimosNombres = nombres;
-        // Fisher-Yates shuffle
-        const orden = [...nombres];
-        for (let i = orden.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [orden[i], orden[j]] = [orden[j], orden[i]];
-        }
-
-        mostrarResultado(orden);
-      }
-
-      function mostrarResultado(orden) {
-        // Cambia vista
-        inputView.classList.add('hidden');
-        resultView.classList.remove('hidden');
-
-        // Frase sorpresa al azar
-        const phraseEl = document.getElementById('shuffle-winner-phrase');
-        if (phraseEl) {
-          phraseEl.textContent = FRASES_SORTEO[Math.floor(Math.random() * FRASES_SORTEO.length)];
-        }
-
-        // Ganador con animación
-        winnerEl.textContent = orden[0];
-        winnerEl.classList.remove('winner-reveal');
-        void winnerEl.offsetWidth;
-        winnerEl.classList.add('winner-reveal');
-
-        // Lista completa con stagger
-        orderEl.innerHTML = '';
-        orden.forEach((nombre, i) => {
-          const li = document.createElement('li');
-          li.className = 'flex items-center justify-center gap-3 py-1';
-          const esGanador = i === 0;
-          li.innerHTML = `
-            <span class="font-mono text-xs ${esGanador ? 'text-gold' : 'text-paper/40'} w-6 text-right">${i + 1}°</span>
-            <span class="${esGanador ? 'text-paper font-bold' : 'text-paper/70'}">${escapeHtml(nombre)}</span>
-          `;
-          li.style.animationDelay = `${i * 80}ms`;
-          orderEl.appendChild(li);
-        });
-
-        // Foco al botón "sortear de nuevo" para flujo rápido
-        setTimeout(() => againBtn.focus(), 100);
-      }
-
-      function escapeHtml(str) {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-      }
-
-      function abrirModal() {
-        lastFocused = document.activeElement;
-        modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-        // Restaurar inputs si hay nombres previos, si no inicializa con 2 vacíos
-        inputView.classList.remove('hidden');
-        resultView.classList.add('hidden');
-        if (playerList.children.length === 0) {
-          inicializarLista(ultimosNombres);
-        }
-        setTimeout(() => {
-          const firstInput = playerList.querySelector('input');
-          if (firstInput) firstInput.focus();
-        }, 100);
-      }
-
-      function cerrarModal() {
-        modal.classList.add('hidden');
-        document.body.style.overflow = '';
-        if (lastFocused) lastFocused.focus();
-      }
-
-      // Focus trap para teclado
-      modal.addEventListener('keydown', (e) => {
-        if (e.key !== 'Tab') return;
-        const focusable = modal.querySelectorAll('button, input, [href]');
-        if (focusable.length === 0) return;
-        const visibles = Array.from(focusable).filter(el => el.offsetParent !== null);
-        if (visibles.length === 0) return;
-        const first = visibles[0];
-        const last = visibles[visibles.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      });
-
-      // Listeners
-      launcher.addEventListener('click', abrirModal);
-      closeBtn.addEventListener('click', cerrarModal);
-
-      addBtn.addEventListener('click', () => {
-        if (playerList.children.length >= MAX_JUGADORES) return;
-        const fila = crearFila(playerList.children.length + 1);
-        playerList.appendChild(fila);
-        actualizarBotonAgregar();
-        fila.querySelector('input').focus();
-      });
-
-      sortearBtn.addEventListener('click', sortear);
-      againBtn.addEventListener('click', () => {
-        // Re-sortear con los mismos nombres
-        const orden = [...ultimosNombres];
-        for (let i = orden.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [orden[i], orden[j]] = [orden[j], orden[i]];
-        }
-        mostrarResultado(orden);
-      });
-
-      editBtn.addEventListener('click', () => {
-        // Vuelve a vista de inputs manteniendo nombres
-        inputView.classList.remove('hidden');
-        resultView.classList.add('hidden');
-        // Reconstruye con los últimos nombres
-        inicializarLista(ultimosNombres);
-        const firstInput = playerList.querySelector('input');
-        if (firstInput) firstInput.focus();
-      });
-
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) cerrarModal();
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !modal.classList.contains('hidden')) cerrarModal();
-      });
-    } catch (e) { console.warn('[shuffle]', e); }
-  })();
-
-  // 7. FABs (WhatsApp + Compartir): aparecen tras scroll
+  // 6. FABs (WhatsApp + Compartir): aparecen tras scroll
   (function() {
     try {
       const waFab = document.getElementById('wa-fab');
