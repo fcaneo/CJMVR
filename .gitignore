@@ -1,12 +1,21 @@
 # Documento de planificación interna (no parte de la web)
 club_juegos_mesa_v_region_proyecto_web.md
 
-# Archivos de sistema
+# Configuración local de Claude Code
+.claude/
+
+# Archivos del sistema operativo
 Thumbs.db
 .DS_Store
 desktop.ini
 
-# Editor
+# Editores
 .vscode/
 .idea/
 *.swp
+*.swo
+*~
+
+# Logs y temporales
+*.log
+*.tmp
