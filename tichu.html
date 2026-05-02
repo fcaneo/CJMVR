@@ -4,12 +4,12 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#0E0E10" />
-<title>Marcador de Tichu · Club Juegos de Mesa Quinta Región</title>
-<meta name="description" content="Marcador especializado para Tichu. Calcula puntos por ronda, Tichu cantado, Gran Tichu y 1-2 (saca todo). Hasta 1500 puntos." />
+<title>Marcador de Tichu · Dragones vs Perros · Club Juegos de Mesa Quinta Región</title>
+<meta name="description" content="Marcador especializado para Tichu. Team Dragones vs Team Perros. Calcula puntos, Tichu, Gran Tichu y 1-2 con dragones animados." />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://fcaneo.github.io/CJMVR/tichu.html" />
 
-<meta property="og:title" content="Marcador de Tichu · Club CJMVR" />
+<meta property="og:title" content="Marcador de Tichu · Dragones vs Perros" />
 <meta property="og:description" content="Marcador para Tichu con cálculo automático y animaciones de dragón." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://fcaneo.github.io/CJMVR/tichu.html" />
@@ -28,8 +28,6 @@
 <style>
   .tool-main { max-width: 720px; }
 
-  /* === SETUP === */
-  .setup-row { margin-bottom: 1.25rem; }
   .label {
     font-family: 'Space Mono', monospace;
     font-size: 11px;
@@ -39,43 +37,35 @@
     margin-bottom: 0.65rem;
   }
 
-  .pair-setup {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  /* Meta toggle (compacto, en game-view) */
+  .meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 0.75rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
   }
-  .pair-block {
-    background: var(--ink-soft);
-    border: 1px solid var(--ink-line);
-    padding: 1rem;
-    position: relative;
-  }
-  .pair-block.a { border-left: 3px solid var(--gold); }
-  .pair-block.b { border-left: 3px solid var(--cyan); }
-  .pair-block-label {
+  .meta-row-label {
     font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.25em;
+    font-size: 11px;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    margin-bottom: 0.5rem;
+    color: var(--dim);
   }
-  .pair-block.a .pair-block-label { color: var(--gold); }
-  .pair-block.b .pair-block-label { color: var(--cyan); }
-
-  /* Meta */
   .meta-toggle {
     display: inline-flex;
     background: var(--ink-soft);
     border: 1px solid var(--ink-line);
-    padding: 4px;
+    padding: 3px;
   }
   .meta-toggle button {
     background: transparent;
     border: none;
     color: var(--dim);
-    padding: 0.5rem 0.95rem;
+    padding: 0.4rem 0.85rem;
     font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -85,14 +75,7 @@
     color: var(--ink);
   }
 
-  .start-btn {
-    width: 100%;
-    padding: 1.25rem;
-    font-size: 16px;
-    margin-top: 1.5rem;
-  }
-
-  /* === GAME VIEW === */
+  /* Score cards */
   .scoreboard-header {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -106,24 +89,31 @@
     text-align: center;
     position: relative;
     overflow: hidden;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
-  .pair-score-card.a { border-color: var(--gold); }
-  .pair-score-card.b { border-color: var(--cyan); }
+  .pair-score-card.dragones { border-color: var(--gold); }
+  .pair-score-card.perros { border-color: var(--cyan); }
   .pair-score-card.leading {
     box-shadow: 0 0 28px -4px currentColor;
   }
-  .pair-score-card.a.leading { color: var(--gold); }
-  .pair-score-card.b.leading { color: var(--cyan); }
+  .pair-score-card.dragones.leading { color: var(--gold); }
+  .pair-score-card.perros.leading { color: var(--cyan); }
 
   .pair-score-name {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.2em;
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(15px, 4vw, 18px);
     text-transform: uppercase;
-    color: var(--dim);
-    margin-bottom: 0.4rem;
+    letter-spacing: 0.04em;
+    color: var(--paper);
+    margin-bottom: 0.5rem;
   }
+  .pair-score-card.dragones .pair-score-name { color: var(--gold); }
+  .pair-score-card.perros .pair-score-name { color: var(--cyan); }
+  .pair-score-name .emoji {
+    font-size: 1.2em;
+    margin-right: 0.3rem;
+  }
+
   .pair-score-total {
     font-family: 'Anton', sans-serif;
     font-size: clamp(2.5rem, 11vw, 4.2rem);
@@ -131,8 +121,8 @@
     color: var(--paper);
     font-variant-numeric: tabular-nums;
   }
-  .pair-score-card.a .pair-score-total { color: var(--gold); }
-  .pair-score-card.b .pair-score-total { color: var(--cyan); }
+  .pair-score-card.dragones .pair-score-total { color: var(--gold); }
+  .pair-score-card.perros .pair-score-total { color: var(--cyan); }
   .pair-score-meta {
     font-family: 'Space Mono', monospace;
     font-size: 10px;
@@ -141,30 +131,18 @@
     letter-spacing: 0.1em;
   }
 
-  /* Decoración: dragón sutil en cada card */
-  .dragon-icon {
+  /* Decoración: ícono temático en cada card */
+  .deco-icon {
     position: absolute;
-    bottom: -8px;
-    right: -8px;
-    width: 80px;
-    height: 80px;
-    opacity: 0.06;
+    bottom: -10px;
+    right: -10px;
+    width: 90px;
+    height: 90px;
+    opacity: 0.08;
     pointer-events: none;
     transition: opacity 0.5s ease;
   }
-  .pair-score-card.leading .dragon-icon { opacity: 0.18; }
-
-  .meta-tag {
-    display: inline-block;
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--dim);
-    text-align: center;
-    margin-bottom: 1rem;
-  }
-  .meta-tag .meta-val { color: var(--paper); font-weight: 700; }
+  .pair-score-card.leading .deco-icon { opacity: 0.22; }
 
   /* === ROUND INPUT === */
   .round-input {
@@ -203,19 +181,16 @@
     gap: 1rem;
     margin-bottom: 1rem;
   }
-  .pair-input-block {
-    text-align: center;
-  }
+  .pair-input-block { text-align: center; }
   .pair-input-block .label-mini {
     font-family: 'Space Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--dim);
     margin-bottom: 0.4rem;
   }
-  .pair-input-block.a .label-mini { color: var(--gold); }
-  .pair-input-block.b .label-mini { color: var(--cyan); }
+  .pair-input-block.dragones .label-mini { color: var(--gold); }
+  .pair-input-block.perros .label-mini { color: var(--cyan); }
 
   .points-input {
     width: 100%;
@@ -243,6 +218,10 @@
     display: none;
     margin: 0;
   }
+  .points-input:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
 
   .vs-label {
     font-family: 'Anton', sans-serif;
@@ -251,7 +230,7 @@
     letter-spacing: 0.1em;
   }
 
-  /* Tichu cantado checkboxes */
+  /* === Calls grid (Tichu / Gran Tichu como botones toggle) === */
   .calls-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -263,48 +242,86 @@
     border: 1px solid var(--ink-line);
     padding: 0.85rem;
   }
-  .call-block.a { border-left: 3px solid var(--gold); }
-  .call-block.b { border-left: 3px solid var(--cyan); }
+  .call-block.dragones { border-left: 3px solid var(--gold); }
+  .call-block.perros { border-left: 3px solid var(--cyan); }
   .call-block-label {
     font-family: 'Space Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.65rem;
   }
-  .call-block.a .call-block-label { color: var(--gold); }
-  .call-block.b .call-block-label { color: var(--cyan); }
+  .call-block.dragones .call-block-label { color: var(--gold); }
+  .call-block.perros .call-block-label { color: var(--cyan); }
 
   .call-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto;
     align-items: center;
-    justify-content: space-between;
+    gap: 0.5rem;
     padding: 0.4rem 0;
     border-bottom: 1px solid rgba(255,255,255,0.05);
-    font-size: 13px;
   }
   .call-row:last-child { border-bottom: none; }
-  .call-row label {
-    cursor: pointer;
-    user-select: none;
-    flex: 1;
-  }
-  .call-row .pts {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--dim);
-    margin: 0 0.5rem;
-  }
-  .call-row select {
-    background: var(--ink-soft);
-    border: 1px solid var(--ink-line);
-    color: var(--paper);
-    padding: 4px 8px;
+  .call-row .call-label {
     font-size: 12px;
+    color: var(--paper);
+  }
+  .call-row .call-pts {
     font-family: 'Space Mono', monospace;
-    cursor: pointer;
+    font-size: 10px;
+    color: var(--dim);
+    margin-left: 4px;
   }
 
+  /* Botones toggle ✓ / ✗ */
+  .call-buttons {
+    display: inline-flex;
+    gap: 4px;
+  }
+  .call-btn {
+    width: 36px;
+    height: 32px;
+    background: transparent;
+    border: 1px solid var(--ink-line);
+    color: var(--dim);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .call-btn:hover:not(:disabled) {
+    border-color: var(--paper);
+    color: var(--paper);
+  }
+  .call-btn.hit.active {
+    background: #25D366;
+    border-color: #25D366;
+    color: var(--ink);
+    box-shadow: 0 0 12px rgba(37, 211, 102, 0.4);
+  }
+  .call-btn.fail.active {
+    background: var(--magenta);
+    border-color: var(--magenta);
+    color: var(--paper);
+    box-shadow: 0 0 12px rgba(233, 30, 99, 0.4);
+  }
+  .call-btn:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+    border-style: dashed;
+  }
+  .call-btn:disabled:hover {
+    border-color: var(--ink-line);
+    color: var(--dim);
+  }
+
+  /* 1-2 toggle */
   .one-two-toggle {
     background: var(--ink);
     border: 1px solid var(--ink-line);
@@ -315,10 +332,10 @@
     margin-top: 1rem;
     cursor: pointer;
     transition: all 0.2s ease;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
-  .one-two-toggle:hover {
-    border-color: var(--gold);
-  }
+  .one-two-toggle:hover { border-color: var(--gold); }
   .one-two-toggle.active {
     border-color: var(--gold);
     background: rgba(245, 183, 0, 0.08);
@@ -329,17 +346,51 @@
     font-size: 14px;
     letter-spacing: 0.05em;
   }
-  .one-two-select {
-    background: var(--ink-soft);
-    border: 1px solid var(--ink-line);
-    color: var(--paper);
-    padding: 6px 10px;
-    font-size: 13px;
-    font-family: 'Space Mono', monospace;
-  }
-  .one-two-select.hidden { display: none; }
 
-  /* Botones de acción */
+  /* Botones de 1-2 (toggle qué par lo hizo) */
+  .one-two-buttons {
+    display: inline-flex;
+    gap: 4px;
+  }
+  .one-two-btn {
+    background: transparent;
+    border: 1px solid var(--ink-line);
+    color: var(--dim);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 0.4rem 0.7rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .one-two-btn:hover:not(:disabled) {
+    color: var(--paper);
+  }
+  .one-two-btn.dragones.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+  .one-two-btn.perros.active {
+    background: var(--cyan);
+    border-color: var(--cyan);
+    color: var(--ink);
+  }
+
+  .preview-tag {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    text-align: center;
+    margin-top: 1rem;
+  }
+  .preview-tag .meta-val { color: var(--paper); font-weight: 700; }
+
   .round-actions {
     display: flex;
     gap: 0.75rem;
@@ -348,9 +399,7 @@
   }
 
   /* === HISTORIAL === */
-  .history-section {
-    margin-top: 1.5rem;
-  }
+  .history-section { margin-top: 1.5rem; }
   .history-table {
     width: 100%;
     border-collapse: collapse;
@@ -358,7 +407,7 @@
     border: 1px solid var(--ink-line);
   }
   .history-table th, .history-table td {
-    padding: 0.65rem 0.75rem;
+    padding: 0.65rem 0.5rem;
     text-align: center;
     border-bottom: 1px solid var(--ink-line);
     font-variant-numeric: tabular-nums;
@@ -366,7 +415,7 @@
   .history-table th {
     font-family: 'Space Mono', monospace;
     font-size: 10px;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--dim);
     background: var(--ink);
@@ -377,16 +426,13 @@
     font-family: 'Space Mono', monospace;
     font-size: 11px;
     color: var(--dim);
-    letter-spacing: 0.15em;
   }
   .history-table .events {
     font-size: 10px;
     color: var(--dim);
     font-family: 'Space Mono', monospace;
-    letter-spacing: 0.05em;
   }
 
-  /* === GAME ACTIONS === */
   .game-meta-actions {
     display: flex;
     gap: 0.5rem;
@@ -425,7 +471,6 @@
     animation: dragonFly 2s cubic-bezier(0.4, 0.2, 0.2, 1);
   }
 
-  /* Texto dramático que acompaña al dragón */
   .dragon-cry {
     position: absolute;
     top: 35%;
@@ -433,13 +478,16 @@
     transform: translate(-50%, -50%);
     font-family: 'Anton', sans-serif;
     text-transform: uppercase;
-    font-size: clamp(2.5rem, 10vw, 5rem);
+    font-size: clamp(2rem, 8vw, 4rem);
     color: var(--gold);
     text-shadow: 0 0 30px rgba(245, 183, 0, 0.8), 0 0 60px rgba(245, 183, 0, 0.4);
     letter-spacing: 0.05em;
     text-align: center;
     white-space: nowrap;
     opacity: 0;
+    max-width: 90vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .dragon-overlay.show .dragon-cry {
     animation: cryReveal 2s ease-out;
@@ -450,17 +498,16 @@
     100% { opacity: 0; transform: translate(-50%, -50%) scale(1.3); }
   }
 
-  /* Dragones decorativos en bordes del game-view */
-  .dragon-corner {
+  /* Decoración fondo: dragones y huesos por esquinas */
+  .corner-deco {
     position: absolute;
-    width: 100px;
-    height: 100px;
+    width: 110px;
+    height: 110px;
     opacity: 0.04;
     pointer-events: none;
-    transition: opacity 0.5s ease;
   }
-  .dragon-corner.tl { top: 1rem; left: 1rem; transform: rotate(-15deg); }
-  .dragon-corner.br { bottom: 1rem; right: 1rem; transform: rotate(165deg); }
+  .corner-deco.tl { top: 1rem; left: 1rem; }
+  .corner-deco.br { bottom: 1rem; right: 1rem; transform: rotate(180deg); }
 
   /* Confirm modal */
   .confirm-overlay {
@@ -574,209 +621,169 @@
   </a>
 </header>
 
-<main class="tool-main">
-  <!-- VISTA 1: SETUP -->
-  <div id="setup-view">
-    <div class="tool-eyebrow gold">★ Marcador de Tichu</div>
-    <h1 class="tool-title">Tichu.</h1>
-    <p class="tool-subtitle">Marcador para el clásico cooperativo de Urs Hostettler. Cálculo automático de Tichu, Gran Tichu y 1-2.</p>
+<main class="tool-main" style="position: relative;">
+  <div class="tool-eyebrow gold">★ Marcador de Tichu</div>
+  <h1 class="tool-title">Dragones vs Perros.</h1>
+  <p class="tool-subtitle">Marcador para el clásico cooperativo de Urs Hostettler. Cálculo automático, dragones que celebran las jugadas épicas.</p>
 
-    <div class="setup-row">
-      <div class="label">Pares</div>
-      <div class="pair-setup">
-        <div class="pair-block a">
-          <div class="pair-block-label">★ Par A</div>
-          <input id="pair-a-name" type="text" maxlength="20" placeholder="Pancho / María" autocomplete="off-cjmvr" autocorrect="off" autocapitalize="words" spellcheck="false" />
-        </div>
-        <div class="pair-block b">
-          <div class="pair-block-label">★ Par B</div>
-          <input id="pair-b-name" type="text" maxlength="20" placeholder="Luis / Ana" autocomplete="off-cjmvr" autocorrect="off" autocapitalize="words" spellcheck="false" />
-        </div>
-      </div>
+  <!-- Dragones decorativos en esquinas -->
+  <svg class="corner-deco tl" viewBox="0 0 100 100" fill="#F5B700" aria-hidden="true">
+    <path d="M50 10c-8 0-15 4-20 10-3-2-7-3-12-2-5 2-9 6-10 12 0 4 2 8 6 12-2 4-2 8 0 12 3 6 9 9 16 9-4 4-6 9-5 14 1 5 5 9 11 11 5 1 10 0 14-3 4 5 10 7 16 6 6-1 11-5 13-11 1-5 0-10-3-14 6-2 11-6 13-12 1-6-1-12-5-16 4-4 6-9 5-14-1-6-5-10-11-12-5-1-10 1-14 4-4-4-9-7-14-6z"/>
+  </svg>
+  <svg class="corner-deco br" viewBox="0 0 100 100" fill="#3FA9D6" aria-hidden="true">
+    <!-- Hueso de perro -->
+    <path d="M30 50c-7-3-15 0-18 7s0 15 7 18c4 2 8 0 11-2l10 5c-2 3-4 7-2 11 3 7 11 10 18 7s10-11 7-18c-2-4-6-6-10-6 0-4-2-8-6-10 0-4 6-10-1-13s-15 0-18 7c-2 4 0 8 2 11l-10 5c2-3 0-8 0-13z"/>
+  </svg>
+
+  <!-- Selector de meta -->
+  <div class="meta-row">
+    <span class="meta-row-label">Meta:</span>
+    <div class="meta-toggle" id="meta-toggle" role="group" aria-label="Meta de puntos">
+      <button data-meta="500" type="button">500</button>
+      <button data-meta="1000" class="active" type="button">1000</button>
+      <button data-meta="1500" type="button">1500</button>
     </div>
-
-    <div class="setup-row">
-      <div class="label">Meta de victoria</div>
-      <div class="meta-toggle" id="meta-toggle" role="group" aria-label="Meta de puntos">
-        <button data-meta="500" type="button">500</button>
-        <button data-meta="1000" class="active" type="button">1000</button>
-        <button data-meta="1500" type="button">1500</button>
-      </div>
-    </div>
-
-    <button id="start-btn" class="btn btn-primary start-btn">
-      Empezar partida
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-    </button>
   </div>
 
-  <!-- VISTA 2: GAME -->
-  <div id="game-view" hidden style="position: relative;">
-    <!-- Dragones decorativos en esquinas -->
-    <svg class="dragon-corner tl" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
-      <path d="M50 10c-8 0-15 4-20 10-3-2-7-3-12-2-5 2-9 6-10 12 0 4 2 8 6 12-2 4-2 8 0 12 3 6 9 9 16 9-4 4-6 9-5 14 1 5 5 9 11 11 5 1 10 0 14-3 4 5 10 7 16 6 6-1 11-5 13-11 1-5 0-10-3-14 6-2 11-6 13-12 1-6-1-12-5-16 4-4 6-9 5-14-1-6-5-10-11-12-5-1-10 1-14 4-4-4-9-7-14-6z"/>
-    </svg>
-    <svg class="dragon-corner br" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
-      <path d="M50 10c-8 0-15 4-20 10-3-2-7-3-12-2-5 2-9 6-10 12 0 4 2 8 6 12-2 4-2 8 0 12 3 6 9 9 16 9-4 4-6 9-5 14 1 5 5 9 11 11 5 1 10 0 14-3 4 5 10 7 16 6 6-1 11-5 13-11 1-5 0-10-3-14 6-2 11-6 13-12 1-6-1-12-5-16 4-4 6-9 5-14-1-6-5-10-11-12-5-1-10 1-14 4-4-4-9-7-14-6z"/>
-    </svg>
+  <!-- Score de cada par -->
+  <div class="scoreboard-header">
+    <div class="pair-score-card dragones" id="card-a">
+      <div class="pair-score-name"><span class="emoji">🐲</span>Team Dragones</div>
+      <div class="pair-score-total" id="total-a">0</div>
+      <div class="pair-score-meta" id="meta-a">Sin rondas</div>
+      <svg class="deco-icon" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
+        <path d="M50 10c-8 0-15 4-20 10-3-2-7-3-12-2-5 2-9 6-10 12 0 4 2 8 6 12-2 4-2 8 0 12 3 6 9 9 16 9-4 4-6 9-5 14 1 5 5 9 11 11 5 1 10 0 14-3 4 5 10 7 16 6 6-1 11-5 13-11 1-5 0-10-3-14 6-2 11-6 13-12 1-6-1-12-5-16 4-4 6-9 5-14-1-6-5-10-11-12-5-1-10 1-14 4-4-4-9-7-14-6z"/>
+      </svg>
+    </div>
+    <div class="pair-score-card perros" id="card-b">
+      <div class="pair-score-name"><span class="emoji">🐕</span>Team Perros</div>
+      <div class="pair-score-total" id="total-b">0</div>
+      <div class="pair-score-meta" id="meta-b">Sin rondas</div>
+      <svg class="deco-icon" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
+        <!-- Hueso -->
+        <path d="M30 50c-7-3-15 0-18 7s0 15 7 18c4 2 8 0 11-2l10 5c-2 3-4 7-2 11 3 7 11 10 18 7s10-11 7-18c-2-4-6-6-10-6 0-4-2-8-6-10 0-4 6-10-1-13s-15 0-18 7c-2 4 0 8 2 11l-10 5c2-3 0-8 0-13z"/>
+      </svg>
+    </div>
+  </div>
 
-    <div class="meta-tag">
-      Partida hasta <span class="meta-val" id="meta-display">1000</span> pts
+  <!-- Input de ronda -->
+  <div class="round-input">
+    <div class="round-input-title">Ronda <span id="round-num">1</span></div>
+
+    <!-- Banner 1-2 -->
+    <div id="one-two-banner" class="one-two-banner">
+      🐲 1-2 ACTIVO · El team lleva 200, el rival 0
     </div>
 
-    <!-- Score de cada par -->
-    <div class="scoreboard-header">
-      <div class="pair-score-card a" id="card-a">
-        <div class="pair-score-name" id="display-a">Par A</div>
-        <div class="pair-score-total" id="total-a">0</div>
-        <div class="pair-score-meta" id="meta-a">Ronda 0</div>
-        <svg class="dragon-icon" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
-          <path d="M50 10c-8 0-15 4-20 10-3-2-7-3-12-2-5 2-9 6-10 12 0 4 2 8 6 12-2 4-2 8 0 12 3 6 9 9 16 9-4 4-6 9-5 14 1 5 5 9 11 11 5 1 10 0 14-3 4 5 10 7 16 6 6-1 11-5 13-11 1-5 0-10-3-14 6-2 11-6 13-12 1-6-1-12-5-16 4-4 6-9 5-14-1-6-5-10-11-12-5-1-10 1-14 4-4-4-9-7-14-6z"/>
-        </svg>
+    <!-- Inputs de puntos de cartas -->
+    <div class="pair-input-row">
+      <div class="pair-input-block dragones">
+        <div class="label-mini">🐲 Dragones</div>
+        <input id="points-a" class="points-input" type="text" inputmode="numeric" pattern="-?[0-9]*" placeholder="0" autocomplete="off" />
       </div>
-      <div class="pair-score-card b" id="card-b">
-        <div class="pair-score-name" id="display-b">Par B</div>
-        <div class="pair-score-total" id="total-b">0</div>
-        <div class="pair-score-meta" id="meta-b">Ronda 0</div>
-        <svg class="dragon-icon" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
-          <path d="M50 10c-8 0-15 4-20 10-3-2-7-3-12-2-5 2-9 6-10 12 0 4 2 8 6 12-2 4-2 8 0 12 3 6 9 9 16 9-4 4-6 9-5 14 1 5 5 9 11 11 5 1 10 0 14-3 4 5 10 7 16 6 6-1 11-5 13-11 1-5 0-10-3-14 6-2 11-6 13-12 1-6-1-12-5-16 4-4 6-9 5-14-1-6-5-10-11-12-5-1-10 1-14 4-4-4-9-7-14-6z"/>
-        </svg>
+      <div class="vs-label">vs</div>
+      <div class="pair-input-block perros">
+        <div class="label-mini">🐕 Perros</div>
+        <input id="points-b" class="points-input" type="text" inputmode="numeric" pattern="-?[0-9]*" placeholder="0" autocomplete="off" />
       </div>
     </div>
 
-    <!-- Input de ronda -->
-    <div class="round-input">
-      <div class="round-input-title">Ronda <span id="round-num">1</span></div>
-
-      <!-- Banner 1-2 -->
-      <div id="one-two-banner" class="one-two-banner">
-        🐲 1-2 ACTIVO · El par lleva 200, el rival 0
+    <!-- 1-2 toggle -->
+    <div id="one-two-toggle" class="one-two-toggle">
+      <span class="one-two-toggle-label">¿Hicieron 1-2 esta ronda? 🐲</span>
+      <div class="one-two-buttons">
+        <button id="onetwo-a" class="one-two-btn dragones" type="button">🐲 Dragones</button>
+        <button id="onetwo-b" class="one-two-btn perros" type="button">🐕 Perros</button>
       </div>
+    </div>
 
-      <!-- Inputs de puntos de cartas -->
-      <div class="pair-input-row">
-        <div class="pair-input-block a">
-          <div class="label-mini" id="input-label-a">Par A</div>
-          <input id="points-a" class="points-input" type="text" inputmode="numeric" pattern="-?[0-9]*" placeholder="0" autocomplete="off" />
-        </div>
-        <div class="vs-label">vs</div>
-        <div class="pair-input-block b">
-          <div class="label-mini" id="input-label-b">Par B</div>
-          <input id="points-b" class="points-input" type="text" inputmode="numeric" pattern="-?[0-9]*" placeholder="0" autocomplete="off" />
-        </div>
-      </div>
-
-      <!-- 1-2 toggle -->
-      <div id="one-two-toggle" class="one-two-toggle">
-        <span class="one-two-toggle-label">¿1-2 esta ronda? 🐲</span>
-        <select id="one-two-winner" class="one-two-select hidden">
-          <option value="">— Ninguno</option>
-          <option value="a">Par A se llevó todo</option>
-          <option value="b">Par B se llevó todo</option>
-        </select>
-      </div>
-
-      <!-- Tichus cantados -->
-      <div class="calls-grid">
-        <div class="call-block a">
-          <div class="call-block-label">★ Par A</div>
-          <div class="call-row">
-            <label for="tichu-a">Tichu cantado</label>
-            <span class="pts">±100</span>
-            <select id="tichu-a">
-              <option value="">—</option>
-              <option value="hit">✓ Acertó</option>
-              <option value="fail">✗ Falló</option>
-            </select>
-          </div>
-          <div class="call-row">
-            <label for="grand-a">Gran Tichu</label>
-            <span class="pts">±200</span>
-            <select id="grand-a">
-              <option value="">—</option>
-              <option value="hit">✓ Acertó</option>
-              <option value="fail">✗ Falló</option>
-            </select>
+    <!-- Tichus cantados (botones toggle) -->
+    <div class="calls-grid">
+      <div class="call-block dragones">
+        <div class="call-block-label">🐲 Dragones cantó:</div>
+        <div class="call-row">
+          <span class="call-label">Tichu <span class="call-pts">±100</span></span>
+          <div class="call-buttons">
+            <button class="call-btn hit" data-call="tichuA" data-val="hit" type="button" aria-label="Tichu acertado">✓</button>
+            <button class="call-btn fail" data-call="tichuA" data-val="fail" type="button" aria-label="Tichu fallido">✗</button>
           </div>
         </div>
-        <div class="call-block b">
-          <div class="call-block-label">★ Par B</div>
-          <div class="call-row">
-            <label for="tichu-b">Tichu cantado</label>
-            <span class="pts">±100</span>
-            <select id="tichu-b">
-              <option value="">—</option>
-              <option value="hit">✓ Acertó</option>
-              <option value="fail">✗ Falló</option>
-            </select>
-          </div>
-          <div class="call-row">
-            <label for="grand-b">Gran Tichu</label>
-            <span class="pts">±200</span>
-            <select id="grand-b">
-              <option value="">—</option>
-              <option value="hit">✓ Acertó</option>
-              <option value="fail">✗ Falló</option>
-            </select>
+        <div class="call-row">
+          <span class="call-label">Gran Tichu <span class="call-pts">±200</span></span>
+          <div class="call-buttons">
+            <button class="call-btn hit" data-call="grandA" data-val="hit" type="button" aria-label="Gran Tichu acertado">✓</button>
+            <button class="call-btn fail" data-call="grandA" data-val="fail" type="button" aria-label="Gran Tichu fallido">✗</button>
           </div>
         </div>
       </div>
-
-      <!-- Preview total -->
-      <div class="meta-tag" style="margin-top: 1rem;">
-        Esta ronda · <span class="meta-val" id="preview-a">+0</span> / <span class="meta-val" id="preview-b">+0</span>
-      </div>
-
-      <div class="round-actions">
-        <button id="add-round-btn" class="btn btn-primary" style="flex: 1;">
-          Agregar ronda
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-        </button>
-        <button id="undo-round-btn" class="btn btn-ghost" type="button" disabled>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 7v6h6M21 17a9 9 0 00-15-6.7L3 13"/></svg>
-          Deshacer última
-        </button>
-      </div>
-    </div>
-
-    <!-- Historial -->
-    <div id="history-section" class="history-section" hidden>
-      <div class="label">Historial</div>
-      <div style="overflow-x: auto;">
-        <table class="history-table">
-          <thead>
-            <tr>
-              <th>Ronda</th>
-              <th id="hist-head-a">Par A</th>
-              <th id="hist-head-b">Par B</th>
-              <th>Eventos</th>
-            </tr>
-          </thead>
-          <tbody id="history-tbody"></tbody>
-        </table>
+      <div class="call-block perros">
+        <div class="call-block-label">🐕 Perros cantó:</div>
+        <div class="call-row">
+          <span class="call-label">Tichu <span class="call-pts">±100</span></span>
+          <div class="call-buttons">
+            <button class="call-btn hit" data-call="tichuB" data-val="hit" type="button" aria-label="Tichu acertado">✓</button>
+            <button class="call-btn fail" data-call="tichuB" data-val="fail" type="button" aria-label="Tichu fallido">✗</button>
+          </div>
+        </div>
+        <div class="call-row">
+          <span class="call-label">Gran Tichu <span class="call-pts">±200</span></span>
+          <div class="call-buttons">
+            <button class="call-btn hit" data-call="grandB" data-val="hit" type="button" aria-label="Gran Tichu acertado">✓</button>
+            <button class="call-btn fail" data-call="grandB" data-val="fail" type="button" aria-label="Gran Tichu fallido">✗</button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="game-meta-actions">
-      <button id="end-btn" class="btn btn-ghost btn-small" type="button">Terminar partida</button>
+    <span class="preview-tag">
+      Esta ronda · <span class="meta-val" id="preview-a">+0</span> / <span class="meta-val" id="preview-b">+0</span>
+    </span>
+
+    <div class="round-actions">
+      <button id="add-round-btn" class="btn btn-primary" style="flex: 1;">
+        Agregar ronda
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+      <button id="undo-round-btn" class="btn btn-ghost" type="button" disabled>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 7v6h6M21 17a9 9 0 00-15-6.7L3 13"/></svg>
+        Deshacer
+      </button>
     </div>
+  </div>
+
+  <!-- Historial -->
+  <div id="history-section" class="history-section" hidden>
+    <div class="label">Historial</div>
+    <div style="overflow-x: auto;">
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Ronda</th>
+            <th>🐲 Dragones</th>
+            <th>🐕 Perros</th>
+            <th>Eventos</th>
+          </tr>
+        </thead>
+        <tbody id="history-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="game-meta-actions">
+    <button id="reset-btn" class="btn btn-ghost btn-small" type="button">Nueva partida</button>
   </div>
 </main>
 
 <!-- Overlay del dragón animado -->
 <div id="dragon-overlay" class="dragon-overlay" aria-hidden="true">
   <svg class="dragon-flyer" viewBox="0 0 200 200" fill="none">
-    <!-- Dragón estilizado -->
     <path d="M100 30c-15 0-28 8-35 20-8-3-18-3-25 3-7 5-10 14-7 23-7 5-12 13-12 22 0 12 8 22 20 26-3 6-3 14 1 20 5 8 15 12 25 9 4 5 11 7 18 6-3 8-1 17 5 23 8 8 20 9 30 4 8 9 22 11 32 4 8-6 12-16 9-26 11-1 21-9 24-20 3-9 0-19-6-26 7-5 11-13 11-21 0-12-8-22-19-26 2-7 1-15-4-21-6-7-15-10-23-8-7-7-17-11-27-8h-17z"
           fill="#F5B700" stroke="#0E0E10" stroke-width="3"/>
-    <!-- Ojos -->
     <circle cx="80" cy="85" r="6" fill="#0E0E10"/>
     <circle cx="120" cy="85" r="6" fill="#0E0E10"/>
     <circle cx="80" cy="83" r="2" fill="#fff"/>
     <circle cx="120" cy="83" r="2" fill="#fff"/>
-    <!-- Boca -->
     <path d="M85 115c5 5 25 5 30 0" stroke="#0E0E10" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <!-- Llamas -->
     <path d="M70 130c-5 5-10 12-8 18 4-3 8-5 12-4M130 130c5 5 10 12 8 18-4-3-8-5-12-4" stroke="#E91E63" stroke-width="3" fill="none" stroke-linecap="round"/>
   </svg>
   <div class="dragon-cry" id="dragon-cry">¡TICHU!</div>
@@ -820,56 +827,50 @@
 </footer>
 
 <script>
-  const STORAGE_KEY = 'cjmvr-tichu-v1';
+  const STORAGE_KEY = 'cjmvr-tichu-v2';
+  const NAME_A = '🐲 Dragones';
+  const NAME_B = '🐕 Perros';
 
   let state = {
-    pairA: 'Par A',
-    pairB: 'Par B',
     meta: 1000,
-    rounds: [],   // [{a: 80, b: 20, oneTwo: null|'a'|'b', tichuA: null|'hit'|'fail', tichuB, grandA, grandB}]
-    started: false
+    rounds: []
+  };
+
+  // Estado del input de ronda actual (no persiste)
+  let currentRound = {
+    oneTwo: null, // 'a' | 'b' | null
+    tichuA: null, // 'hit' | 'fail' | null
+    tichuB: null,
+    grandA: null,
+    grandB: null
   };
 
   // === REFS ===
-  const setupView = document.getElementById('setup-view');
-  const gameView = document.getElementById('game-view');
-  const pairAInput = document.getElementById('pair-a-name');
-  const pairBInput = document.getElementById('pair-b-name');
   const metaToggle = document.getElementById('meta-toggle');
-  const startBtn = document.getElementById('start-btn');
-
-  const displayA = document.getElementById('display-a');
-  const displayB = document.getElementById('display-b');
-  const totalAEl = document.getElementById('total-a');
-  const totalBEl = document.getElementById('total-b');
   const metaAEl = document.getElementById('meta-a');
   const metaBEl = document.getElementById('meta-b');
+  const totalAEl = document.getElementById('total-a');
+  const totalBEl = document.getElementById('total-b');
   const cardA = document.getElementById('card-a');
   const cardB = document.getElementById('card-b');
-  const metaDisplay = document.getElementById('meta-display');
 
-  const inputLabelA = document.getElementById('input-label-a');
-  const inputLabelB = document.getElementById('input-label-b');
   const pointsAInput = document.getElementById('points-a');
   const pointsBInput = document.getElementById('points-b');
-  const oneTwoToggle = document.getElementById('one-two-toggle');
-  const oneTwoSelect = document.getElementById('one-two-winner');
   const oneTwoBanner = document.getElementById('one-two-banner');
-  const tichuA = document.getElementById('tichu-a');
-  const tichuB = document.getElementById('tichu-b');
-  const grandA = document.getElementById('grand-a');
-  const grandB = document.getElementById('grand-b');
+  const oneTwoToggle = document.getElementById('one-two-toggle');
+  const onetwoABtn = document.getElementById('onetwo-a');
+  const onetwoBBtn = document.getElementById('onetwo-b');
   const previewAEl = document.getElementById('preview-a');
   const previewBEl = document.getElementById('preview-b');
   const roundNumEl = document.getElementById('round-num');
   const addRoundBtn = document.getElementById('add-round-btn');
   const undoRoundBtn = document.getElementById('undo-round-btn');
-  const endBtn = document.getElementById('end-btn');
+  const resetBtn = document.getElementById('reset-btn');
+
+  const callBtns = document.querySelectorAll('.call-btn');
 
   const historySection = document.getElementById('history-section');
   const historyTbody = document.getElementById('history-tbody');
-  const histHeadA = document.getElementById('hist-head-a');
-  const histHeadB = document.getElementById('hist-head-b');
 
   const confirmOverlay = document.getElementById('confirm-overlay');
   const confirmTitle = document.getElementById('confirm-title');
@@ -895,7 +896,7 @@
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const p = JSON.parse(raw);
-        if (p && Array.isArray(p.rounds)) state = { ...state, ...p };
+        if (p && Array.isArray(p.rounds)) state = { meta: p.meta || 1000, rounds: p.rounds };
       }
     } catch (e) {}
   }
@@ -903,7 +904,7 @@
     try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
   }
 
-  // === UTILS ===
+  // === LÓGICA ===
   function totals() {
     return state.rounds.reduce((acc, r) => {
       acc.a += r.scoreA;
@@ -912,12 +913,10 @@
     }, { a: 0, b: 0 });
   }
 
-  // Calcula puntos de la ronda actual desde inputs (no del state)
   function calcRound() {
-    const oneTwo = oneTwoSelect.value || null;
     let baseA, baseB;
-    if (oneTwo === 'a') { baseA = 200; baseB = 0; }
-    else if (oneTwo === 'b') { baseA = 0; baseB = 200; }
+    if (currentRound.oneTwo === 'a') { baseA = 200; baseB = 0; }
+    else if (currentRound.oneTwo === 'b') { baseA = 0; baseB = 200; }
     else {
       baseA = parseInt(pointsAInput.value, 10);
       baseB = parseInt(pointsBInput.value, 10);
@@ -929,18 +928,16 @@
     let scoreA = baseA;
     let scoreB = baseB;
 
-    // Tichu cantado: ±100 cada lado
-    if (tichuA.value === 'hit') scoreA += 100;
-    if (tichuA.value === 'fail') scoreA -= 100;
-    if (tichuB.value === 'hit') scoreB += 100;
-    if (tichuB.value === 'fail') scoreB -= 100;
-    // Gran Tichu: ±200
-    if (grandA.value === 'hit') scoreA += 200;
-    if (grandA.value === 'fail') scoreA -= 200;
-    if (grandB.value === 'hit') scoreB += 200;
-    if (grandB.value === 'fail') scoreB -= 200;
+    if (currentRound.tichuA === 'hit') scoreA += 100;
+    if (currentRound.tichuA === 'fail') scoreA -= 100;
+    if (currentRound.tichuB === 'hit') scoreB += 100;
+    if (currentRound.tichuB === 'fail') scoreB -= 100;
+    if (currentRound.grandA === 'hit') scoreA += 200;
+    if (currentRound.grandA === 'fail') scoreA -= 200;
+    if (currentRound.grandB === 'hit') scoreB += 200;
+    if (currentRound.grandB === 'fail') scoreB -= 200;
 
-    return { scoreA, scoreB, oneTwo, baseA, baseB };
+    return { scoreA, scoreB, baseA, baseB };
   }
 
   function updatePreview() {
@@ -949,14 +946,55 @@
     previewBEl.textContent = (r.scoreB >= 0 ? '+' : '') + r.scoreB;
   }
 
+  // Bloqueo: si un par acertó Tichu o Gran Tichu, el otro no puede acertar
+  function updateCallButtonsState() {
+    const aHit = currentRound.tichuA === 'hit' || currentRound.grandA === 'hit';
+    const bHit = currentRound.tichuB === 'hit' || currentRound.grandB === 'hit';
+
+    callBtns.forEach(btn => {
+      const callId = btn.dataset.call; // tichuA, tichuB, grandA, grandB
+      const val = btn.dataset.val; // hit | fail
+      const par = callId.endsWith('A') ? 'a' : 'b';
+
+      // Estado activo
+      const currentVal = currentRound[callId];
+      btn.classList.toggle('active', currentVal === val);
+
+      // Bloqueo de "hit": si el OTRO par ya acertó, deshabilita el hit de este par
+      if (val === 'hit') {
+        if (par === 'a' && bHit) {
+          btn.disabled = true;
+        } else if (par === 'b' && aHit) {
+          btn.disabled = true;
+        } else {
+          btn.disabled = false;
+        }
+      }
+    });
+
+    // Bloqueo del 1-2: si alguien acertó Tichu/Gran, igual puede haber 1-2 (el que acertó es el que sale primero)
+    // Pero si hay 1-2, el par del 1-2 es por definición quien sale primero → si A hizo 1-2 y B marcó hit, contradicción
+    // Permitimos que el usuario decida; la regla del cálculo ya respeta el orden
+  }
+
+  function setCall(callId, val) {
+    // Si clickea el mismo botón ya activo, se deselecciona
+    if (currentRound[callId] === val) {
+      currentRound[callId] = null;
+    } else {
+      currentRound[callId] = val;
+    }
+    updateCallButtonsState();
+    updatePreview();
+  }
+
   // === RENDER ===
   function renderTotals() {
     const t = totals();
     totalAEl.textContent = t.a;
     totalBEl.textContent = t.b;
-    metaAEl.textContent = state.rounds.length === 0 ? 'Sin rondas aún' : `Ronda ${state.rounds.length}`;
-    metaBEl.textContent = state.rounds.length === 0 ? 'Sin rondas aún' : `Ronda ${state.rounds.length}`;
-    metaDisplay.textContent = state.meta;
+    metaAEl.textContent = state.rounds.length === 0 ? `Meta ${state.meta}` : `Ronda ${state.rounds.length} · Meta ${state.meta}`;
+    metaBEl.textContent = state.rounds.length === 0 ? `Meta ${state.meta}` : `Ronda ${state.rounds.length} · Meta ${state.meta}`;
 
     cardA.classList.toggle('leading', t.a > t.b && state.rounds.length > 0);
     cardB.classList.toggle('leading', t.b > t.a && state.rounds.length > 0);
@@ -968,27 +1006,26 @@
   function renderHistory() {
     if (state.rounds.length === 0) {
       historySection.hidden = true;
+      historyTbody.innerHTML = '';
       return;
     }
     historySection.hidden = false;
-    histHeadA.textContent = state.pairA;
-    histHeadB.textContent = state.pairB;
     historyTbody.innerHTML = '';
     let cumA = 0, cumB = 0;
     state.rounds.forEach((r, i) => {
       cumA += r.scoreA;
       cumB += r.scoreB;
       const events = [];
-      if (r.oneTwo === 'a') events.push('1-2 (' + state.pairA + ')');
-      if (r.oneTwo === 'b') events.push('1-2 (' + state.pairB + ')');
-      if (r.tichuA === 'hit') events.push('TichuA✓');
-      if (r.tichuA === 'fail') events.push('TichuA✗');
-      if (r.tichuB === 'hit') events.push('TichuB✓');
-      if (r.tichuB === 'fail') events.push('TichuB✗');
-      if (r.grandA === 'hit') events.push('GTichuA✓');
-      if (r.grandA === 'fail') events.push('GTichuA✗');
-      if (r.grandB === 'hit') events.push('GTichuB✓');
-      if (r.grandB === 'fail') events.push('GTichuB✗');
+      if (r.oneTwo === 'a') events.push('1-2 🐲');
+      if (r.oneTwo === 'b') events.push('1-2 🐕');
+      if (r.tichuA === 'hit') events.push('Tichu🐲✓');
+      if (r.tichuA === 'fail') events.push('Tichu🐲✗');
+      if (r.tichuB === 'hit') events.push('Tichu🐕✓');
+      if (r.tichuB === 'fail') events.push('Tichu🐕✗');
+      if (r.grandA === 'hit') events.push('GTichu🐲✓');
+      if (r.grandA === 'fail') events.push('GTichu🐲✗');
+      if (r.grandB === 'hit') events.push('GTichu🐕✓');
+      if (r.grandB === 'fail') events.push('GTichu🐕✗');
 
       const tr = document.createElement('tr');
       tr.innerHTML = `
@@ -1001,26 +1038,17 @@
     });
   }
 
-  function renderNames() {
-    const a = state.pairA || 'Par A';
-    const b = state.pairB || 'Par B';
-    displayA.textContent = a;
-    displayB.textContent = b;
-    inputLabelA.textContent = a;
-    inputLabelB.textContent = b;
-  }
-
   function clearRoundInputs() {
     pointsAInput.value = '';
     pointsBInput.value = '';
-    oneTwoSelect.value = '';
-    oneTwoSelect.classList.add('hidden');
-    oneTwoBanner.classList.remove('show');
-    oneTwoToggle.classList.remove('active');
     pointsAInput.disabled = false;
     pointsBInput.disabled = false;
-    tichuA.value = ''; tichuB.value = '';
-    grandA.value = ''; grandB.value = '';
+    currentRound = { oneTwo: null, tichuA: null, tichuB: null, grandA: null, grandB: null };
+    onetwoABtn.classList.remove('active');
+    onetwoBBtn.classList.remove('active');
+    oneTwoToggle.classList.remove('active');
+    oneTwoBanner.classList.remove('show');
+    updateCallButtonsState();
     updatePreview();
   }
 
@@ -1034,30 +1062,11 @@
   }
 
   // === ACTIONS ===
-  function startGame() {
-    state.pairA = pairAInput.value.trim() || 'Par A';
-    state.pairB = pairBInput.value.trim() || 'Par B';
-    state.rounds = [];
-    state.started = true;
-    save();
-    renderNames();
-    renderTotals();
-    renderHistory();
-    clearRoundInputs();
-    setupView.hidden = true;
-    gameView.hidden = false;
-  }
-
-  function showSetup() {
-    setupView.hidden = false;
-    gameView.hidden = true;
-  }
-
   function addRound() {
     const r = calcRound();
-    if (r.scoreA === 0 && r.scoreB === 0 && !r.oneTwo &&
-        tichuA.value === '' && tichuB.value === '' &&
-        grandA.value === '' && grandB.value === '') {
+    if (r.scoreA === 0 && r.scoreB === 0 && !currentRound.oneTwo &&
+        !currentRound.tichuA && !currentRound.tichuB &&
+        !currentRound.grandA && !currentRound.grandB) {
       flashError(pointsAInput, 'Ingresa puntos');
       return;
     }
@@ -1066,27 +1075,28 @@
       scoreB: r.scoreB,
       baseA: r.baseA,
       baseB: r.baseB,
-      oneTwo: r.oneTwo,
-      tichuA: tichuA.value || null,
-      tichuB: tichuB.value || null,
-      grandA: grandA.value || null,
-      grandB: grandB.value || null
+      oneTwo: currentRound.oneTwo,
+      tichuA: currentRound.tichuA,
+      tichuB: currentRound.tichuB,
+      grandA: currentRound.grandA,
+      grandB: currentRound.grandB
     };
     state.rounds.push(round);
     save();
 
     // Animación dragón si hubo eventos especiales
-    if (r.oneTwo) {
-      const ganador = r.oneTwo === 'a' ? state.pairA : state.pairB;
-      flyDragon('¡1-2 PARA ' + ganador.toUpperCase() + '! 🐲');
-    } else if (grandA.value === 'hit' || grandB.value === 'hit') {
-      const par = grandA.value === 'hit' ? state.pairA : state.pairB;
-      flyDragon('¡GRAN TICHU DE ' + par.toUpperCase() + '! 🐲');
-    } else if (grandA.value === 'fail' || grandB.value === 'fail') {
+    if (currentRound.oneTwo) {
+      const ganador = currentRound.oneTwo === 'a' ? 'DRAGONES' : 'PERROS';
+      const emoji = currentRound.oneTwo === 'a' ? '🐲' : '🐕';
+      flyDragon(`¡1-2 PARA ${ganador}! ${emoji}`);
+    } else if (currentRound.grandA === 'hit' || currentRound.grandB === 'hit') {
+      const par = currentRound.grandA === 'hit' ? 'DRAGONES 🐲' : 'PERROS 🐕';
+      flyDragon(`¡GRAN TICHU DE ${par}!`);
+    } else if (currentRound.grandA === 'fail' || currentRound.grandB === 'fail') {
       flyDragon('GRAN TICHU FALLIDO 💀');
-    } else if (tichuA.value === 'hit' || tichuB.value === 'hit') {
-      const par = tichuA.value === 'hit' ? state.pairA : state.pairB;
-      flyDragon('¡TICHU DE ' + par.toUpperCase() + '!');
+    } else if (currentRound.tichuA === 'hit' || currentRound.tichuB === 'hit') {
+      const par = currentRound.tichuA === 'hit' ? 'DRAGONES 🐲' : 'PERROS 🐕';
+      flyDragon(`¡TICHU DE ${par}!`);
     }
 
     renderTotals();
@@ -1096,7 +1106,6 @@
     // ¿Ganó alguien?
     const t = totals();
     if (t.a >= state.meta || t.b >= state.meta) {
-      // Decidir ganador (en caso de empate o si ambos pasaron, gana el que tenga más)
       setTimeout(() => showWinner(), 1500);
     }
   }
@@ -1111,22 +1120,22 @@
 
   function showWinner() {
     const t = totals();
-    let win, lose, winScore, loseScore;
-    if (t.a > t.b) { win = state.pairA; lose = state.pairB; winScore = t.a; loseScore = t.b; }
-    else if (t.b > t.a) { win = state.pairB; lose = state.pairA; winScore = t.b; loseScore = t.a; }
-    else { win = 'EMPATE'; lose = ''; winScore = t.a; loseScore = t.b; }
+    let win, winScore, loseScore;
+    if (t.a > t.b) { win = '🐲 DRAGONES'; winScore = t.a; loseScore = t.b; }
+    else if (t.b > t.a) { win = '🐕 PERROS'; winScore = t.b; loseScore = t.a; }
+    else { win = 'EMPATE'; winScore = t.a; loseScore = t.b; }
     winnerName.textContent = win;
     winnerScore.textContent = winScore + ' vs ' + loseScore;
     winnerModal.classList.add('show');
   }
 
   function newGame() {
-    state = { pairA: 'Par A', pairB: 'Par B', meta: state.meta, rounds: [], started: false };
+    state = { meta: state.meta, rounds: [] };
     clearStorage();
-    pairAInput.value = '';
-    pairBInput.value = '';
-    showSetup();
-    pairAInput.focus();
+    save();
+    clearRoundInputs();
+    renderTotals();
+    renderHistory();
   }
 
   function flashError(el, msg) {
@@ -1143,41 +1152,57 @@
     Array.from(metaToggle.children).forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     state.meta = parseInt(btn.dataset.meta, 10);
+    save();
+    renderTotals();
   });
 
-  startBtn.addEventListener('click', startGame);
-
-  // 1-2 toggle
-  oneTwoToggle.addEventListener('click', (e) => {
-    if (e.target.tagName === 'SELECT' || e.target.tagName === 'OPTION') return;
-    if (oneTwoSelect.classList.contains('hidden')) {
-      oneTwoSelect.classList.remove('hidden');
-      oneTwoToggle.classList.add('active');
-    } else if (!oneTwoSelect.value) {
-      oneTwoSelect.classList.add('hidden');
+  // 1-2 buttons (toggle)
+  onetwoABtn.addEventListener('click', () => {
+    if (currentRound.oneTwo === 'a') {
+      currentRound.oneTwo = null;
+      onetwoABtn.classList.remove('active');
       oneTwoToggle.classList.remove('active');
-    }
-  });
-
-  oneTwoSelect.addEventListener('change', () => {
-    if (oneTwoSelect.value) {
-      pointsAInput.disabled = true;
-      pointsBInput.disabled = true;
-      oneTwoBanner.classList.add('show');
-      oneTwoToggle.classList.add('active');
-    } else {
+      oneTwoBanner.classList.remove('show');
       pointsAInput.disabled = false;
       pointsBInput.disabled = false;
-      oneTwoBanner.classList.remove('show');
-      oneTwoToggle.classList.remove('active');
+    } else {
+      currentRound.oneTwo = 'a';
+      onetwoABtn.classList.add('active');
+      onetwoBBtn.classList.remove('active');
+      oneTwoToggle.classList.add('active');
+      oneTwoBanner.classList.add('show');
+      pointsAInput.disabled = true;
+      pointsBInput.disabled = true;
     }
     updatePreview();
   });
 
-  // Live preview con cualquier cambio
-  [pointsAInput, pointsBInput, tichuA, tichuB, grandA, grandB].forEach(el => {
-    el.addEventListener('input', updatePreview);
-    el.addEventListener('change', updatePreview);
+  onetwoBBtn.addEventListener('click', () => {
+    if (currentRound.oneTwo === 'b') {
+      currentRound.oneTwo = null;
+      onetwoBBtn.classList.remove('active');
+      oneTwoToggle.classList.remove('active');
+      oneTwoBanner.classList.remove('show');
+      pointsAInput.disabled = false;
+      pointsBInput.disabled = false;
+    } else {
+      currentRound.oneTwo = 'b';
+      onetwoBBtn.classList.add('active');
+      onetwoABtn.classList.remove('active');
+      oneTwoToggle.classList.add('active');
+      oneTwoBanner.classList.add('show');
+      pointsAInput.disabled = true;
+      pointsBInput.disabled = true;
+    }
+    updatePreview();
+  });
+
+  // Botones de Tichu/Gran Tichu (toggle ✓ / ✗)
+  callBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.disabled) return;
+      setCall(btn.dataset.call, btn.dataset.val);
+    });
   });
 
   // Filtro numérico (permite negativos)
@@ -1192,8 +1217,12 @@
   addRoundBtn.addEventListener('click', addRound);
   undoRoundBtn.addEventListener('click', undoRound);
 
-  endBtn.addEventListener('click', () => {
-    askConfirm('¿Terminar la partida?', 'Volverás a la pantalla de configuración. Los datos se borrarán.', newGame);
+  resetBtn.addEventListener('click', () => {
+    if (state.rounds.length === 0) {
+      newGame();
+      return;
+    }
+    askConfirm('¿Nueva partida?', 'Se borrarán todas las rondas. La meta se mantiene.', newGame);
   });
 
   let confirmCb = null;
@@ -1213,7 +1242,6 @@
     newGame();
   });
 
-  // ESC cierra modales
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       confirmOverlay.classList.remove('show');
@@ -1223,16 +1251,13 @@
 
   // === INIT ===
   load();
-  if (state.started && state.rounds !== undefined) {
-    renderNames();
-    renderTotals();
-    renderHistory();
-    clearRoundInputs();
-    setupView.hidden = true;
-    gameView.hidden = false;
-  } else {
-    pairAInput.focus();
-  }
+  // Marcar meta activa
+  Array.from(metaToggle.children).forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.meta, 10) === state.meta);
+  });
+  renderTotals();
+  renderHistory();
+  clearRoundInputs();
 </script>
 
 </body>
