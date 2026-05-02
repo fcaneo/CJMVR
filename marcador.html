@@ -1135,6 +1135,14 @@
   }
 
   function renderScoreboard() {
+    // Limpieza completa SIEMPRE (también cuando hay <2 jugadores, para que no queden datos viejos visibles)
+    headerRow.innerHTML = '<th>Ronda</th>';
+    roundsBody.innerHTML = '';
+    cardsContainer.innerHTML = '';
+    totalsRow.innerHTML = '<td>Total</td>';
+    totalsMobileGrid.innerHTML = '';
+    totalsMobileEl.hidden = true;
+
     if (state.players.length < 2) {
       scoreboardWrap.hidden = true;
       emptyStateEl.hidden = false;
