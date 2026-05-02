@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#0E0E10" />
+<title>Marcador de Tichu · Club Juegos de Mesa Quinta Región</title>
+<meta name="description" content="Marcador especializado para Tichu. Calcula puntos por ronda, Tichu cantado, Gran Tichu y 1-2 (saca todo). Hasta 1500 puntos." />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://fcaneo.github.io/CJMVR/tichu.html" />
+
+<meta property="og:title" content="Marcador de Tichu · Club CJMVR" />
+<meta property="og:description" content="Marcador para Tichu con cálculo automático y animaciones de dragón." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://fcaneo.github.io/CJMVR/tichu.html" />
+<meta property="og:image" content="https://fcaneo.github.io/CJMVR/assets/images/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='6' width='52' height='52' rx='10' fill='%23F5B700' stroke='%230E0E10' stroke-width='4'/%3E%3Ccircle cx='20' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%230E0E10'/%3E%3Ccircle cx='20' cy='44' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='44' r='5' fill='%230E0E10'/%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/tools.css">
+
+<style>
+  .tool-main { max-width: 720px; }
+
+  /* === SETUP === */
+  .setup-row { margin-bottom: 1.25rem; }
+  .label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 0.65rem;
+  }
+
+  .pair-setup {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  .pair-block {
+    background: var(--ink-soft);
+    border: 1px solid var(--ink-line);
+    padding: 1rem;
+    position: relative;
+  }
+  .pair-block.a { border-left: 3px solid var(--gold); }
+  .pair-block.b { border-left: 3px solid var(--cyan); }
+  .pair-block-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .pair-block.a .pair-block-label { color: var(--gold); }
+  .pair-block.b .pair-block-label { color: var(--cyan); }
+
+  /* Meta */
+  .meta-toggle {
+    display: inline-flex;
+    background: var(--ink-soft);
+    border: 1px solid var(--ink-line);
+    padding: 4px;
+  }
+  .meta-toggle button {
+    background: transparent;
+    border: none;
+    color: var(--dim);
+    padding: 0.5rem 0.95rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .meta-toggle button.active {
+    background: var(--gold);
+    color: var(--ink);
+  }
+
+  .start-btn {
+    width: 100%;
+    padding: 1.25rem;
+    font-size: 16px;
+    margin-top: 1.5rem;
+  }
+
+  /* === GAME VIEW === */
+  .scoreboard-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .pair-score-card {
+    background: var(--ink-soft);
+    border: 2px solid var(--ink-line);
+    padding: 1.25rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+  }
+  .pair-score-card.a { border-color: var(--gold); }
+  .pair-score-card.b { border-color: var(--cyan); }
+  .pair-score-card.leading {
+    box-shadow: 0 0 28px -4px currentColor;
+  }
+  .pair-score-card.a.leading { color: var(--gold); }
+  .pair-score-card.b.leading { color: var(--cyan); }
+
+  .pair-score-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 0.4rem;
+  }
+  .pair-score-total {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(2.5rem, 11vw, 4.2rem);
+    line-height: 1;
+    color: var(--paper);
+    font-variant-numeric: tabular-nums;
+  }
+  .pair-score-card.a .pair-score-total { color: var(--gold); }
+  .pair-score-card.b .pair-score-total { color: var(--cyan); }
+  .pair-score-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    margin-top: 0.4rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* Decoración: dragón sutil en cada card */
+  .dragon-icon {
+    position: absolute;
+    bottom: -8px;
+    right: -8px;
+    width: 80px;
+    height: 80px;
+    opacity: 0.06;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+  .pair-score-card.leading .dragon-icon { opacity: 0.18; }
+
+  .meta-tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .meta-tag .meta-val { color: var(--paper); font-weight: 700; }
+
+  /* === ROUND INPUT === */
+  .round-input {
+    background: var(--ink-soft);
+    border: 1px solid var(--ink-line);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .round-input-title {
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.02em;
+  }
+
+  .one-two-banner {
+    background: linear-gradient(135deg, rgba(245,183,0,0.15), rgba(233,30,99,0.15));
+    border: 2px solid var(--gold);
+    padding: 0.85rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    font-size: 1.05rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    display: none;
+  }
+  .one-two-banner.show { display: block; }
+
+  .pair-input-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .pair-input-block {
+    text-align: center;
+  }
+  .pair-input-block .label-mini {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 0.4rem;
+  }
+  .pair-input-block.a .label-mini { color: var(--gold); }
+  .pair-input-block.b .label-mini { color: var(--cyan); }
+
+  .points-input {
+    width: 100%;
+    background: var(--ink) !important;
+    border: 2px solid var(--ink-line) !important;
+    color: var(--paper) !important;
+    text-align: center;
+    padding: 0.75rem !important;
+    font-family: 'Anton', sans-serif !important;
+    font-size: 28px !important;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+    border-radius: 0;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .points-input:focus {
+    outline: none;
+    border-color: var(--magenta) !important;
+  }
+  .points-input::-webkit-outer-spin-button,
+  .points-input::-webkit-inner-spin-button,
+  .points-input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    display: none;
+    margin: 0;
+  }
+
+  .vs-label {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.5rem;
+    color: var(--dim);
+    letter-spacing: 0.1em;
+  }
+
+  /* Tichu cantado checkboxes */
+  .calls-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+  .call-block {
+    background: var(--ink);
+    border: 1px solid var(--ink-line);
+    padding: 0.85rem;
+  }
+  .call-block.a { border-left: 3px solid var(--gold); }
+  .call-block.b { border-left: 3px solid var(--cyan); }
+  .call-block-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .call-block.a .call-block-label { color: var(--gold); }
+  .call-block.b .call-block-label { color: var(--cyan); }
+
+  .call-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 13px;
+  }
+  .call-row:last-child { border-bottom: none; }
+  .call-row label {
+    cursor: pointer;
+    user-select: none;
+    flex: 1;
+  }
+  .call-row .pts {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    margin: 0 0.5rem;
+  }
+  .call-row select {
+    background: var(--ink-soft);
+    border: 1px solid var(--ink-line);
+    color: var(--paper);
+    padding: 4px 8px;
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    cursor: pointer;
+  }
+
+  .one-two-toggle {
+    background: var(--ink);
+    border: 1px solid var(--ink-line);
+    padding: 0.85rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .one-two-toggle:hover {
+    border-color: var(--gold);
+  }
+  .one-two-toggle.active {
+    border-color: var(--gold);
+    background: rgba(245, 183, 0, 0.08);
+  }
+  .one-two-toggle-label {
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+  }
+  .one-two-select {
+    background: var(--ink-soft);
+    border: 1px solid var(--ink-line);
+    color: var(--paper);
+    padding: 6px 10px;
+    font-size: 13px;
+    font-family: 'Space Mono', monospace;
+  }
+  .one-two-select.hidden { display: none; }
+
+  /* Botones de acción */
+  .round-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  /* === HISTORIAL === */
+  .history-section {
+    margin-top: 1.5rem;
+  }
+  .history-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--ink-soft);
+    border: 1px solid var(--ink-line);
+  }
+  .history-table th, .history-table td {
+    padding: 0.65rem 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid var(--ink-line);
+    font-variant-numeric: tabular-nums;
+  }
+  .history-table th {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    background: var(--ink);
+  }
+  .history-table .pair-a-cell { color: var(--gold); font-family: 'Anton', sans-serif; font-size: 16px; }
+  .history-table .pair-b-cell { color: var(--cyan); font-family: 'Anton', sans-serif; font-size: 16px; }
+  .history-table .round-cell {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.15em;
+  }
+  .history-table .events {
+    font-size: 10px;
+    color: var(--dim);
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  /* === GAME ACTIONS === */
+  .game-meta-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    justify-content: center;
+  }
+
+  /* === DRAGÓN ANIMADO === */
+  .dragon-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    pointer-events: none;
+    overflow: hidden;
+    display: none;
+  }
+  .dragon-overlay.show { display: block; }
+
+  .dragon-flyer {
+    position: absolute;
+    top: 50%;
+    left: -200px;
+    width: 280px;
+    height: 280px;
+    transform: translateY(-50%);
+  }
+  @keyframes dragonFly {
+    0% { left: -200px; transform: translateY(-50%) rotate(-10deg) scale(0.7); opacity: 0; }
+    20% { opacity: 1; }
+    50% { transform: translateY(-90%) rotate(8deg) scale(1.2); }
+    80% { opacity: 1; }
+    100% { left: 110vw; transform: translateY(-30%) rotate(-15deg) scale(0.8); opacity: 0; }
+  }
+  .dragon-overlay.show .dragon-flyer {
+    animation: dragonFly 2s cubic-bezier(0.4, 0.2, 0.2, 1);
+  }
+
+  /* Texto dramático que acompaña al dragón */
+  .dragon-cry {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    font-size: clamp(2.5rem, 10vw, 5rem);
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(245, 183, 0, 0.8), 0 0 60px rgba(245, 183, 0, 0.4);
+    letter-spacing: 0.05em;
+    text-align: center;
+    white-space: nowrap;
+    opacity: 0;
+  }
+  .dragon-overlay.show .dragon-cry {
+    animation: cryReveal 2s ease-out;
+  }
+  @keyframes cryReveal {
+    0%, 20% { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+    35%, 75% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.3); }
+  }
+
+  /* Dragones decorativos en bordes del game-view */
+  .dragon-corner {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    opacity: 0.04;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+  .dragon-corner.tl { top: 1rem; left: 1rem; transform: rotate(-15deg); }
+  .dragon-corner.br { bottom: 1rem; right: 1rem; transform: rotate(165deg); }
+
+  /* Confirm modal */
+  .confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(14, 14, 16, 0.9);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .confirm-overlay.show { display: flex; }
+  .confirm-box {
+    background: var(--ink-soft);
+    border: 2px solid var(--magenta);
+    padding: 2rem;
+    max-width: 400px;
+    text-align: center;
+  }
+  .confirm-box h3 {
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .confirm-box p {
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 1.5rem;
+  }
+  .confirm-actions { display: flex; gap: 0.75rem; justify-content: center; }
+
+  /* Ganador modal */
+  .winner-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(14, 14, 16, 0.95);
+    backdrop-filter: blur(12px);
+    z-index: 90;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .winner-modal.show { display: flex; }
+  .winner-box {
+    background: var(--ink-soft);
+    border: 3px solid var(--gold);
+    padding: 2.5rem;
+    max-width: 500px;
+    text-align: center;
+    animation: modalScale 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  @keyframes modalScale {
+    from { opacity: 0; transform: scale(0.85) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .winner-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .winner-name {
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+    font-size: clamp(2rem, 7vw, 3.5rem);
+    color: var(--gold);
+    line-height: 1;
+    margin: 1rem 0 0.5rem;
+    text-shadow: 0 0 40px rgba(245, 183, 0, 0.4);
+  }
+  .winner-score {
+    font-family: 'Space Mono', monospace;
+    font-size: 18px;
+    color: var(--paper);
+    margin-bottom: 1.5rem;
+  }
+  .winner-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<header class="tool-header">
+  <div class="tool-nav">
+    <a href="/CJMVR/" class="tool-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Volver al club
+    </a>
+    <a href="mesa.html" class="tool-link">
+      🎲 Mesa de juego
+    </a>
+  </div>
+  <a href="/CJMVR/" class="tool-brand" aria-label="Volver al sitio del Club Juegos de Mesa Quinta Región">
+    <span class="text">
+      <span class="name">Club Juegos de Mesa</span>
+      <span class="sub">Quinta Región · Viña</span>
+    </span>
+    <img src="assets/logo/cjmvr-logo-blanco.png" alt="" class="brand-logo" width="880" height="886" />
+  </a>
+</header>
+
+<main class="tool-main">
+  <!-- VISTA 1: SETUP -->
+  <div id="setup-view">
+    <div class="tool-eyebrow gold">★ Marcador de Tichu</div>
+    <h1 class="tool-title">Tichu.</h1>
+    <p class="tool-subtitle">Marcador para el clásico cooperativo de Urs Hostettler. Cálculo automático de Tichu, Gran Tichu y 1-2.</p>
+
+    <div class="setup-row">
+      <div class="label">Pares</div>
+      <div class="pair-setup">
+        <div class="pair-block a">
+          <div class="pair-block-label">★ Par A</div>
+          <input id="pair-a-name" type="text" maxlength="20" placeholder="Pancho / María" autocomplete="off-cjmvr" autocorrect="off" autocapitalize="words" spellcheck="false" />
+        </div>
+        <div class="pair-block b">
+          <div class="pair-block-label">★ Par B</div>
+          <input id="pair-b-name" type="text" maxlength="20" placeholder="Luis / Ana" autocomplete="off-cjmvr" autocorrect="off" autocapitalize="words" spellcheck="false" />
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-row">
+      <div class="label">Meta de victoria</div>
+      <div class="meta-toggle" id="meta-toggle" role="group" aria-label="Meta de puntos">
+        <button data-meta="500" type="button">500</button>
+        <button data-meta="1000" class="active" type="button">1000</button>
+        <button data-meta="1500" type="button">1500</button>
+      </div>
+    </div>
+
+    <button id="start-btn" class="btn btn-primary start-btn">
+      Empezar partida
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    </button>
+  </div>
+
+  <!-- VISTA 2: GAME -->
+  <div id="game-view" hidden style="position: relative;">
+    <!-- Dragones decorativos en esquinas -->
+    <svg class="dragon-corner tl" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
+      <path d="M50 10c-8 0-15 4-20 10-3-2-7-3-12-2-5 2-9 6-10 12 0 4 2 8 6 12-2 4-2 8 0 12 3 6 9 9 16 9-4 4-6 9-5 14 1 5 5 9 11 11 5 1 10 0 14-3 4 5 10 7 16 6 6-1 11-5 13-11 1-5 0-10-3-14 6-2 11-6 13-12 1-6-1-12-5-16 4-4 6-9 5-14-1-6-5-10-11-12-5-1-10 1-14 4-4-4-9-7-14-6z"/>
+    </svg>
+    <svg class="dragon-corner br" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
+      <path d="M50 10c-8 0-15 4-20 10-3-2-7-3-12-2-5 2-9 6-10 12 0 4 2 8 6 12-2 4-2 8 0 12 3 6 9 9 16 9-4 4-6 9-5 14 1 5 5 9 11 11 5 1 10 0 14-3 4 5 10 7 16 6 6-1 11-5 13-11 1-5 0-10-3-14 6-2 11-6 13-12 1-6-1-12-5-16 4-4 6-9 5-14-1-6-5-10-11-12-5-1-10 1-14 4-4-4-9-7-14-6z"/>
+    </svg>
+
+    <div class="meta-tag">
+      Partida hasta <span class="meta-val" id="meta-display">1000</span> pts
+    </div>
+
+    <!-- Score de cada par -->
+    <div class="scoreboard-header">
+      <div class="pair-score-card a" id="card-a">
+        <div class="pair-score-name" id="display-a">Par A</div>
+        <div class="pair-score-total" id="total-a">0</div>
+        <div class="pair-score-meta" id="meta-a">Ronda 0</div>
+        <svg class="dragon-icon" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
+          <path d="M50 10c-8 0-15 4-20 10-3-2-7-3-12-2-5 2-9 6-10 12 0 4 2 8 6 12-2 4-2 8 0 12 3 6 9 9 16 9-4 4-6 9-5 14 1 5 5 9 11 11 5 1 10 0 14-3 4 5 10 7 16 6 6-1 11-5 13-11 1-5 0-10-3-14 6-2 11-6 13-12 1-6-1-12-5-16 4-4 6-9 5-14-1-6-5-10-11-12-5-1-10 1-14 4-4-4-9-7-14-6z"/>
+        </svg>
+      </div>
+      <div class="pair-score-card b" id="card-b">
+        <div class="pair-score-name" id="display-b">Par B</div>
+        <div class="pair-score-total" id="total-b">0</div>
+        <div class="pair-score-meta" id="meta-b">Ronda 0</div>
+        <svg class="dragon-icon" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
+          <path d="M50 10c-8 0-15 4-20 10-3-2-7-3-12-2-5 2-9 6-10 12 0 4 2 8 6 12-2 4-2 8 0 12 3 6 9 9 16 9-4 4-6 9-5 14 1 5 5 9 11 11 5 1 10 0 14-3 4 5 10 7 16 6 6-1 11-5 13-11 1-5 0-10-3-14 6-2 11-6 13-12 1-6-1-12-5-16 4-4 6-9 5-14-1-6-5-10-11-12-5-1-10 1-14 4-4-4-9-7-14-6z"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Input de ronda -->
+    <div class="round-input">
+      <div class="round-input-title">Ronda <span id="round-num">1</span></div>
+
+      <!-- Banner 1-2 -->
+      <div id="one-two-banner" class="one-two-banner">
+        🐲 1-2 ACTIVO · El par lleva 200, el rival 0
+      </div>
+
+      <!-- Inputs de puntos de cartas -->
+      <div class="pair-input-row">
+        <div class="pair-input-block a">
+          <div class="label-mini" id="input-label-a">Par A</div>
+          <input id="points-a" class="points-input" type="text" inputmode="numeric" pattern="-?[0-9]*" placeholder="0" autocomplete="off" />
+        </div>
+        <div class="vs-label">vs</div>
+        <div class="pair-input-block b">
+          <div class="label-mini" id="input-label-b">Par B</div>
+          <input id="points-b" class="points-input" type="text" inputmode="numeric" pattern="-?[0-9]*" placeholder="0" autocomplete="off" />
+        </div>
+      </div>
+
+      <!-- 1-2 toggle -->
+      <div id="one-two-toggle" class="one-two-toggle">
+        <span class="one-two-toggle-label">¿1-2 esta ronda? 🐲</span>
+        <select id="one-two-winner" class="one-two-select hidden">
+          <option value="">— Ninguno</option>
+          <option value="a">Par A se llevó todo</option>
+          <option value="b">Par B se llevó todo</option>
+        </select>
+      </div>
+
+      <!-- Tichus cantados -->
+      <div class="calls-grid">
+        <div class="call-block a">
+          <div class="call-block-label">★ Par A</div>
+          <div class="call-row">
+            <label for="tichu-a">Tichu cantado</label>
+            <span class="pts">±100</span>
+            <select id="tichu-a">
+              <option value="">—</option>
+              <option value="hit">✓ Acertó</option>
+              <option value="fail">✗ Falló</option>
+            </select>
+          </div>
+          <div class="call-row">
+            <label for="grand-a">Gran Tichu</label>
+            <span class="pts">±200</span>
+            <select id="grand-a">
+              <option value="">—</option>
+              <option value="hit">✓ Acertó</option>
+              <option value="fail">✗ Falló</option>
+            </select>
+          </div>
+        </div>
+        <div class="call-block b">
+          <div class="call-block-label">★ Par B</div>
+          <div class="call-row">
+            <label for="tichu-b">Tichu cantado</label>
+            <span class="pts">±100</span>
+            <select id="tichu-b">
+              <option value="">—</option>
+              <option value="hit">✓ Acertó</option>
+              <option value="fail">✗ Falló</option>
+            </select>
+          </div>
+          <div class="call-row">
+            <label for="grand-b">Gran Tichu</label>
+            <span class="pts">±200</span>
+            <select id="grand-b">
+              <option value="">—</option>
+              <option value="hit">✓ Acertó</option>
+              <option value="fail">✗ Falló</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preview total -->
+      <div class="meta-tag" style="margin-top: 1rem;">
+        Esta ronda · <span class="meta-val" id="preview-a">+0</span> / <span class="meta-val" id="preview-b">+0</span>
+      </div>
+
+      <div class="round-actions">
+        <button id="add-round-btn" class="btn btn-primary" style="flex: 1;">
+          Agregar ronda
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <button id="undo-round-btn" class="btn btn-ghost" type="button" disabled>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 7v6h6M21 17a9 9 0 00-15-6.7L3 13"/></svg>
+          Deshacer última
+        </button>
+      </div>
+    </div>
+
+    <!-- Historial -->
+    <div id="history-section" class="history-section" hidden>
+      <div class="label">Historial</div>
+      <div style="overflow-x: auto;">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Ronda</th>
+              <th id="hist-head-a">Par A</th>
+              <th id="hist-head-b">Par B</th>
+              <th>Eventos</th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="game-meta-actions">
+      <button id="end-btn" class="btn btn-ghost btn-small" type="button">Terminar partida</button>
+    </div>
+  </div>
+</main>
+
+<!-- Overlay del dragón animado -->
+<div id="dragon-overlay" class="dragon-overlay" aria-hidden="true">
+  <svg class="dragon-flyer" viewBox="0 0 200 200" fill="none">
+    <!-- Dragón estilizado -->
+    <path d="M100 30c-15 0-28 8-35 20-8-3-18-3-25 3-7 5-10 14-7 23-7 5-12 13-12 22 0 12 8 22 20 26-3 6-3 14 1 20 5 8 15 12 25 9 4 5 11 7 18 6-3 8-1 17 5 23 8 8 20 9 30 4 8 9 22 11 32 4 8-6 12-16 9-26 11-1 21-9 24-20 3-9 0-19-6-26 7-5 11-13 11-21 0-12-8-22-19-26 2-7 1-15-4-21-6-7-15-10-23-8-7-7-17-11-27-8h-17z"
+          fill="#F5B700" stroke="#0E0E10" stroke-width="3"/>
+    <!-- Ojos -->
+    <circle cx="80" cy="85" r="6" fill="#0E0E10"/>
+    <circle cx="120" cy="85" r="6" fill="#0E0E10"/>
+    <circle cx="80" cy="83" r="2" fill="#fff"/>
+    <circle cx="120" cy="83" r="2" fill="#fff"/>
+    <!-- Boca -->
+    <path d="M85 115c5 5 25 5 30 0" stroke="#0E0E10" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Llamas -->
+    <path d="M70 130c-5 5-10 12-8 18 4-3 8-5 12-4M130 130c5 5 10 12 8 18-4-3-8-5-12-4" stroke="#E91E63" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </svg>
+  <div class="dragon-cry" id="dragon-cry">¡TICHU!</div>
+</div>
+
+<!-- Modal confirmación -->
+<div id="confirm-overlay" class="confirm-overlay" role="dialog" aria-modal="true">
+  <div class="confirm-box">
+    <h3 id="confirm-title">¿Estás seguro?</h3>
+    <p id="confirm-msg">Esta acción no se puede deshacer.</p>
+    <div class="confirm-actions">
+      <button id="confirm-cancel" class="btn btn-ghost" type="button">Cancelar</button>
+      <button id="confirm-yes" class="btn btn-magenta" type="button">Sí</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal ganador -->
+<div id="winner-modal" class="winner-modal" role="dialog" aria-modal="true">
+  <div class="winner-box">
+    <div class="winner-eyebrow">★ Partida terminada</div>
+    <div style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-top: 1rem;">El dragón fue domado por</div>
+    <div id="winner-name" class="winner-name">—</div>
+    <div id="winner-score" class="winner-score">— vs —</div>
+    <div class="winner-actions">
+      <button id="winner-close" class="btn btn-ghost" type="button">Ver tablero</button>
+      <button id="winner-new" class="btn btn-primary" type="button">Nueva partida</button>
+    </div>
+  </div>
+</div>
+
+<footer class="tool-footer">
+  <div class="footer-content">
+    <a href="/CJMVR/" aria-label="Volver al Club Juegos de Mesa Quinta Región">
+      <img src="assets/logo/cjmvr-logo-blanco.png" alt="" class="footer-logo" width="880" height="886" />
+    </a>
+    <span class="footer-tag">
+      Una herramienta del <a href="/CJMVR/">Club Juegos de Mesa Quinta Región</a> · Viña del Mar
+    </span>
+  </div>
+</footer>
+
+<script>
+  const STORAGE_KEY = 'cjmvr-tichu-v1';
+
+  let state = {
+    pairA: 'Par A',
+    pairB: 'Par B',
+    meta: 1000,
+    rounds: [],   // [{a: 80, b: 20, oneTwo: null|'a'|'b', tichuA: null|'hit'|'fail', tichuB, grandA, grandB}]
+    started: false
+  };
+
+  // === REFS ===
+  const setupView = document.getElementById('setup-view');
+  const gameView = document.getElementById('game-view');
+  const pairAInput = document.getElementById('pair-a-name');
+  const pairBInput = document.getElementById('pair-b-name');
+  const metaToggle = document.getElementById('meta-toggle');
+  const startBtn = document.getElementById('start-btn');
+
+  const displayA = document.getElementById('display-a');
+  const displayB = document.getElementById('display-b');
+  const totalAEl = document.getElementById('total-a');
+  const totalBEl = document.getElementById('total-b');
+  const metaAEl = document.getElementById('meta-a');
+  const metaBEl = document.getElementById('meta-b');
+  const cardA = document.getElementById('card-a');
+  const cardB = document.getElementById('card-b');
+  const metaDisplay = document.getElementById('meta-display');
+
+  const inputLabelA = document.getElementById('input-label-a');
+  const inputLabelB = document.getElementById('input-label-b');
+  const pointsAInput = document.getElementById('points-a');
+  const pointsBInput = document.getElementById('points-b');
+  const oneTwoToggle = document.getElementById('one-two-toggle');
+  const oneTwoSelect = document.getElementById('one-two-winner');
+  const oneTwoBanner = document.getElementById('one-two-banner');
+  const tichuA = document.getElementById('tichu-a');
+  const tichuB = document.getElementById('tichu-b');
+  const grandA = document.getElementById('grand-a');
+  const grandB = document.getElementById('grand-b');
+  const previewAEl = document.getElementById('preview-a');
+  const previewBEl = document.getElementById('preview-b');
+  const roundNumEl = document.getElementById('round-num');
+  const addRoundBtn = document.getElementById('add-round-btn');
+  const undoRoundBtn = document.getElementById('undo-round-btn');
+  const endBtn = document.getElementById('end-btn');
+
+  const historySection = document.getElementById('history-section');
+  const historyTbody = document.getElementById('history-tbody');
+  const histHeadA = document.getElementById('hist-head-a');
+  const histHeadB = document.getElementById('hist-head-b');
+
+  const confirmOverlay = document.getElementById('confirm-overlay');
+  const confirmTitle = document.getElementById('confirm-title');
+  const confirmMsg = document.getElementById('confirm-msg');
+  const confirmCancel = document.getElementById('confirm-cancel');
+  const confirmYes = document.getElementById('confirm-yes');
+
+  const winnerModal = document.getElementById('winner-modal');
+  const winnerName = document.getElementById('winner-name');
+  const winnerScore = document.getElementById('winner-score');
+  const winnerClose = document.getElementById('winner-close');
+  const winnerNew = document.getElementById('winner-new');
+
+  const dragonOverlay = document.getElementById('dragon-overlay');
+  const dragonCry = document.getElementById('dragon-cry');
+
+  // === PERSISTENCIA ===
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function load() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p && Array.isArray(p.rounds)) state = { ...state, ...p };
+      }
+    } catch (e) {}
+  }
+  function clearStorage() {
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  }
+
+  // === UTILS ===
+  function totals() {
+    return state.rounds.reduce((acc, r) => {
+      acc.a += r.scoreA;
+      acc.b += r.scoreB;
+      return acc;
+    }, { a: 0, b: 0 });
+  }
+
+  // Calcula puntos de la ronda actual desde inputs (no del state)
+  function calcRound() {
+    const oneTwo = oneTwoSelect.value || null;
+    let baseA, baseB;
+    if (oneTwo === 'a') { baseA = 200; baseB = 0; }
+    else if (oneTwo === 'b') { baseA = 0; baseB = 200; }
+    else {
+      baseA = parseInt(pointsAInput.value, 10);
+      baseB = parseInt(pointsBInput.value, 10);
+      if (isNaN(baseA) && isNaN(baseB)) { baseA = 0; baseB = 0; }
+      else if (isNaN(baseA)) baseA = 100 - baseB;
+      else if (isNaN(baseB)) baseB = 100 - baseA;
+    }
+
+    let scoreA = baseA;
+    let scoreB = baseB;
+
+    // Tichu cantado: ±100 cada lado
+    if (tichuA.value === 'hit') scoreA += 100;
+    if (tichuA.value === 'fail') scoreA -= 100;
+    if (tichuB.value === 'hit') scoreB += 100;
+    if (tichuB.value === 'fail') scoreB -= 100;
+    // Gran Tichu: ±200
+    if (grandA.value === 'hit') scoreA += 200;
+    if (grandA.value === 'fail') scoreA -= 200;
+    if (grandB.value === 'hit') scoreB += 200;
+    if (grandB.value === 'fail') scoreB -= 200;
+
+    return { scoreA, scoreB, oneTwo, baseA, baseB };
+  }
+
+  function updatePreview() {
+    const r = calcRound();
+    previewAEl.textContent = (r.scoreA >= 0 ? '+' : '') + r.scoreA;
+    previewBEl.textContent = (r.scoreB >= 0 ? '+' : '') + r.scoreB;
+  }
+
+  // === RENDER ===
+  function renderTotals() {
+    const t = totals();
+    totalAEl.textContent = t.a;
+    totalBEl.textContent = t.b;
+    metaAEl.textContent = state.rounds.length === 0 ? 'Sin rondas aún' : `Ronda ${state.rounds.length}`;
+    metaBEl.textContent = state.rounds.length === 0 ? 'Sin rondas aún' : `Ronda ${state.rounds.length}`;
+    metaDisplay.textContent = state.meta;
+
+    cardA.classList.toggle('leading', t.a > t.b && state.rounds.length > 0);
+    cardB.classList.toggle('leading', t.b > t.a && state.rounds.length > 0);
+
+    roundNumEl.textContent = state.rounds.length + 1;
+    undoRoundBtn.disabled = state.rounds.length === 0;
+  }
+
+  function renderHistory() {
+    if (state.rounds.length === 0) {
+      historySection.hidden = true;
+      return;
+    }
+    historySection.hidden = false;
+    histHeadA.textContent = state.pairA;
+    histHeadB.textContent = state.pairB;
+    historyTbody.innerHTML = '';
+    let cumA = 0, cumB = 0;
+    state.rounds.forEach((r, i) => {
+      cumA += r.scoreA;
+      cumB += r.scoreB;
+      const events = [];
+      if (r.oneTwo === 'a') events.push('1-2 (' + state.pairA + ')');
+      if (r.oneTwo === 'b') events.push('1-2 (' + state.pairB + ')');
+      if (r.tichuA === 'hit') events.push('TichuA✓');
+      if (r.tichuA === 'fail') events.push('TichuA✗');
+      if (r.tichuB === 'hit') events.push('TichuB✓');
+      if (r.tichuB === 'fail') events.push('TichuB✗');
+      if (r.grandA === 'hit') events.push('GTichuA✓');
+      if (r.grandA === 'fail') events.push('GTichuA✗');
+      if (r.grandB === 'hit') events.push('GTichuB✓');
+      if (r.grandB === 'fail') events.push('GTichuB✗');
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="round-cell">R${i + 1}</td>
+        <td class="pair-a-cell">${(r.scoreA >= 0 ? '+' : '') + r.scoreA}<br/><span style="font-family: 'Space Mono', monospace; font-size: 10px; color: var(--dim);">${cumA}</span></td>
+        <td class="pair-b-cell">${(r.scoreB >= 0 ? '+' : '') + r.scoreB}<br/><span style="font-family: 'Space Mono', monospace; font-size: 10px; color: var(--dim);">${cumB}</span></td>
+        <td class="events">${events.join(' · ') || '—'}</td>
+      `;
+      historyTbody.appendChild(tr);
+    });
+  }
+
+  function renderNames() {
+    const a = state.pairA || 'Par A';
+    const b = state.pairB || 'Par B';
+    displayA.textContent = a;
+    displayB.textContent = b;
+    inputLabelA.textContent = a;
+    inputLabelB.textContent = b;
+  }
+
+  function clearRoundInputs() {
+    pointsAInput.value = '';
+    pointsBInput.value = '';
+    oneTwoSelect.value = '';
+    oneTwoSelect.classList.add('hidden');
+    oneTwoBanner.classList.remove('show');
+    oneTwoToggle.classList.remove('active');
+    pointsAInput.disabled = false;
+    pointsBInput.disabled = false;
+    tichuA.value = ''; tichuB.value = '';
+    grandA.value = ''; grandB.value = '';
+    updatePreview();
+  }
+
+  // === DRAGÓN ANIMADO ===
+  function flyDragon(text) {
+    dragonCry.textContent = text;
+    dragonOverlay.classList.remove('show');
+    void dragonOverlay.offsetWidth;
+    dragonOverlay.classList.add('show');
+    setTimeout(() => dragonOverlay.classList.remove('show'), 2100);
+  }
+
+  // === ACTIONS ===
+  function startGame() {
+    state.pairA = pairAInput.value.trim() || 'Par A';
+    state.pairB = pairBInput.value.trim() || 'Par B';
+    state.rounds = [];
+    state.started = true;
+    save();
+    renderNames();
+    renderTotals();
+    renderHistory();
+    clearRoundInputs();
+    setupView.hidden = true;
+    gameView.hidden = false;
+  }
+
+  function showSetup() {
+    setupView.hidden = false;
+    gameView.hidden = true;
+  }
+
+  function addRound() {
+    const r = calcRound();
+    if (r.scoreA === 0 && r.scoreB === 0 && !r.oneTwo &&
+        tichuA.value === '' && tichuB.value === '' &&
+        grandA.value === '' && grandB.value === '') {
+      flashError(pointsAInput, 'Ingresa puntos');
+      return;
+    }
+    const round = {
+      scoreA: r.scoreA,
+      scoreB: r.scoreB,
+      baseA: r.baseA,
+      baseB: r.baseB,
+      oneTwo: r.oneTwo,
+      tichuA: tichuA.value || null,
+      tichuB: tichuB.value || null,
+      grandA: grandA.value || null,
+      grandB: grandB.value || null
+    };
+    state.rounds.push(round);
+    save();
+
+    // Animación dragón si hubo eventos especiales
+    if (r.oneTwo) {
+      const ganador = r.oneTwo === 'a' ? state.pairA : state.pairB;
+      flyDragon('¡1-2 PARA ' + ganador.toUpperCase() + '! 🐲');
+    } else if (grandA.value === 'hit' || grandB.value === 'hit') {
+      const par = grandA.value === 'hit' ? state.pairA : state.pairB;
+      flyDragon('¡GRAN TICHU DE ' + par.toUpperCase() + '! 🐲');
+    } else if (grandA.value === 'fail' || grandB.value === 'fail') {
+      flyDragon('GRAN TICHU FALLIDO 💀');
+    } else if (tichuA.value === 'hit' || tichuB.value === 'hit') {
+      const par = tichuA.value === 'hit' ? state.pairA : state.pairB;
+      flyDragon('¡TICHU DE ' + par.toUpperCase() + '!');
+    }
+
+    renderTotals();
+    renderHistory();
+    clearRoundInputs();
+
+    // ¿Ganó alguien?
+    const t = totals();
+    if (t.a >= state.meta || t.b >= state.meta) {
+      // Decidir ganador (en caso de empate o si ambos pasaron, gana el que tenga más)
+      setTimeout(() => showWinner(), 1500);
+    }
+  }
+
+  function undoRound() {
+    if (state.rounds.length === 0) return;
+    state.rounds.pop();
+    save();
+    renderTotals();
+    renderHistory();
+  }
+
+  function showWinner() {
+    const t = totals();
+    let win, lose, winScore, loseScore;
+    if (t.a > t.b) { win = state.pairA; lose = state.pairB; winScore = t.a; loseScore = t.b; }
+    else if (t.b > t.a) { win = state.pairB; lose = state.pairA; winScore = t.b; loseScore = t.a; }
+    else { win = 'EMPATE'; lose = ''; winScore = t.a; loseScore = t.b; }
+    winnerName.textContent = win;
+    winnerScore.textContent = winScore + ' vs ' + loseScore;
+    winnerModal.classList.add('show');
+  }
+
+  function newGame() {
+    state = { pairA: 'Par A', pairB: 'Par B', meta: state.meta, rounds: [], started: false };
+    clearStorage();
+    pairAInput.value = '';
+    pairBInput.value = '';
+    showSetup();
+    pairAInput.focus();
+  }
+
+  function flashError(el, msg) {
+    const orig = el.placeholder;
+    el.placeholder = msg;
+    el.style.borderColor = 'var(--magenta)';
+    setTimeout(() => { el.placeholder = orig; el.style.borderColor = ''; }, 2000);
+  }
+
+  // === LISTENERS ===
+  metaToggle.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    Array.from(metaToggle.children).forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.meta = parseInt(btn.dataset.meta, 10);
+  });
+
+  startBtn.addEventListener('click', startGame);
+
+  // 1-2 toggle
+  oneTwoToggle.addEventListener('click', (e) => {
+    if (e.target.tagName === 'SELECT' || e.target.tagName === 'OPTION') return;
+    if (oneTwoSelect.classList.contains('hidden')) {
+      oneTwoSelect.classList.remove('hidden');
+      oneTwoToggle.classList.add('active');
+    } else if (!oneTwoSelect.value) {
+      oneTwoSelect.classList.add('hidden');
+      oneTwoToggle.classList.remove('active');
+    }
+  });
+
+  oneTwoSelect.addEventListener('change', () => {
+    if (oneTwoSelect.value) {
+      pointsAInput.disabled = true;
+      pointsBInput.disabled = true;
+      oneTwoBanner.classList.add('show');
+      oneTwoToggle.classList.add('active');
+    } else {
+      pointsAInput.disabled = false;
+      pointsBInput.disabled = false;
+      oneTwoBanner.classList.remove('show');
+      oneTwoToggle.classList.remove('active');
+    }
+    updatePreview();
+  });
+
+  // Live preview con cualquier cambio
+  [pointsAInput, pointsBInput, tichuA, tichuB, grandA, grandB].forEach(el => {
+    el.addEventListener('input', updatePreview);
+    el.addEventListener('change', updatePreview);
+  });
+
+  // Filtro numérico (permite negativos)
+  [pointsAInput, pointsBInput].forEach(input => {
+    input.addEventListener('input', () => {
+      const cleaned = input.value.replace(/[^0-9-]/g, '').replace(/(?!^)-/g, '');
+      if (cleaned !== input.value) input.value = cleaned;
+      updatePreview();
+    });
+  });
+
+  addRoundBtn.addEventListener('click', addRound);
+  undoRoundBtn.addEventListener('click', undoRound);
+
+  endBtn.addEventListener('click', () => {
+    askConfirm('¿Terminar la partida?', 'Volverás a la pantalla de configuración. Los datos se borrarán.', newGame);
+  });
+
+  let confirmCb = null;
+  function askConfirm(title, msg, cb) {
+    confirmTitle.textContent = title;
+    confirmMsg.textContent = msg;
+    confirmCb = cb;
+    confirmOverlay.classList.add('show');
+  }
+  confirmCancel.addEventListener('click', () => { confirmOverlay.classList.remove('show'); confirmCb = null; });
+  confirmYes.addEventListener('click', () => { confirmOverlay.classList.remove('show'); if (confirmCb) confirmCb(); confirmCb = null; });
+  confirmOverlay.addEventListener('click', (e) => { if (e.target === confirmOverlay) { confirmOverlay.classList.remove('show'); confirmCb = null; } });
+
+  winnerClose.addEventListener('click', () => winnerModal.classList.remove('show'));
+  winnerNew.addEventListener('click', () => {
+    winnerModal.classList.remove('show');
+    newGame();
+  });
+
+  // ESC cierra modales
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      confirmOverlay.classList.remove('show');
+      winnerModal.classList.remove('show');
+    }
+  });
+
+  // === INIT ===
+  load();
+  if (state.started && state.rounds !== undefined) {
+    renderNames();
+    renderTotals();
+    renderHistory();
+    clearRoundInputs();
+    setupView.hidden = true;
+    gameView.hidden = false;
+  } else {
+    pairAInput.focus();
+  }
+</script>
+
+</body>
+</html>

@@ -4,6 +4,10 @@ club_juegos_mesa_v_region_proyecto_web.md
 # Configuración local de Claude Code
 .claude/
 
+# Tests con Playwright (carpeta local de desarrollo)
+.test/
+node_modules/
+
 # Archivos del sistema operativo
 Thumbs.db
 .DS_Store
