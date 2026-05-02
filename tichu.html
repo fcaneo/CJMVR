@@ -663,7 +663,7 @@
   <!-- Score de cada par -->
   <div class="scoreboard-header">
     <div class="pair-score-card dragones" id="card-a">
-      <div class="pair-score-name"><span class="emoji">🐲</span>Team Dragones</div>
+      <div class="pair-score-name"><span class="emoji">🐉</span>Team Dragones</div>
       <div class="pair-score-total" id="total-a">0</div>
       <div class="pair-score-meta" id="meta-a">Sin rondas</div>
       <svg class="deco-icon" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
@@ -687,13 +687,13 @@
 
     <!-- Banner 1-2 -->
     <div id="one-two-banner" class="one-two-banner">
-      🐲 1-2 ACTIVO · El team lleva 200, el rival 0
+      🐉 1-2 ACTIVO · El team lleva 200, el rival 0
     </div>
 
     <!-- Inputs de puntos de cartas -->
     <div class="pair-input-row">
       <div class="pair-input-block dragones">
-        <div class="label-mini">🐲 Dragones</div>
+        <div class="label-mini">🐉 Dragones</div>
         <input id="points-a" class="points-input" type="text" inputmode="numeric" pattern="-?[0-9]*" placeholder="0" autocomplete="off" />
       </div>
       <div class="vs-label">vs</div>
@@ -706,9 +706,9 @@
 
     <!-- 1-2 toggle -->
     <div id="one-two-toggle" class="one-two-toggle">
-      <span class="one-two-toggle-label">¿Hicieron 1-2 esta ronda? 🐲</span>
+      <span class="one-two-toggle-label">¿Hicieron 1-2 esta ronda? 🐉</span>
       <div class="one-two-buttons">
-        <button id="onetwo-a" class="one-two-btn dragones" type="button">🐲 Dragones</button>
+        <button id="onetwo-a" class="one-two-btn dragones" type="button">🐉 Dragones</button>
         <button id="onetwo-b" class="one-two-btn perros" type="button">🐕 Perros</button>
       </div>
     </div>
@@ -716,7 +716,7 @@
     <!-- Tichus cantados (botones toggle) -->
     <div class="calls-grid">
       <div class="call-block dragones">
-        <div class="call-block-label">🐲 Dragones cantó:</div>
+        <div class="call-block-label">🐉 Dragones cantó:</div>
         <div class="call-row">
           <span class="call-label">Tichu <span class="call-pts">±100</span></span>
           <div class="call-buttons">
@@ -775,7 +775,7 @@
         <thead>
           <tr>
             <th>Ronda</th>
-            <th>🐲 Dragones</th>
+            <th>🐉 Dragones</th>
             <th>🐕 Perros</th>
             <th>Eventos</th>
           </tr>
@@ -844,7 +844,7 @@
 
 <script>
   const STORAGE_KEY = 'cjmvr-tichu-v2';
-  const NAME_A = '🐲 Dragones';
+  const NAME_A = '🐉 Dragones';
   const NAME_B = '🐕 Perros';
 
   let state = {
@@ -1038,14 +1038,14 @@
       cumA += r.scoreA;
       cumB += r.scoreB;
       const events = [];
-      if (r.oneTwo === 'a') events.push('1-2 🐲');
+      if (r.oneTwo === 'a') events.push('1-2 🐉');
       if (r.oneTwo === 'b') events.push('1-2 🐕');
-      if (r.tichuA === 'hit') events.push('Tichu🐲✓');
-      if (r.tichuA === 'fail') events.push('Tichu🐲✗');
+      if (r.tichuA === 'hit') events.push('Tichu🐉✓');
+      if (r.tichuA === 'fail') events.push('Tichu🐉✗');
       if (r.tichuB === 'hit') events.push('Tichu🐕✓');
       if (r.tichuB === 'fail') events.push('Tichu🐕✗');
-      if (r.grandA === 'hit') events.push('GTichu🐲✓');
-      if (r.grandA === 'fail') events.push('GTichu🐲✗');
+      if (r.grandA === 'hit') events.push('GTichu🐉✓');
+      if (r.grandA === 'fail') events.push('GTichu🐉✗');
       if (r.grandB === 'hit') events.push('GTichu🐕✓');
       if (r.grandB === 'fail') events.push('GTichu🐕✗');
 
@@ -1111,15 +1111,15 @@
     // Animación dragón si hubo eventos especiales
     if (currentRound.oneTwo) {
       const ganador = currentRound.oneTwo === 'a' ? 'DRAGONES' : 'PERROS';
-      const emoji = currentRound.oneTwo === 'a' ? '🐲' : '🐕';
+      const emoji = currentRound.oneTwo === 'a' ? '🐉' : '🐕';
       flyDragon(`¡1-2 PARA ${ganador}! ${emoji}`);
     } else if (currentRound.grandA === 'hit' || currentRound.grandB === 'hit') {
-      const par = currentRound.grandA === 'hit' ? 'DRAGONES 🐲' : 'PERROS 🐕';
+      const par = currentRound.grandA === 'hit' ? 'DRAGONES 🐉' : 'PERROS 🐕';
       flyDragon(`¡GRAN TICHU DE ${par}!`);
     } else if (currentRound.grandA === 'fail' || currentRound.grandB === 'fail') {
       flyDragon('GRAN TICHU FALLIDO 💀');
     } else if (currentRound.tichuA === 'hit' || currentRound.tichuB === 'hit') {
-      const par = currentRound.tichuA === 'hit' ? 'DRAGONES 🐲' : 'PERROS 🐕';
+      const par = currentRound.tichuA === 'hit' ? 'DRAGONES 🐉' : 'PERROS 🐕';
       flyDragon(`¡TICHU DE ${par}!`);
     }
 
@@ -1145,7 +1145,7 @@
   function showWinner() {
     const t = totals();
     let win, winScore, loseScore;
-    if (t.a > t.b) { win = '🐲 DRAGONES'; winScore = t.a; loseScore = t.b; }
+    if (t.a > t.b) { win = '🐉 DRAGONES'; winScore = t.a; loseScore = t.b; }
     else if (t.b > t.a) { win = '🐕 PERROS'; winScore = t.b; loseScore = t.a; }
     else { win = 'EMPATE'; winScore = t.a; loseScore = t.b; }
     winnerName.textContent = win;
