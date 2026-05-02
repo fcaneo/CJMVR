@@ -222,6 +222,21 @@
     opacity: 0.4;
     cursor: not-allowed;
   }
+  .points-input.auto-filled {
+    color: var(--dim) !important;
+    border-style: dashed !important;
+    border-color: var(--ink-line) !important;
+  }
+  .auto-hint {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-top: 0.4rem;
+    text-align: center;
+    min-height: 1em;
+  }
 
   .vs-label {
     font-family: 'Anton', sans-serif;
@@ -687,6 +702,7 @@
         <input id="points-b" class="points-input" type="text" inputmode="numeric" pattern="-?[0-9]*" placeholder="0" autocomplete="off" />
       </div>
     </div>
+    <div class="auto-hint">Las cartas suman 100 — escribe uno y se calcula el otro</div>
 
     <!-- 1-2 toggle -->
     <div id="one-two-toggle" class="one-two-toggle">
@@ -1047,6 +1063,8 @@
   function clearRoundInputs() {
     pointsAInput.value = '';
     pointsBInput.value = '';
+    pointsAInput.classList.remove('auto-filled');
+    pointsBInput.classList.remove('auto-filled');
     pointsAInput.disabled = false;
     pointsBInput.disabled = false;
     currentRound = { oneTwo: null, tichuA: null, tichuB: null, grandA: null, grandB: null };
@@ -1179,6 +1197,8 @@
       oneTwoBanner.classList.add('show');
       pointsAInput.disabled = true;
       pointsBInput.disabled = true;
+      pointsAInput.classList.remove('auto-filled');
+      pointsBInput.classList.remove('auto-filled');
     }
     updatePreview();
   });
@@ -1199,6 +1219,8 @@
       oneTwoBanner.classList.add('show');
       pointsAInput.disabled = true;
       pointsBInput.disabled = true;
+      pointsAInput.classList.remove('auto-filled');
+      pointsBInput.classList.remove('auto-filled');
     }
     updatePreview();
   });
@@ -1211,12 +1233,38 @@
     });
   });
 
-  // Filtro numérico (permite negativos)
+  // Filtro numérico + auto-relleno: las cartas suman 100, así que con uno se sabe el otro.
+  function autoFillFrom(source, target) {
+    const cleaned = source.value.replace(/[^0-9-]/g, '').replace(/(?!^)-/g, '');
+    if (cleaned !== source.value) source.value = cleaned;
+    source.classList.remove('auto-filled');
+
+    if (cleaned === '' || cleaned === '-') {
+      // Si el usuario borró el origen, también borramos el destino auto-rellenado
+      if (target.classList.contains('auto-filled')) {
+        target.value = '';
+        target.classList.remove('auto-filled');
+      }
+    } else {
+      const n = parseInt(cleaned, 10);
+      if (!isNaN(n)) {
+        target.value = String(100 - n);
+        target.classList.add('auto-filled');
+      }
+    }
+    updatePreview();
+  }
+
+  pointsAInput.addEventListener('input', () => autoFillFrom(pointsAInput, pointsBInput));
+  pointsBInput.addEventListener('input', () => autoFillFrom(pointsBInput, pointsAInput));
+
+  // Si el usuario hace foco en un campo auto-rellenado para sobreescribirlo, lo limpiamos
   [pointsAInput, pointsBInput].forEach(input => {
-    input.addEventListener('input', () => {
-      const cleaned = input.value.replace(/[^0-9-]/g, '').replace(/(?!^)-/g, '');
-      if (cleaned !== input.value) input.value = cleaned;
-      updatePreview();
+    input.addEventListener('focus', () => {
+      if (input.classList.contains('auto-filled')) {
+        input.value = '';
+        input.classList.remove('auto-filled');
+      }
     });
   });
 
