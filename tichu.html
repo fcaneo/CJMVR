@@ -946,7 +946,9 @@
     previewBEl.textContent = (r.scoreB >= 0 ? '+' : '') + r.scoreB;
   }
 
-  // Bloqueo: si un par acertó Tichu o Gran Tichu, el otro no puede acertar
+  // Bloqueo: si un par acertó Tichu/Gran Tichu, el otro no puede acertar.
+  // Además: dentro del mismo par, Tichu y Gran Tichu son mutuamente excluyentes
+  // (una persona no puede declarar ambos a la vez).
   function updateCallButtonsState() {
     const aHit = currentRound.tichuA === 'hit' || currentRound.grandA === 'hit';
     const bHit = currentRound.tichuB === 'hit' || currentRound.grandB === 'hit';
@@ -955,26 +957,30 @@
       const callId = btn.dataset.call; // tichuA, tichuB, grandA, grandB
       const val = btn.dataset.val; // hit | fail
       const par = callId.endsWith('A') ? 'a' : 'b';
+      const tipo = callId.startsWith('grand') ? 'grand' : 'tichu';
 
       // Estado activo
       const currentVal = currentRound[callId];
       btn.classList.toggle('active', currentVal === val);
 
-      // Bloqueo de "hit": si el OTRO par ya acertó, deshabilita el hit de este par
+      // Reset
+      btn.disabled = false;
+
+      // Bloqueo entre par: si el OTRO par ya acertó, deshabilita el hit de este par
       if (val === 'hit') {
-        if (par === 'a' && bHit) {
-          btn.disabled = true;
-        } else if (par === 'b' && aHit) {
-          btn.disabled = true;
-        } else {
-          btn.disabled = false;
-        }
+        if (par === 'a' && bHit) btn.disabled = true;
+        else if (par === 'b' && aHit) btn.disabled = true;
+      }
+
+      // Bloqueo intra-par: Tichu y Gran Tichu son excluyentes en el mismo par.
+      // Si ya hay algo marcado (hit o fail) en el OTRO tipo del mismo par,
+      // deshabilitar este botón.
+      const otroTipo = tipo === 'grand' ? 'tichu' : 'grand';
+      const otroCallId = otroTipo + (par === 'a' ? 'A' : 'B');
+      if (currentRound[otroCallId] !== null) {
+        btn.disabled = true;
       }
     });
-
-    // Bloqueo del 1-2: si alguien acertó Tichu/Gran, igual puede haber 1-2 (el que acertó es el que sale primero)
-    // Pero si hay 1-2, el par del 1-2 es por definición quien sale primero → si A hizo 1-2 y B marcó hit, contradicción
-    // Permitimos que el usuario decida; la regla del cálculo ya respeta el orden
   }
 
   function setCall(callId, val) {
