@@ -874,6 +874,90 @@
   </div>
 </main>
 
+<!-- === Contenido SEO === -->
+<section class="seo-section" aria-labelledby="seo-h2">
+  <h2 id="seo-h2">Marcador de Tichu online: cálculo automático y sin errores</h2>
+  <p>Tichu es un juego de cartas para 4 jugadores (2 parejas) que se juega a 1000 puntos. Es uno de los mejores juegos de cartas del mundo (consistentemente top 30 de BoardGameGeek), pero llevar el puntaje a mano es complicado: cada ronda combina puntos de cartas (que siempre suman 100), apuestas de Tichu (±100), apuestas de Gran Tichu (±200) y la jugada del 1-2 (cuando una pareja sale primero y segundo, gana 200/0 directo). Es muy fácil equivocarse.</p>
+  <p>Este marcador hace todo el cálculo solo. Marcas qué cartas ganó cada equipo, indicas si alguien cantó Tichu o Gran Tichu, y si lo lograron o no. El marcador valida las reglas oficiales (no te deja decir Tichu y Gran Tichu en la misma mano, no te deja anotar Tichu acertado en ambos equipos, etc.) y suma todo automáticamente. La meta es configurable (500 / 1000 / 1500). Y cuando alguien hace una jugada épica, un dragón vuela por la pantalla.</p>
+
+  <h2>Cómo funciona</h2>
+  <ol>
+    <li>Configura la meta (1000 por defecto, que es lo oficial).</li>
+    <li>En cada ronda: marca los puntos de cartas (escribes uno, el otro se calcula solo porque siempre suman 100).</li>
+    <li>Indica si alguien cantó Tichu o Gran Tichu y si lo logró.</li>
+    <li>Si una pareja hizo 1-2, marca esa opción (sobreescribe los puntos de cartas).</li>
+    <li>Aprieta "Agregar ronda". El marcador suma todo.</li>
+    <li>La partida termina cuando una pareja llega a la meta. Si quedan empatados, sigan jugando hasta que uno saque ventaja (regla oficial).</li>
+  </ol>
+
+  <h2>Preguntas frecuentes</h2>
+  <div class="seo-faq">
+    <details>
+      <summary>¿Qué es Tichu?</summary>
+      <p>Un juego de cartas alemán para 4 jugadores en parejas, creado por Urs Hostettler en 1991. Combina elementos de bridge, póker y juegos chinos como Big Two. Considerado uno de los mejores juegos de cartas modernos.</p>
+    </details>
+    <details>
+      <summary>¿Para cuántos jugadores?</summary>
+      <p>Tichu siempre es 4 jugadores en 2 parejas fijas.</p>
+    </details>
+    <details>
+      <summary>¿Cuántos puntos tiene una mano?</summary>
+      <p>Las cartas suman exactamente 100 puntos por mano (sin contar Tichu, Gran Tichu o 1-2). Por eso solo necesitas escribir el puntaje de un equipo y el otro se calcula solo.</p>
+    </details>
+    <details>
+      <summary>¿Cuánto vale Tichu?</summary>
+      <p>Si lo cantas y ganas la mano (sales primero), +100. Si fallas, -100. El Gran Tichu es ±200.</p>
+    </details>
+    <details>
+      <summary>¿Qué es el 1-2?</summary>
+      <p>Cuando una pareja sale primera y segunda en la misma mano. Esa pareja gana 200 puntos directo y la otra 0, sin contar cartas.</p>
+    </details>
+    <details>
+      <summary>¿Por qué los equipos se llaman Dragones y Perros?</summary>
+      <p>Es nuestro toque de personalidad. El dragón es la carta más alta del juego (vale 25 puntos pero también obliga a regalársela al rival). Los perros son una carta especial que pasa el turno a tu compañero. Pareció justo dedicarles un equipo cada uno.</p>
+    </details>
+    <details>
+      <summary>¿Guarda la partida?</summary>
+      <p>Sí, en tu navegador. Si cierras la pestaña, la partida sigue donde la dejaste.</p>
+    </details>
+  </div>
+
+  <h2>Otras herramientas que pueden servirte</h2>
+  <ul>
+    <li><a href="marcador.html">Marcador genérico</a> — para otros juegos de cartas y de mesa.</li>
+    <li><a href="temporizador.html">Temporizador</a> — útil en torneos de Tichu.</li>
+    <li><a href="sorteo.html">Sorteo de turno</a> — para definir parejas si no están fijadas.</li>
+  </ul>
+
+  <!-- Bloque "Conoce al club" -->
+  <div class="club-card">
+    <h2>¿Te sirvió esta herramienta?</h2>
+    <p>La hicimos en el <strong>Club Juegos de Mesa Quinta Región</strong>, un grupo de Viña del Mar que se junta cada jueves a jugar. Si te gustan los juegos de mesa y andas por la zona, ven a una de nuestras juntas. Si estás más lejos, igual te queremos en los grupos:</p>
+    <ul>
+      <li>📱 <a href="https://www.instagram.com/clubjuegosdemesaquintaregion">Síguenos en Instagram</a> · fotos de las partidas y agenda semanal</li>
+      <li>💬 <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh">Únete al WhatsApp</a> · el grupo donde coordinamos</li>
+      <li>📅 <a href="/CJMVR/">Conoce al club</a> · cómo asociarse, encuentros, alianzas</li>
+    </ul>
+    <span class="club-tagline">🎲 Jugando desde 2020 · Club oficial desde 2022</span>
+  </div>
+</section>
+
+<!-- Schema FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "¿Qué es Tichu?", "acceptedAnswer": { "@type": "Answer", "text": "Un juego de cartas alemán para 4 jugadores en parejas, creado por Urs Hostettler en 1991. Combina elementos de bridge, póker y juegos chinos como Big Two. Considerado uno de los mejores juegos de cartas modernos." } },
+    { "@type": "Question", "name": "¿Para cuántos jugadores se juega Tichu?", "acceptedAnswer": { "@type": "Answer", "text": "Tichu siempre se juega con 4 jugadores en 2 parejas fijas." } },
+    { "@type": "Question", "name": "¿Cuántos puntos tiene una mano de Tichu?", "acceptedAnswer": { "@type": "Answer", "text": "Las cartas suman exactamente 100 puntos por mano (sin contar Tichu, Gran Tichu o 1-2). Por eso solo necesitas escribir el puntaje de un equipo y el otro se calcula solo." } },
+    { "@type": "Question", "name": "¿Cuánto vale Tichu?", "acceptedAnswer": { "@type": "Answer", "text": "Si lo cantas y ganas la mano (sales primero), +100. Si fallas, -100. El Gran Tichu es ±200." } },
+    { "@type": "Question", "name": "¿Qué es el 1-2 en Tichu?", "acceptedAnswer": { "@type": "Answer", "text": "Cuando una pareja sale primera y segunda en la misma mano. Esa pareja gana 200 puntos directo y la otra 0, sin contar cartas." } },
+    { "@type": "Question", "name": "¿El marcador guarda la partida?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, en tu navegador. Si cierras la pestaña, la partida sigue donde la dejaste." } }
+  ]
+}
+</script>
+
 <!-- Overlay del dragón animado -->
 <div id="dragon-overlay" class="dragon-overlay" aria-hidden="true">
   <svg class="dragon-flyer" viewBox="0 0 240 200" fill="none">

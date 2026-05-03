@@ -901,6 +901,84 @@
   </div>
 </main>
 
+<!-- === Contenido SEO === -->
+<section class="seo-section" aria-labelledby="seo-h2">
+  <h2 id="seo-h2">Marcador online para juegos de mesa: rápido, sin papel, con podio</h2>
+  <p>Después de varios años llevando puntajes en servilletas, hojas sueltas y notas del celular que se borraban a mitad de partida, hicimos esto. Es un marcador para <strong>anotar puntos por rondas en cualquier juego de mesa</strong>: pones los nombres de los jugadores, agregas puntos en cada ronda, y al final aparece el podio. Funciona especialmente bien en juegos como <strong>Toma 6, Skull King, Papayoo, Amazonas</strong> o partidas largas tipo <strong>Twilight Imperium</strong> donde lo último que quieres es preocuparte de la calculadora.</p>
+  <p>Soporta hasta 12 jugadores, guarda la partida en tu navegador (si cierras la pestaña por error no pierdes nada), y muestra historial de las últimas 3 partidas. No requiere registro y no manda datos a ningún servidor.</p>
+
+  <h2>Cómo funciona</h2>
+  <ol>
+    <li>Pon los nombres de los jugadores y dale a "Empezar".</li>
+    <li>En cada ronda, escribe los puntos que sumó cada uno y dale a "Agregar ronda".</li>
+    <li>La tabla se actualiza sola con el acumulado.</li>
+    <li>Cuando termine la partida, aparece el podio automáticamente.</li>
+  </ol>
+
+  <h2>Preguntas frecuentes</h2>
+  <div class="seo-faq">
+    <details>
+      <summary>¿Sirve para cualquier juego de mesa?</summary>
+      <p>Para todos los que se llevan por puntos por rondas: Toma 6, Skull King, Papayoo, Amazonas, Wizard, Welcome to, etc. También para partidas largas tipo Twilight Imperium si quieres anotar puntos parciales. Para juegos con scoring complejo (Terraforming Mars, Wingspan), conviene el método tradicional con la planilla del juego.</p>
+    </details>
+    <details>
+      <summary>¿Cuántos jugadores soporta?</summary>
+      <p>Hasta 12.</p>
+    </details>
+    <details>
+      <summary>¿Guarda los datos?</summary>
+      <p>Sí, pero solo en tu navegador (localStorage). Nada se sube a ningún servidor.</p>
+    </details>
+    <details>
+      <summary>¿Funciona offline?</summary>
+      <p>Una vez cargada la página, sí.</p>
+    </details>
+    <details>
+      <summary>¿Puedo recuperar una partida vieja?</summary>
+      <p>Las últimas 3 quedan en historial. Más viejas que eso, no.</p>
+    </details>
+    <details>
+      <summary>¿Se puede compartir el resultado?</summary>
+      <p>Por ahora no hay botón de compartir. Si quieres, sácale screenshot al podio.</p>
+    </details>
+  </div>
+
+  <h2>Otras herramientas para tu mesa</h2>
+  <ul>
+    <li><a href="temporizador.html">Temporizador</a> — si las rondas también tienen tiempo límite.</li>
+    <li><a href="sorteo.html">Sorteo de turno</a> — para decidir quién parte la partida.</li>
+    <li><a href="tichu.html">Marcador de Tichu</a> — para Tichu, mejor usa el marcador especializado.</li>
+  </ul>
+
+  <!-- Bloque "Conoce al club" -->
+  <div class="club-card">
+    <h2>¿Te sirvió esta herramienta?</h2>
+    <p>La hicimos en el <strong>Club Juegos de Mesa Quinta Región</strong>, un grupo de Viña del Mar que se junta cada jueves a jugar. Si te gustan los juegos de mesa y andas por la zona, ven a una de nuestras juntas. Si estás más lejos, igual te queremos en los grupos:</p>
+    <ul>
+      <li>📱 <a href="https://www.instagram.com/clubjuegosdemesaquintaregion">Síguenos en Instagram</a> · fotos de las partidas y agenda semanal</li>
+      <li>💬 <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh">Únete al WhatsApp</a> · el grupo donde coordinamos</li>
+      <li>📅 <a href="/CJMVR/">Conoce al club</a> · cómo asociarse, encuentros, alianzas</li>
+    </ul>
+    <span class="club-tagline">🎲 Jugando desde 2020 · Club oficial desde 2022</span>
+  </div>
+</section>
+
+<!-- Schema FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "¿Sirve para cualquier juego de mesa?", "acceptedAnswer": { "@type": "Answer", "text": "Para todos los que se llevan por puntos por rondas: Toma 6, Skull King, Papayoo, Amazonas, Wizard, Welcome to, etc. También para partidas largas tipo Twilight Imperium. Para juegos con scoring complejo (Terraforming Mars, Wingspan), conviene el método tradicional." } },
+    { "@type": "Question", "name": "¿Cuántos jugadores soporta el marcador?", "acceptedAnswer": { "@type": "Answer", "text": "Hasta 12 jugadores en una misma partida." } },
+    { "@type": "Question", "name": "¿El marcador guarda los datos?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, pero solo en tu navegador (localStorage). Nada se sube a ningún servidor." } },
+    { "@type": "Question", "name": "¿Funciona offline?", "acceptedAnswer": { "@type": "Answer", "text": "Una vez cargada la página, sí." } },
+    { "@type": "Question", "name": "¿Puedo recuperar una partida vieja?", "acceptedAnswer": { "@type": "Answer", "text": "Las últimas 3 quedan en historial. Más viejas que eso, no." } },
+    { "@type": "Question", "name": "¿Se puede compartir el resultado?", "acceptedAnswer": { "@type": "Answer", "text": "Por ahora no hay botón de compartir. Lo más fácil es hacer screenshot al podio." } }
+  ]
+}
+</script>
+
 <!-- Confirm modal para "Nueva partida" -->
 <div id="confirm-overlay" class="confirm-overlay" role="dialog" aria-modal="true">
   <div class="confirm-box">

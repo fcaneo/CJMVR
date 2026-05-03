@@ -466,3 +466,139 @@ input::placeholder {
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
+
+/* === Bloques SEO al final de cada herramienta ===
+   Sobrios, monocromáticos, no compiten con el widget de la herramienta.
+   Sirven para que Google indexe contenido y la gente conozca el club. */
+.seo-section {
+  max-width: 720px;
+  margin: 4rem auto 2rem;
+  padding: 0 1.25rem;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.65;
+}
+.seo-section h2 {
+  font-family: 'Anton', sans-serif;
+  text-transform: uppercase;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  letter-spacing: -0.005em;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--paper);
+  text-wrap: balance;
+}
+.seo-section h2:first-child { margin-top: 0; }
+.seo-section p {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+.seo-section a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.seo-section a:hover {
+  text-decoration-thickness: 2px;
+}
+.seo-section ol,
+.seo-section ul {
+  margin: 0.5rem 0 1.5rem 1.25rem;
+  font-size: 0.95rem;
+}
+.seo-section li {
+  margin-bottom: 0.5rem;
+}
+.seo-section ol li::marker {
+  font-family: 'Space Mono', monospace;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* FAQ items con <details>/<summary> */
+.seo-faq {
+  border-top: 1px solid var(--ink-line);
+  margin-top: 0.5rem;
+}
+.seo-faq details {
+  border-bottom: 1px solid var(--ink-line);
+  padding: 0.85rem 0;
+}
+.seo-faq summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--paper);
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.95rem;
+  padding-right: 0.25rem;
+}
+.seo-faq summary::-webkit-details-marker { display: none; }
+.seo-faq summary::after {
+  content: "+";
+  font-family: 'Anton', sans-serif;
+  color: var(--gold);
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+.seo-faq details[open] summary::after {
+  content: "−";
+}
+.seo-faq details > p {
+  margin-top: 0.6rem;
+  margin-bottom: 0;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.9rem;
+}
+
+/* Bloque "Conoce al club" — distintivo, al cierre de cada herramienta */
+.club-card {
+  margin-top: 3rem;
+  padding: 1.75rem 1.5rem;
+  border: 2px solid var(--gold);
+  background: linear-gradient(180deg, rgba(245,183,0,0.04), transparent);
+  position: relative;
+}
+.club-card::before {
+  content: "🎲";
+  position: absolute;
+  top: -16px;
+  left: 1.25rem;
+  background: var(--ink);
+  padding: 0 0.5rem;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.club-card h2 {
+  margin-top: 0 !important;
+  margin-bottom: 0.85rem !important;
+}
+.club-card p {
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+.club-card ul {
+  list-style: none !important;
+  margin: 0.5rem 0 1rem 0 !important;
+  padding: 0;
+}
+.club-card ul li {
+  margin-bottom: 0.6rem;
+  padding-left: 0;
+}
+.club-card .club-tagline {
+  display: block;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--ink-line);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  text-align: center;
+}
