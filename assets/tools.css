@@ -431,6 +431,18 @@ input::placeholder {
 .tool-footer .footer-tag {
   display: block;
 }
+.tool-footer .footer-legal {
+  display: flex;
+  gap: 1rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-top: 0.5rem;
+}
+.tool-footer .footer-legal a { color: var(--dim); }
+.tool-footer .footer-legal a:hover { color: var(--paper); }
 
 /* Animaciones reducidas */
 @media (prefers-reduced-motion: reduce) {
