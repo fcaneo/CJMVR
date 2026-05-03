@@ -21,7 +21,6 @@ Sitio web del **Club Juegos de Mesa Quinta Región**, Viña del Mar.
 | [`/dado.html`](https://fcaneo.github.io/CJMVR/dado.html) | Recomendador al azar del top 50 BoardGameGeek |
 | [`/sorteo.html`](https://fcaneo.github.io/CJMVR/sorteo.html) | Sorteo de orden de turno (hasta 12 jugadores) |
 | [`/marcador.html`](https://fcaneo.github.io/CJMVR/marcador.html) | Marcador de partidas con persistencia y podio |
-| [`/wordle.html`](https://fcaneo.github.io/CJMVR/wordle.html) | Wordle del día en español, 5 letras, 6 intentos |
 | [`/temporizador.html`](https://fcaneo.github.io/CJMVR/temporizador.html) | Chess clock para juegos de mesa largos (hasta 12 jugadores) |
 | [`/dados.html`](https://fcaneo.github.io/CJMVR/dados.html) | Multi-dado D4 a D20, hasta 10 dados con suma e historial |
 | [`/tichu.html`](https://fcaneo.github.io/CJMVR/tichu.html) | Marcador de Tichu con cálculo de Tichu/Gran Tichu/1-2 y dragones animados |
@@ -36,7 +35,6 @@ CJMVR/
 ├── dado.html               # Herramienta: recomendador BGG
 ├── sorteo.html             # Herramienta: sorteo de orden
 ├── marcador.html           # Herramienta: marcador con persistencia
-├── wordle.html             # Juego: Wordle del día en español
 ├── temporizador.html       # Herramienta: chess clock multi-jugador
 ├── dados.html              # Herramienta: multi-dado D4-D20
 ├── tichu.html              # Herramienta: marcador de Tichu
