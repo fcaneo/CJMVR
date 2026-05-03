@@ -1,0 +1,64 @@
+{
+  "name": "Club Juegos de Mesa Quinta Región",
+  "short_name": "CJMVR",
+  "description": "Herramientas online para tus partidas de juegos de mesa: marcador, temporizador, sorteo de turno, dados D4-D20 y marcador de Tichu.",
+  "start_url": "/CJMVR/mesa.html",
+  "scope": "/CJMVR/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#0E0E10",
+  "background_color": "#0E0E10",
+  "lang": "es-CL",
+  "dir": "ltr",
+  "categories": ["games", "utilities", "entertainment"],
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/logo/cjmvr-logo-blanco.png",
+      "sizes": "880x886",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Marcador",
+      "short_name": "Marcador",
+      "description": "Anotar puntos por rondas",
+      "url": "/CJMVR/marcador.html",
+      "icons": [{ "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Temporizador",
+      "short_name": "Reloj",
+      "description": "Chess clock para juegos de mesa",
+      "url": "/CJMVR/temporizador.html",
+      "icons": [{ "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Tirar dados",
+      "short_name": "Dados",
+      "description": "Lanzador D4 a D20",
+      "url": "/CJMVR/dados.html",
+      "icons": [{ "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Marcador de Tichu",
+      "short_name": "Tichu",
+      "description": "Marcador especializado",
+      "url": "/CJMVR/tichu.html",
+      "icons": [{ "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    }
+  ]
+}
