@@ -31,10 +31,12 @@
 <meta name="twitter:image" content="https://fcaneo.github.io/CJMVR/assets/images/og-image.png" />
 
 <!-- Schema.org enriquecido para SEO local -->
+<!-- TODO cuando exista Google Business Profile: agregar su URL al "sameAs" -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "SportsClub",
+  "@type": ["SportsClub", "LocalBusiness"],
+  "@id": "https://fcaneo.github.io/CJMVR/#club",
   "name": "Club Juegos de Mesa Quinta Región",
   "alternateName": "CJMVR",
   "description": "Club de juegos de mesa en Viña del Mar. Encuentros semanales abiertos al público los jueves desde las 19:30 en Curva 54. Jugando desde 2020, formalizado como club en 2022.",
@@ -44,20 +46,40 @@
   "foundingDate": "2022",
   "slogan": "Jugando desde 2020, club oficial desde 2022",
   "sport": "Board Games",
+  "knowsLanguage": "es",
+  "priceRange": "$0-$2500 CLP",
   "sameAs": [
     "https://www.instagram.com/clubjuegosdemesaquintaregion",
+    "https://www.facebook.com/profile.php?id=100084115896665",
     "https://github.com/fcaneo/CJMVR"
   ],
   "address": {
     "@type": "PostalAddress",
+    "streetAddress": "Avenida Valparaíso 54",
     "addressLocality": "Viña del Mar",
     "addressRegion": "Región de Valparaíso",
+    "postalCode": "2520000",
     "addressCountry": "CL"
   },
-  "areaServed": {
-    "@type": "AdministrativeArea",
-    "name": "Región de Valparaíso, Chile"
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": -33.0245,
+    "longitude": -71.5518
   },
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Viña del Mar"
+    },
+    {
+      "@type": "City",
+      "name": "Valparaíso"
+    },
+    {
+      "@type": "AdministrativeArea",
+      "name": "Región de Valparaíso, Chile"
+    }
+  ],
   "memberOf": {
     "@type": "Organization",
     "name": "Comunidad de juegos de mesa de Chile"
@@ -77,11 +99,18 @@
       "location": {
         "@type": "Place",
         "name": "Curva 54",
+        "url": "https://www.instagram.com/barcurva54/",
         "address": {
           "@type": "PostalAddress",
+          "streetAddress": "Avenida Valparaíso 54",
           "addressLocality": "Viña del Mar",
           "addressRegion": "Región de Valparaíso",
           "addressCountry": "CL"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": -33.0245,
+          "longitude": -71.5518
         }
       },
       "organizer": {
@@ -94,12 +123,49 @@
         "price": "0",
         "priceCurrency": "CLP",
         "availability": "https://schema.org/InStock",
-        "url": "https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh"
+        "url": "https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh",
+        "validFrom": "2022-01-01"
       },
       "eventSchedule": {
         "@type": "Schedule",
         "byDay": "https://schema.org/Thursday",
         "startTime": "19:30",
+        "scheduleTimezone": "America/Santiago",
+        "repeatFrequency": "P1W"
+      }
+    },
+    {
+      "@type": "Event",
+      "name": "Encuentro de Socios Lunes",
+      "description": "Encuentro semanal solo para socios del club en Gato Arcano, tienda de juegos de mesa en Viña del Mar.",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "location": {
+        "@type": "Place",
+        "name": "Gato Arcano",
+        "url": "https://gatoarcano.cl/",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "1 Oriente 406, esquina 5 Norte",
+          "addressLocality": "Viña del Mar",
+          "addressRegion": "Región de Valparaíso",
+          "addressCountry": "CL"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": -33.0182,
+          "longitude": -71.5402
+        }
+      },
+      "organizer": {
+        "@type": "Organization",
+        "name": "Club Juegos de Mesa Quinta Región",
+        "url": "https://fcaneo.github.io/CJMVR/"
+      },
+      "eventSchedule": {
+        "@type": "Schedule",
+        "byDay": "https://schema.org/Monday",
+        "startTime": "20:00",
         "scheduleTimezone": "America/Santiago",
         "repeatFrequency": "P1W"
       }
