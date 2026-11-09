@@ -41,9 +41,17 @@ CJMVR/
 ├── 404.html                # Página de error
 ├── robots.txt              # Permite indexación, apunta al sitemap
 ├── sitemap.xml             # Sitemap XML para buscadores
+├── manifest.json           # Manifest PWA (instalable, accesos directos)
+├── service-worker.js       # Caché offline (subir CACHE_VERSION al cambiar archivos)
 ├── README.md               # Este archivo
+├── tools/                  # Config de Tailwind para regenerar assets/site.css
 └── assets/
-    ├── tools.css           # Estilos compartidos de las 3 herramientas
+    ├── site.css            # Tailwind precompilado de index.html (no editar a mano)
+    ├── tools.css           # Estilos compartidos de las herramientas
+    ├── common.js           # Utilidades compartidas (escapeHtml)
+    ├── juegos.js           # Lista del top BGG (dado.html + easter egg del index)
+    ├── register-sw.js      # Registro del service worker
+    ├── icon-*.png          # Íconos de la app (180, 192, 512, maskable)
     ├── images/
     │   ├── og-image.png    # Imagen al compartir (1200x630, fondo negro + logo)
     │   ├── curva-54.jpg    # Foto del club jugando en Curva 54
@@ -55,7 +63,8 @@ CJMVR/
 ## Stack técnico
 
 - **HTML estático** — sin frameworks pesados, sin builds, sin servidor
-- **Tailwind CSS** vía CDN para el sitio principal
+- **Tailwind CSS** precompilado (`assets/site.css`) para el sitio principal. Si cambias clases de Tailwind en `index.html`, regenera el CSS:
+  `npx -y tailwindcss@3.4.17 -c tools/tailwind.config.js -i tools/tailwind.input.css -o assets/site.css --minify`
 - **CSS custom** (tools.css) para las herramientas standalone
 - Tipografías: [Anton](https://fonts.google.com/specimen/Anton) (display) + [DM Sans](https://fonts.google.com/specimen/DM+Sans) (body) + [Space Mono](https://fonts.google.com/specimen/Space+Mono) (monospace)
 - **Persistencia local:** `localStorage` para el marcador (nombres, scores e historial), nunca se sube a ningún servidor
@@ -102,7 +111,7 @@ Servido gratis con [GitHub Pages](https://pages.github.com/) desde la rama `main
 
 - El sitio **no recolecta datos personales** ni tiene analytics
 - El marcador guarda nombres y scores **solo en el navegador del usuario** (localStorage), nunca se transmiten
-- Los únicos requests externos al cargar la página son a Google Fonts, Tailwind CDN y la API pública de Schema.org
+- Los únicos requests externos al cargar la página son a Google Fonts (el resto se sirve desde el propio sitio)
 
 ## Licencia y atribuciones
 

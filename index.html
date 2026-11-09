@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#0E0E10" />
 <title>Club Juegos de Mesa Quinta Región | Viña del Mar · Encuentro semanal de board games</title>
@@ -187,49 +188,20 @@
 
 <!-- Favicon: dado dorado SVG inline (cero peso, nítido en cualquier tamaño) -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='6' width='52' height='52' rx='10' fill='%23F5B700' stroke='%230E0E10' stroke-width='4'/%3E%3Ccircle cx='20' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='20' r='5' fill='%230E0E10'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%230E0E10'/%3E%3Ccircle cx='20' cy='44' r='5' fill='%230E0E10'/%3E%3Ccircle cx='44' cy='44' r='5' fill='%230E0E10'/%3E%3C/svg%3E" />
-<link rel="apple-touch-icon" href="assets/logo/cjmvr-logo-blanco.png" />
 
 <!-- Fuentes: Anton (display) + DM Sans (body) + Space Mono. Optimizado: preload + subset latin + display=swap -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- Preload Anton (la fuente del título principal — protagónica, evita FOUT visible en hero) -->
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Anton&display=swap">
-<!-- Carga normal del resto -->
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap&subset=latin,latin-ext" rel="stylesheet">
 
 <!-- PWA -->
-<link rel="manifest" href="/CJMVR/manifest.json">
-<link rel="apple-touch-icon" href="/CJMVR/assets/icon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="CJMVR">
 <meta name="mobile-web-app-capable" content="yes">
-<script defer src="/CJMVR/assets/register-sw.js"></script>
-
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          ink: '#0E0E10',
-          inkSoft: '#16161A',
-          inkLine: '#26262C',
-          gold: '#F5B700',
-          cyan: '#3FA9D6',
-          magenta: '#E91E63',
-          paper: '#FFFFFF',
-          dim: '#A0A0A8'
-        },
-        fontFamily: {
-          display: ['Anton', 'sans-serif'],
-          body: ['"DM Sans"', 'sans-serif'],
-          mono: ['"Space Mono"', 'monospace']
-        }
-      }
-    }
-  }
-</script>
+<script defer src="assets/register-sw.js"></script>
 
 <style>
   html { scroll-behavior: smooth; color-scheme: dark; }
@@ -624,6 +596,8 @@
     );
   }
 </style>
+<!-- Tailwind precompilado (ver tools/tailwind.config.js para regenerarlo). Va después del <style> para respetar la cascada que tenía el CDN -->
+<link rel="stylesheet" href="assets/site.css">
 </head>
 
 <body class="font-body">
@@ -819,7 +793,7 @@
         <div class="relative w-full max-w-[340px] lg:max-w-[460px]">
           <!-- Halo dorado detrás -->
           <div class="absolute inset-0 bg-gold/10 blur-3xl scale-90 rounded-full pointer-events-none"></div>
-          <img src="assets/logo/cjmvr-logo-blanco.png" alt="Club Juegos de Mesa Quinta Región" width="880" height="886" sizes="(max-width: 1024px) 340px, 460px" fetchpriority="high" decoding="async" class="relative w-full h-auto float-slow" style="--r: 0deg;" />
+          <img src="assets/logo/cjmvr-logo-blanco.png" srcset="assets/logo/cjmvr-logo-blanco-460.webp 460w, assets/logo/cjmvr-logo-blanco.png 880w" alt="Club Juegos de Mesa Quinta Región" width="880" height="886" sizes="(max-width: 1024px) 340px, 460px" fetchpriority="high" decoding="async" class="relative w-full h-auto float-slow" style="--r: 0deg;" />
         </div>
       </div>
 
@@ -971,7 +945,7 @@
       <article class="tilt-card group relative bg-inkSoft border-2 border-gold/40 overflow-hidden flex flex-col">
         <!-- Foto -->
         <a href="https://www.instagram.com/barcurva54/" target="_blank" rel="noopener noreferrer" class="block aspect-[16/10] relative overflow-hidden bg-ink">
-          <img src="assets/images/curva-54.jpg" alt="Socios del club jugando en Curva 54, Viña del Mar" width="1080" height="1440" sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" decoding="async" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
+          <img src="assets/images/curva-54.jpg" srcset="assets/images/curva-54-480.webp 480w, assets/images/curva-54-960.webp 960w, assets/images/curva-54.jpg 1080w" alt="Socios del club jugando en Curva 54, Viña del Mar" width="1080" height="1440" sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" decoding="async" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
           <div class="absolute inset-0 bg-gradient-to-t from-inkSoft via-inkSoft/40 to-transparent"></div>
           <div class="absolute top-4 left-4">
             <span class="pill text-ink bg-gold border-gold font-bold">★ Abierto a todos · Gratis</span>
@@ -1012,7 +986,7 @@
       <!-- Lunes en Gato Arcano: SOLO SOCIOS + foto -->
       <article class="tilt-card group relative bg-inkSoft border-2 border-magenta/40 overflow-hidden flex flex-col">
         <a href="https://gatoarcano.cl/" target="_blank" rel="noopener noreferrer" class="block aspect-[16/10] relative overflow-hidden bg-ink">
-          <img src="assets/images/gato-arcano.jpg" alt="Equipo de Gato Arcano frente a la fachada morada y amarilla" width="1152" height="1536" sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" decoding="async" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
+          <img src="assets/images/gato-arcano.jpg" srcset="assets/images/gato-arcano-480.webp 480w, assets/images/gato-arcano-960.webp 960w, assets/images/gato-arcano.jpg 1152w" alt="Equipo de Gato Arcano frente a la fachada morada y amarilla" width="1152" height="1536" sizes="(max-width: 768px) 100vw, 50vw" loading="lazy" decoding="async" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" />
           <div class="absolute inset-0 bg-gradient-to-t from-inkSoft via-inkSoft/40 to-transparent"></div>
           <div class="absolute top-4 left-4">
             <span class="pill text-ink bg-magenta border-magenta font-bold">🔒 Solo socios</span>
@@ -1734,6 +1708,7 @@
   .dice-tumble { animation: diceTumble 1s cubic-bezier(0.4, 0.2, 0.2, 1); }
 </style>
 
+<script src="assets/juegos.js"></script>
 <script>
   // Cada bloque aislado — si uno falla, los demás siguen funcionando
 
@@ -1755,11 +1730,35 @@
       const meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
       const dias = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
 
+      const HORA_INICIO = 19.5;  // 19:30
+      const HORA_CIERRE = 23.5;  // 23:30
+      const LABEL_ORIGINAL = labelEl ? labelEl.textContent : '';
+
+      // Fecha y hora en Chile, sin importar el huso horario del visitante
+      const fmtSantiago = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/Santiago', weekday: 'short', year: 'numeric',
+        month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hourCycle: 'h23'
+      });
+      const WEEKDAYS = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+      function ahoraEnSantiago() {
+        const p = {};
+        fmtSantiago.formatToParts(new Date()).forEach(({ type, value }) => { p[type] = value; });
+        return {
+          dia: WEEKDAYS[p.weekday],
+          hora: Number(p.hour) + Number(p.minute) / 60,
+          y: Number(p.year), m: Number(p.month) - 1, d: Number(p.day)
+        };
+      }
+
       function actualizar() {
-        const hoy = new Date();
-        const dia = hoy.getDay();
-        const horaDecimal = hoy.getHours() + hoy.getMinutes() / 60;
-        const enVivo = (dia === 4 && horaDecimal >= 19.5);
+        const { dia, hora: horaDecimal, y, m, d } = ahoraEnSantiago();
+        const enVivo = (dia === 4 && horaDecimal >= HORA_INICIO && horaDecimal < HORA_CIERRE);
+
+        if (!enVivo && labelEl) {
+          labelEl.textContent = LABEL_ORIGINAL;
+          labelEl.classList.add('text-gold');
+          labelEl.style.color = '';
+        }
 
         if (enVivo) {
           if (labelEl) {
@@ -1772,11 +1771,11 @@
         }
 
         let diff = (4 - dia + 7) % 7;
-        if (diff === 0 && horaDecimal >= 19.5) diff = 7;
+        if (diff === 0 && horaDecimal >= HORA_INICIO) diff = 7;
 
-        const fecha = new Date(hoy);
-        fecha.setDate(hoy.getDate() + diff);
-        const fechaStr = `${fecha.getDate()} ${meses[fecha.getMonth()]}`;
+        // Aritmética en UTC sobre la fecha de Santiago (evita saltos por horario de verano)
+        const fecha = new Date(Date.UTC(y, m, d + diff));
+        const fechaStr = `${fecha.getUTCDate()} ${meses[fecha.getUTCMonth()]}`;
         let cuando;
         if (diff === 0) cuando = 'Hoy, jueves';
         else if (diff === 1) cuando = 'Mañana, jueves';
@@ -1829,53 +1828,7 @@
     try {
       // Top 50 BGG (filtrado: sin secuelas/expansiones del mismo IP)
       // Fuente: boardgamegeek.com/browse/boardgame
-      const juegos = [
-        { name: 'Brass: Birmingham', meta: '2-4 jug · 2h · #1 BGG', blurb: 'Redes industriales en la Inglaterra victoriana. Cada jugada es ingeniería pura.' },
-        { name: 'Ark Nova', meta: '1-4 jug · 2-3h · Pesado', blurb: 'Construye un zoológico moderno con 250 cartas. Pide la mesa entera y la noche entera.' },
-        { name: 'Pandemic Legacy: Season 1', meta: '2-4 jug · 60 min · Legacy', blurb: 'Cooperativo que cambia mes a mes. Cada partida deja huella permanente en el tablero.' },
-        { name: 'Gloomhaven', meta: '1-4 jug · 2-3h · Campaña épica', blurb: 'Mazmorras tácticas en una campaña de 95+ escenarios. Para los que quieren compromiso.' },
-        { name: 'Dune: Imperium – Uprising', meta: '1-6 jug · 90 min · Deck-building', blurb: 'Casas nobles peleándose por Arrakis. Mezcla worker placement con construcción de mazo.' },
-        { name: 'Twilight Imperium: Fourth Edition', meta: '3-6 jug · 6-8h · Épico', blurb: 'Conquista galáctica que toma una tarde entera. Diplomacia, traición, naves espaciales.' },
-        { name: 'War of the Ring: Second Edition', meta: '2-4 jug · 3h · Tematico', blurb: 'La Guerra del Anillo en una mesa. Bien o mal, todos quieren ser Sauron al menos una vez.' },
-        { name: 'Terraforming Mars', meta: '1-5 jug · 2h · Ciencia', blurb: 'Convierte Marte en un planeta habitable. Combos, cartas y mucha optimización.' },
-        { name: 'Star Wars: Rebellion', meta: '2-4 jug · 3-4h · Asimétrico', blurb: 'El Imperio busca, los Rebeldes huyen. Tensión narrativa de película.' },
-        { name: 'Spirit Island', meta: '1-4 jug · 90 min · Cooperativo', blurb: 'Espíritus de una isla expulsando colonizadores. El cooperativo más político y satisfactorio.' },
-        { name: 'Gaia Project', meta: '1-4 jug · 2h · Pesado eurogame', blurb: 'Razas alienígenas terraformando planetas. Pesado, pesadísimo, pero con caminos infinitos.' },
-        { name: 'Twilight Struggle', meta: '2 jug · 3h · Histórico', blurb: 'La Guerra Fría en cartas. EE.UU. vs URSS, tensión real, cada partida una crisis distinta.' },
-        { name: 'The Castles of Burgundy', meta: '2-4 jug · 90 min · Clásico', blurb: 'Stefan Feld en su mejor versión. Dados que no pelean contigo, decisiones que sí.' },
-        { name: 'SETI: Search for Extraterrestrial Intelligence', meta: '1-4 jug · 2h · Reciente', blurb: 'Buscar vida en el sistema solar. Un eurogame moderno con tema cósmico real.' },
-        { name: 'Slay the Spire: The Board Game', meta: '1-4 jug · 1-2h · Deck-building', blurb: 'El videojuego de culto, ahora en mesa. Subir la torre construyendo un mazo letal.' },
-        { name: 'Through the Ages', meta: '2-4 jug · 2-3h · Civilización', blurb: 'Construye una civilización desde la antigüedad. Cartas, militares, cultura, ciencia.' },
-        { name: 'The Lord of the Rings: Duel for Middle-earth', meta: '2 jug · 30 min · Para 2', blurb: 'Versión 7 Wonders Duel del universo Tolkien. Elegante y rápido.' },
-        { name: 'Great Western Trail: Second Edition', meta: '2-4 jug · 2h · Eurogame', blurb: 'Arreas ganado por el viejo oeste. Alex Pfister haciendo magia con un tema poco común.' },
-        { name: 'Eclipse: Second Dawn for the Galaxy', meta: '2-6 jug · 2-3h · 4X', blurb: 'Imperios espaciales construyendo, expandiendo, exterminando. Versión refinada del clásico.' },
-        { name: '7 Wonders Duel', meta: '2 jug · 30 min · Para 2', blurb: 'Civilizaciones dueleando en cartas. Si necesitas algo bueno para 2, este es.' },
-        { name: 'Nemesis', meta: '1-5 jug · 2-3h · Tematico', blurb: 'Aliens en una nave espacial. Cooperativo... hasta que no lo es. Traición pura.' },
-        { name: 'Scythe', meta: '1-5 jug · 2h · Asimétrico', blurb: 'Europa alternativa con mechas. Cinco facciones distintas, mismas reglas, partidas dispares.' },
-        { name: 'A Feast for Odin', meta: '1-4 jug · 2-3h · Eurogame', blurb: 'Vikingos en su feria anual. Uwe Rosenberg con tablero gigante y mil acciones.' },
-        { name: 'Clank! Legacy: Acquisitions Incorporated', meta: '2-4 jug · 90 min · Legacy', blurb: 'Deck-building de saqueo en mazmorras, con campaña que evoluciona partida a partida.' },
-        { name: 'Concordia', meta: '2-5 jug · 90 min · Eurogame puro', blurb: 'Sin dados. Sin azar. Solo decisiones, todas duras. Romanos comerciantes.' },
-        { name: 'Lost Ruins of Arnak', meta: '1-4 jug · 90 min · Aventura', blurb: 'Exploración de una isla perdida. Worker placement con deck-building. Aventura ligera.' },
-        { name: 'Arkham Horror: The Card Game', meta: '1-2 jug · 90 min · LCG', blurb: 'Lovecraft en formato campaña. Cartas que te van llevando por una historia oscura.' },
-        { name: 'Sky Team', meta: '2 jug · 15 min · Cooperativo', blurb: 'Pilotear un avión cooperando con tu copiloto, sin hablar. Más tenso de lo que suena.' },
-        { name: 'Root', meta: '2-4 jug · 60-90 min · Asimétrico', blurb: 'Animalitos del bosque en guerra. Cuatro facciones radicalmente distintas, una mesa, caos delicioso.' },
-        { name: 'Terra Mystica', meta: '2-5 jug · 2h · Pesado', blurb: 'Razas fantásticas terraformando un mundo. Eurogame durísimo, sin azar, infinitamente rejugable.' },
-        { name: 'Orléans', meta: '2-4 jug · 90 min · Bag-building', blurb: 'Saca trabajadores de una bolsa para hacer cosas en la Francia medieval. Reinhard Staupe puro.' },
-        { name: 'Too Many Bones', meta: '1-4 jug · 2-3h · Dungeon crawler', blurb: 'Cooperativo de aventureros con dados de habilidad. Componentes premium, decisión heroica.' },
-        { name: 'Wingspan', meta: '1-5 jug · 60-90 min · Eurogame', blurb: 'Aves, hábitats y combos hermosos. Si te gusta optimizar sin pelear, este es tu vicio.' },
-        { name: 'Mage Knight Board Game', meta: '1-4 jug · 2-3h · Solo king', blurb: 'El mejor juego solitario jamás hecho. Aventura, conquista, decisiones que paralizan.' },
-        { name: 'Barrage', meta: '2-4 jug · 2h · Pesado eurogame', blurb: 'Construir represas hidroeléctricas. Suena aburrido — es un golpe a la cara estratégico.' },
-        { name: 'Hegemony: Lead Your Class to Victory', meta: '2-4 jug · 2-3h · Asimétrico', blurb: 'Lucha de clases sociales en un país ficticio. Político, pesado, perfecto para discutir hasta tarde.' },
-        { name: 'Everdell', meta: '1-4 jug · 60 min · Familiar', blurb: 'Animalitos construyendo aldeas bajo un árbol. Hermoso visualmente, sólido mecánicamente.' },
-        { name: 'The Crew: Mission Deep Sea', meta: '2-5 jug · 30 min · Cooperativo', blurb: 'Trick-taking cooperativo, sin hablar. Cada misión es un puzzle con tu equipo.' },
-        { name: 'Viticulture Essential Edition', meta: '1-6 jug · 90 min · Eurogame', blurb: 'Hacer vino en la Toscana. Worker placement temático, accesible, con karma incluido.' },
-        { name: 'Kanban EV', meta: '2-4 jug · 2-3h · Pesado', blurb: 'Trabajas en una fábrica de autos eléctricos con un jefe IA implacable. Estrés laboral en mesa.' },
-        { name: 'Crokinole', meta: '2-4 jug · 30 min · Habilidad', blurb: 'Tirar discos con el dedo. Sí, ese juego del 1876 sigue siendo top BGG. Por algo será.' },
-        { name: 'Heat: Pedal to the Metal', meta: '1-6 jug · 60 min · Carreras', blurb: 'Carreras de Fórmula 1 retro con cartas. Tenso, rápido, accesible. Combos motor explícitos.' },
-        { name: 'Marvel Champions: The Card Game', meta: '1-4 jug · 60 min · LCG', blurb: 'Cooperativo de superhéroes Marvel construyendo mazos. Cada héroe juega completamente distinto.' },
-        { name: 'Food Chain Magnate', meta: '2-5 jug · 2-4h · Capitalista', blurb: 'Cadenas de fast food peleando. El juego más cruel que vas a jugar. Sin perdón.' },
-        { name: 'Underwater Cities', meta: '1-4 jug · 2h · Eurogame', blurb: 'Ciudades submarinas en el futuro. Vladimír Suchý destilando estrategia pura.' }
-      ];
+      const juegos = window.CJMVR_JUEGOS || [];
 
       const navDice = document.querySelector('.nav-dice');
       const modal = document.getElementById('dice-modal');

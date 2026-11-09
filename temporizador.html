@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#0E0E10" />
 <title>Temporizador de turno online · Chess clock para juegos de mesa · CJMVR</title>
@@ -83,13 +84,13 @@
 <link rel="stylesheet" href="assets/tools.css">
 
 <!-- PWA -->
-<link rel="manifest" href="/CJMVR/manifest.json">
-<link rel="apple-touch-icon" href="/CJMVR/assets/icon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="CJMVR">
 <meta name="mobile-web-app-capable" content="yes">
-<script defer src="/CJMVR/assets/register-sw.js"></script>
+<script defer src="assets/register-sw.js"></script>
 
 <style>
   /* Setup view */
@@ -419,7 +420,7 @@
 
 <header class="tool-header">
   <div class="tool-nav">
-    <a href="/CJMVR/" class="tool-back">
+    <a href="./" class="tool-back">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
       Volver al club
     </a>
@@ -427,7 +428,7 @@
       🎲 Mesa de juego
     </a>
   </div>
-  <a href="/CJMVR/" class="tool-brand" aria-label="Volver al sitio del Club Juegos de Mesa Quinta Región">
+  <a href="./" class="tool-brand" aria-label="Volver al sitio del Club Juegos de Mesa Quinta Región">
     <span class="text">
       <span class="name">Club Juegos de Mesa</span>
       <span class="sub">Quinta Región · Viña</span>
@@ -563,7 +564,7 @@
     <ul>
       <li>📱 <a href="https://www.instagram.com/clubjuegosdemesaquintaregion">Síguenos en Instagram</a> · fotos de las partidas y agenda semanal</li>
       <li>💬 <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh">Únete al WhatsApp</a> · el grupo donde coordinamos</li>
-      <li>📅 <a href="/CJMVR/">Conoce al club</a> · cómo asociarse, encuentros, alianzas</li>
+      <li>📅 <a href="./">Conoce al club</a> · cómo asociarse, encuentros, alianzas</li>
     </ul>
     <span class="club-tagline">🎲 Jugando desde 2020 · Club oficial desde 2022</span>
   </div>
@@ -602,11 +603,11 @@
 
 <footer class="tool-footer">
   <div class="footer-content">
-    <a href="/CJMVR/" aria-label="Volver al Club Juegos de Mesa Quinta Región">
+    <a href="./" aria-label="Volver al Club Juegos de Mesa Quinta Región">
       <img src="assets/logo/cjmvr-logo-blanco.png" alt="" class="footer-logo" width="880" height="886" loading="lazy" decoding="async" />
     </a>
     <span class="footer-tag">
-      Una herramienta del <a href="/CJMVR/">Club Juegos de Mesa Quinta Región</a> · Viña del Mar
+      Una herramienta del <a href="./">Club Juegos de Mesa Quinta Región</a> · Viña del Mar
     </span>
     <div class="footer-legal">
       <a href="privacidad.html">Privacidad</a>
@@ -616,6 +617,7 @@
   </div>
 </footer>
 
+<script src="assets/common.js"></script>
 <script>
   const STORAGE_KEY = 'cjmvr-timer-v1';
   const MAX_PLAYERS = 12;
@@ -773,12 +775,6 @@
     }, 2000);
   }
 
-  function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
-
   addPlayerBtn.addEventListener('click', () => {
     addPlayer(newPlayerInput.value);
     newPlayerInput.value = '';
@@ -800,11 +796,13 @@
     state.currentIdx = 0;
     state.paused = false;
     state.started = true;
-    state.lastTick = Date.now();
+    state.lastTick = performance.now();
     save();
     showGameView();
     renderGame();
     startTicker();
+    prepararAudio();
+    syncWakeLock();
   }
 
   function showGameView() {
@@ -817,6 +815,57 @@
   }
 
   let tickerInterval = null;
+  let ticksSinceSave = 0;
+
+  // --- Mantener la pantalla encendida mientras el reloj corre ---
+  let wakeLock = null;
+  async function syncWakeLock() {
+    const debeEstarActivo = state.started && !state.paused && document.visibilityState === 'visible';
+    try {
+      if (debeEstarActivo && !wakeLock && 'wakeLock' in navigator) {
+        wakeLock = await navigator.wakeLock.request('screen');
+        wakeLock.addEventListener('release', () => { wakeLock = null; });
+      } else if (!debeEstarActivo && wakeLock) {
+        await wakeLock.release();
+        wakeLock = null;
+      }
+    } catch (e) { /* no soportado o denegado: no es crítico */ }
+  }
+
+  // --- Aviso cuando a un jugador se le acaba el tiempo ---
+  let audioCtx = null;
+  function avisarTiempoAgotado() {
+    try { if (navigator.vibrate) navigator.vibrate([200, 100, 200]); } catch (e) {}
+    try {
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      [0, 0.25].forEach(offset => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.value = 880;
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime + offset);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + offset + 0.2);
+        osc.connect(gain).connect(audioCtx.destination);
+        osc.start(audioCtx.currentTime + offset);
+        osc.stop(audioCtx.currentTime + offset + 0.2);
+      });
+    } catch (e) {}
+  }
+
+  // El AudioContext debe crearse/reanudarse dentro de un gesto del usuario (iOS/Chrome)
+  function prepararAudio() {
+    try {
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    } catch (e) {}
+  }
+
+  // Guardar al ocultar o cerrar la pestaña (no perder los últimos segundos)
+  document.addEventListener('visibilitychange', () => {
+    if (state.started) save();
+    syncWakeLock();
+  });
+  window.addEventListener('pagehide', () => { if (state.started) save(); });
+
   function startTicker() {
     if (tickerInterval) clearInterval(tickerInterval);
     tickerInterval = setInterval(tick, 100); // 10 fps para suavidad pero no se va al carajo
@@ -828,33 +877,35 @@
 
   function tick() {
     if (state.paused || !state.started) return;
-    const now = Date.now();
+    const now = performance.now();
     const elapsed = (now - state.lastTick) / 1000;
     state.lastTick = now;
 
     const cur = state.players[state.currentIdx];
     if (!cur) return;
 
+    const teniaTiempo = cur.remaining > 0;
     cur.remaining -= elapsed;
     cur.totalUsed += elapsed;
+    if (teniaTiempo && cur.remaining <= 0) avisarTiempoAgotado();
 
     renderGame();
 
-    // Persiste cada ~3s (no en cada tick para no saturar)
-    if (Math.random() < 0.03) save();
+    // Persiste cada ~3s (30 ticks de 100 ms), no en cada tick
+    if (++ticksSinceSave >= 30) { ticksSinceSave = 0; save(); }
   }
 
   function pasarTurno() {
     if (!state.started) return;
     state.currentIdx = (state.currentIdx + 1) % state.players.length;
-    state.lastTick = Date.now();
+    state.lastTick = performance.now();
     save();
     renderGame();
   }
 
   function togglePausa() {
     state.paused = !state.paused;
-    if (!state.paused) state.lastTick = Date.now();
+    if (!state.paused) state.lastTick = performance.now();
     pauseBtn.innerHTML = state.paused
       ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg> Reanudar'
       : '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Pausar';
@@ -864,12 +915,14 @@
       : `Pasar turno <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>`;
     save();
     renderGame();
+    prepararAudio();
+    syncWakeLock();
   }
 
   function resetTiempos() {
     state.players = state.players.map(p => ({ ...p, remaining: state.perPlayerSec, totalUsed: 0 }));
     state.currentIdx = 0;
-    state.lastTick = Date.now();
+    state.lastTick = performance.now();
     save();
     renderGame();
   }
@@ -878,6 +931,7 @@
     state.started = false;
     state.paused = false;
     stopTicker();
+    syncWakeLock();
     clearStorage();
     state.players = state.players.map(p => ({ ...p, remaining: state.perPlayerSec, totalUsed: 0 }));
     showSetupView();
@@ -994,6 +1048,11 @@
       }
     });
   }
+  // Si el usuario sale de pantalla completa (ESC o gesto del sistema, que el
+  // navegador consume sin disparar keydown), salir también del modo focus
+  document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) document.body.classList.remove('focus-mode');
+  });
   // ESC sale del modo focus
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && document.body.classList.contains('focus-mode')) {

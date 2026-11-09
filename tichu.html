@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#0E0E10" />
 <title>Marcador de Tichu online · Cálculo automático de puntos · CJMVR</title>
@@ -97,13 +98,13 @@
 <link rel="stylesheet" href="assets/tools.css">
 
 <!-- PWA -->
-<link rel="manifest" href="/CJMVR/manifest.json">
-<link rel="apple-touch-icon" href="/CJMVR/assets/icon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="CJMVR">
 <meta name="mobile-web-app-capable" content="yes">
-<script defer src="/CJMVR/assets/register-sw.js"></script>
+<script defer src="assets/register-sw.js"></script>
 
 <style>
   .tool-main { max-width: 720px; }
@@ -714,7 +715,7 @@
 
 <header class="tool-header">
   <div class="tool-nav">
-    <a href="/CJMVR/" class="tool-back">
+    <a href="./" class="tool-back">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
       Volver al club
     </a>
@@ -722,7 +723,7 @@
       🎲 Mesa de juego
     </a>
   </div>
-  <a href="/CJMVR/" class="tool-brand" aria-label="Volver al sitio del Club Juegos de Mesa Quinta Región">
+  <a href="./" class="tool-brand" aria-label="Volver al sitio del Club Juegos de Mesa Quinta Región">
     <span class="text">
       <span class="name">Club Juegos de Mesa</span>
       <span class="sub">Quinta Región · Viña</span>
@@ -887,7 +888,7 @@
 <section class="seo-section" aria-labelledby="seo-h2">
   <h2 id="seo-h2">Marcador de Tichu online: cálculo automático y sin errores</h2>
   <p>Tichu es un juego de cartas para 4 jugadores (2 parejas) que se juega a 1000 puntos. Es uno de los mejores juegos de cartas del mundo (consistentemente top 30 de BoardGameGeek), pero llevar el puntaje a mano es complicado: cada ronda combina puntos de cartas (que siempre suman 100), apuestas de Tichu (±100), apuestas de Gran Tichu (±200) y la jugada del 1-2 (cuando una pareja sale primero y segundo, gana 200/0 directo). Es muy fácil equivocarse.</p>
-  <p>Este marcador hace todo el cálculo solo. Marcas qué cartas ganó cada equipo, indicas si alguien cantó Tichu o Gran Tichu, y si lo lograron o no. El marcador valida las reglas oficiales (no te deja decir Tichu y Gran Tichu en la misma mano, no te deja anotar Tichu acertado en ambos equipos, etc.) y suma todo automáticamente. La meta es configurable (500 / 1000 / 1500). Y cuando alguien hace una jugada épica, un dragón vuela por la pantalla.</p>
+  <p>Este marcador hace todo el cálculo solo. Marcas qué cartas ganó cada equipo, indicas si alguien cantó Tichu o Gran Tichu, y si lo lograron o no. El marcador valida las reglas oficiales (solo un canto puede acertarse por ronda, el equipo que pierde un 1-2 no puede acertar su Tichu, etc.) y suma todo automáticamente. La meta es configurable (500 / 1000 / 1500). Y cuando alguien hace una jugada épica, un dragón vuela por la pantalla.</p>
 
   <h2>Cómo funciona</h2>
   <ol>
@@ -945,7 +946,7 @@
     <ul>
       <li>📱 <a href="https://www.instagram.com/clubjuegosdemesaquintaregion">Síguenos en Instagram</a> · fotos de las partidas y agenda semanal</li>
       <li>💬 <a href="https://chat.whatsapp.com/GYmennwlxbxDE3G6Ljhrbh">Únete al WhatsApp</a> · el grupo donde coordinamos</li>
-      <li>📅 <a href="/CJMVR/">Conoce al club</a> · cómo asociarse, encuentros, alianzas</li>
+      <li>📅 <a href="./">Conoce al club</a> · cómo asociarse, encuentros, alianzas</li>
     </ul>
     <span class="club-tagline">🎲 Jugando desde 2020 · Club oficial desde 2022</span>
   </div>
@@ -1045,11 +1046,11 @@
 
 <footer class="tool-footer">
   <div class="footer-content">
-    <a href="/CJMVR/" aria-label="Volver al Club Juegos de Mesa Quinta Región">
+    <a href="./" aria-label="Volver al Club Juegos de Mesa Quinta Región">
       <img src="assets/logo/cjmvr-logo-blanco.png" alt="" class="footer-logo" width="880" height="886" loading="lazy" decoding="async" />
     </a>
     <span class="footer-tag">
-      Una herramienta del <a href="/CJMVR/">Club Juegos de Mesa Quinta Región</a> · Viña del Mar
+      Una herramienta del <a href="./">Club Juegos de Mesa Quinta Región</a> · Viña del Mar
     </span>
     <div class="footer-legal">
       <a href="privacidad.html">Privacidad</a>
@@ -1185,21 +1186,22 @@
   }
 
   // Reglas de bloqueo de los botones Tichu/Gran Tichu:
-  //  - Si un par acertó Tichu/Gran Tichu, el otro par no puede acertar (solo fallar).
-  //  - Tichu y Gran Tichu son mutuamente excluyentes dentro del mismo par
-  //    (una persona no puede declarar ambos a la vez).
+  //  - Solo un jugador sale primero, así que solo UN canto por ronda puede
+  //    acertarse: si hay un acierto marcado, los demás solo pueden fallar.
+  //  - Dentro del mismo par, Tichu y Gran Tichu pueden convivir: los cantan
+  //    jugadores distintos (p. ej. uno acierta su Tichu y el compañero falla
+  //    su Gran Tichu).
   //  - Si hay 1-2: el par perdedor no salió 1° ni 2°, así que cualquier
   //    Tichu/Gran Tichu cantado por ellos es por fuerza fallo.
+  const CALL_IDS = ['tichuA', 'grandA', 'tichuB', 'grandB'];
   function updateCallButtonsState() {
-    const aHit = currentRound.tichuA === 'hit' || currentRound.grandA === 'hit';
-    const bHit = currentRound.tichuB === 'hit' || currentRound.grandB === 'hit';
     const oneTwo = currentRound.oneTwo; // 'a' | 'b' | null
 
     callBtns.forEach(btn => {
       const callId = btn.dataset.call; // tichuA, tichuB, grandA, grandB
       const val = btn.dataset.val; // hit | fail
       const par = callId.endsWith('A') ? 'a' : 'b';
-      const tipo = callId.startsWith('grand') ? 'grand' : 'tichu';
+      const otroAcierto = CALL_IDS.some(id => id !== callId && currentRound[id] === 'hit');
 
       // Estado activo
       const currentVal = currentRound[callId];
@@ -1209,11 +1211,8 @@
       // Reset
       btn.disabled = false;
 
-      // Bloqueo entre par: si el OTRO par ya acertó, deshabilita el hit de este par
-      if (val === 'hit') {
-        if (par === 'a' && bHit) btn.disabled = true;
-        else if (par === 'b' && aHit) btn.disabled = true;
-      }
+      // Si otro canto ya se marcó como acertado, este solo puede fallar
+      if (val === 'hit' && otroAcierto) btn.disabled = true;
 
       // Bloqueo por 1-2: el par perdedor no puede haber acertado nada
       if (val === 'hit' && oneTwo && oneTwo !== par) {
@@ -1224,13 +1223,6 @@
           btn.classList.remove('active');
           btn.setAttribute('aria-pressed', 'false');
         }
-      }
-
-      // Bloqueo intra-par: Tichu y Gran Tichu son excluyentes en el mismo par.
-      const otroTipo = tipo === 'grand' ? 'tichu' : 'grand';
-      const otroCallId = otroTipo + (par === 'a' ? 'A' : 'B');
-      if (currentRound[otroCallId] !== null) {
-        btn.disabled = true;
       }
     });
   }

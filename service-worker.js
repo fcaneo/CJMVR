@@ -1,35 +1,51 @@
 // Service Worker del Club Juegos de Mesa Quinta Región
-// Estrategia: network-first con fallback a cache. Si la red falla,
-// servimos lo que tengamos cacheado (asegura uso offline después
-// de la primera visita).
+// Estrategias:
+//  - Páginas (navegación): network-first con timeout; si la red falla o tarda,
+//    se sirve la copia en caché (y si no existe, la 404 cacheada).
+//  - Assets estáticos (css, js, imágenes, manifest): stale-while-revalidate:
+//    respuesta inmediata desde caché y actualización en segundo plano.
+// Las rutas son relativas a este archivo, así funciona en /CJMVR/ y en un dominio propio.
+// IMPORTANTE: al agregar/renombrar páginas o assets, actualizar CORE_ASSETS y subir CACHE_VERSION.
 
-const CACHE_VERSION = 'cjmvr-v1';
+const CACHE_VERSION = 'cjmvr-v2';
+const NETWORK_TIMEOUT_MS = 3000;
 const CORE_ASSETS = [
-  '/CJMVR/',
-  '/CJMVR/index.html',
-  '/CJMVR/mesa.html',
-  '/CJMVR/dado.html',
-  '/CJMVR/sorteo.html',
-  '/CJMVR/marcador.html',
-  '/CJMVR/temporizador.html',
-  '/CJMVR/dados.html',
-  '/CJMVR/tichu.html',
-  '/CJMVR/404.html',
-  '/CJMVR/privacidad.html',
-  '/CJMVR/terminos.html',
-  '/CJMVR/manifest.json',
-  '/CJMVR/assets/tools.css',
-  '/CJMVR/assets/icon.svg',
-  '/CJMVR/assets/logo/cjmvr-logo-blanco.png'
+  './',
+  'index.html',
+  'mesa.html',
+  'dado.html',
+  'sorteo.html',
+  'marcador.html',
+  'temporizador.html',
+  'dados.html',
+  'tichu.html',
+  '404.html',
+  'privacidad.html',
+  'terminos.html',
+  'manifest.json',
+  'assets/site.css',
+  'assets/tools.css',
+  'assets/register-sw.js',
+  'assets/common.js',
+  'assets/juegos.js',
+  'assets/icon.svg',
+  'assets/icon-192.png',
+  'assets/icon-512.png',
+  'assets/icon-180.png',
+  'assets/logo/cjmvr-logo-blanco.png'
 ];
+const SCOPE = new URL('./', self.location).href;
 
-// Install: precache de recursos críticos
+// Install: precache individual (si un archivo falla, el resto igual queda cacheado)
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_VERSION)
-      .then(cache => cache.addAll(CORE_ASSETS))
+      .then(cache => Promise.allSettled(CORE_ASSETS.map(path => cache.add(path))))
+      .then(results => {
+        const fallidos = results.filter(r => r.status === 'rejected').length;
+        if (fallidos) console.warn(`SW install: ${fallidos} recursos sin precachear`);
+      })
       .then(() => self.skipWaiting())
-      .catch(err => console.warn('SW install: precache parcial', err))
   );
 });
 
@@ -44,35 +60,61 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch: network-first, cache fallback
+// Clave de caché sin query string: evita entradas duplicadas (?utm=..., ?fbclid=...)
+function cacheKey(request) {
+  const url = new URL(request.url);
+  return url.origin + url.pathname;
+}
+
+function guardar(request, response) {
+  if (response && response.status === 200 && response.type === 'basic') {
+    const copia = response.clone();
+    caches.open(CACHE_VERSION).then(cache => cache.put(cacheKey(request), copia));
+  }
+  return response;
+}
+
+async function paginaNetworkFirst(event) {
+  const { request } = event;
+  const red = fetch(request).then(res => guardar(request, res));
+  try {
+    return await Promise.race([
+      red,
+      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), NETWORK_TIMEOUT_MS))
+    ]);
+  } catch (e) {
+    // Si la red tarda, igual dejamos que termine para actualizar la caché
+    event.waitUntil(red.catch(() => {}));
+    const cached = await caches.match(cacheKey(request));
+    if (cached) return cached;
+    try { return await red; } catch (err) {
+      return (await caches.match(new URL('404.html', SCOPE).href)) ||
+        new Response('Sin conexión', { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+    }
+  }
+}
+
+async function assetStaleWhileRevalidate(event) {
+  const { request } = event;
+  const cached = await caches.match(cacheKey(request));
+  const red = fetch(request).then(res => guardar(request, res));
+  if (cached) {
+    event.waitUntil(red.catch(() => {}));
+    return cached;
+  }
+  try { return await red; } catch (e) {
+    return new Response('', { status: 504, statusText: 'Offline' });
+  }
+}
+
 self.addEventListener('fetch', (event) => {
   const req = event.request;
+  // Solo GETs dentro del alcance del sitio (ignoramos Google Fonts y otros orígenes)
+  if (req.method !== 'GET' || !req.url.startsWith(SCOPE)) return;
 
-  // Solo cacheamos GETs same-origin (ignoramos Google Fonts, Tailwind CDN)
-  if (req.method !== 'GET') return;
-  const url = new URL(req.url);
-  if (url.origin !== self.location.origin) return;
-
-  event.respondWith(
-    fetch(req)
-      .then(response => {
-        // Solo cacheamos respuestas válidas
-        if (response && response.status === 200 && response.type === 'basic') {
-          const clone = response.clone();
-          caches.open(CACHE_VERSION).then(cache => cache.put(req, clone));
-        }
-        return response;
-      })
-      .catch(() => {
-        // Sin red: tratar de servir desde cache
-        return caches.match(req).then(cached => {
-          if (cached) return cached;
-          // Si la página no está cacheada, devolver 404 cacheada
-          if (req.mode === 'navigate') {
-            return caches.match('/CJMVR/404.html');
-          }
-          return new Response('', { status: 504, statusText: 'Offline' });
-        });
-      })
-  );
+  if (req.mode === 'navigate') {
+    event.respondWith(paginaNetworkFirst(event));
+  } else {
+    event.respondWith(assetStaleWhileRevalidate(event));
+  }
 });

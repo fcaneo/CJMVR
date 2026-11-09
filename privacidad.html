@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#0E0E10" />
 <title>Política de privacidad · Club Juegos de Mesa Quinta Región</title>
@@ -18,18 +19,18 @@
 <link rel="stylesheet" href="assets/tools.css">
 
 <!-- PWA -->
-<link rel="manifest" href="/CJMVR/manifest.json">
-<link rel="apple-touch-icon" href="/CJMVR/assets/icon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="CJMVR">
 <meta name="mobile-web-app-capable" content="yes">
-<script defer src="/CJMVR/assets/register-sw.js"></script>
+<script defer src="assets/register-sw.js"></script>
 </head>
 <body>
 
 <header class="tool-header">
-  <a href="/CJMVR/" class="tool-brand" aria-label="Volver al sitio del Club Juegos de Mesa Quinta Región">
+  <a href="./" class="tool-brand" aria-label="Volver al sitio del Club Juegos de Mesa Quinta Región">
     <span class="text">
       <span class="name">Club Juegos de Mesa</span>
       <span class="sub">Quinta Región · Viña</span>
@@ -92,17 +93,17 @@
 
     <p style="margin-top: 2.5rem; font-family: 'Space Mono', monospace; font-size: 0.8rem; color: var(--dim);">Última actualización: 2 de mayo de 2026</p>
 
-    <p style="margin-top: 2rem;"><a href="/CJMVR/">← Volver al inicio</a> · <a href="terminos.html">Términos de uso</a></p>
+    <p style="margin-top: 2rem;"><a href="./">← Volver al inicio</a> · <a href="terminos.html">Términos de uso</a></p>
   </section>
 </main>
 
 <footer class="tool-footer">
   <div class="footer-content">
-    <a href="/CJMVR/" aria-label="Volver al Club Juegos de Mesa Quinta Región">
+    <a href="./" aria-label="Volver al Club Juegos de Mesa Quinta Región">
       <img src="assets/logo/cjmvr-logo-blanco.png" alt="" class="footer-logo" width="880" height="886" loading="lazy" decoding="async" />
     </a>
     <span class="footer-tag">
-      <a href="/CJMVR/">Club Juegos de Mesa Quinta Región</a> · Viña del Mar
+      <a href="./">Club Juegos de Mesa Quinta Región</a> · Viña del Mar
     </span>
   </div>
 </footer>
